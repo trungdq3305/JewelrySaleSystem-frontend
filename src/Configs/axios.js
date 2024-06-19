@@ -38,3 +38,47 @@ export const getAllGem = async () => {
     }
   }
 }
+export const addProduct = async (formData) => {
+  try {
+    const data = await axios.post(api + '/products/create-product', formData)
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
+    }
+  }
+}
+export const searchProduct = async (searchValue) => {
+  try {
+    const data = await axios.get(api + `/products/productid?productId=${searchValue}`)
+    console.log(data)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+export const editProduct = async () => {
+  try {
+    const data = await axios.put(api + '/products/productidupdate')
+    console.log(data)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}

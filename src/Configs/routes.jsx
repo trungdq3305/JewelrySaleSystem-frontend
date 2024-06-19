@@ -5,6 +5,7 @@ import ManagerPage from '../Page/ManagerPage'
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import ProtectedRoutes from './ProtectedRoutes'
+import ManagerHomePage from '../Page/ManagerHomePage'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -17,7 +18,7 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <StaffHomepage />
           </ProtectedRoutes>
-        ),
+        )
       },
       {
         path: 'AdminPage',
@@ -25,7 +26,7 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[3]}>
             <AdminHomepage />
           </ProtectedRoutes>
-        ),
+        )
       },
       {
         path: 'ManagePage',
@@ -33,8 +34,16 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[2]}>
             <ManagerPage />
           </ProtectedRoutes>
-        ),
+        )
       },
-    ],
-  },
+      {
+        path: 'ManagerHomePage',
+        element: (
+          <ProtectedRoutes allowedRoles={[2]}>
+            <ManagerHomePage />
+          </ProtectedRoutes>
+        )
+      }
+    ]
+  }
 ])
