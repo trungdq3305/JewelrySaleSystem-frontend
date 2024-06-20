@@ -1,12 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
+.view:hover {
+  text-decoration: underline;
+}
 .item {
   width: 95%;
-  border: solid black;
   border-radius: 10px;
-  height: 100%;
+  height: max-content;
+  font-family: 'Fira Sans';
   img {
     width: 100%;
-    height: 150px;
-
+    height: 120px;
     border-radius: 10px 10px 0px 0px;
   }
   .desc {
@@ -22,27 +26,36 @@
       margin-bottom: 5px;
       border: none;
       background-color: #ffdbf0;
+      color: black;
       padding: 5px 15px;
+      text-transform: none;
     }
     .detail {
+      h3 {
+        font-weight: 400;
+        font-size: large;
+        height: 45px;
+      }
+
       h3,
       p,
       div {
         margin: 0;
         text-align: center;
+        font-weight: 300;
         a {
           text-decoration: none;
-          color: blue;
+          color: black;
         }
       }
     }
   }
 }
-button:hover {
-  cursor: pointer;
-  background-color: #000000;
-  color: #ffdbf0;
-}
+// button:hover {
+//   cursor: pointer;
+//   background-color: #000000;
+//   color: #ffdbf0;
+// }
 a:hover {
   text-decoration: underline;
 }
