@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
+button {
+  border: none;
+  padding: 0;
+  border-radius: 5px;
+}
+button:hover {
+  cursor: pointer;
+}
+.cardContainer {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: baseline;
+  margin: 10px 5px;
+  height: 130px;
+  font-family: 'Fira Sans';
+
+  .cardImage {
+    display: flex;
+    width: 35%;
+    height: 100%;
+    border-radius: 5px;
+
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 98%;
+      height: 90%;
+      border-radius: 3px;
+
+      padding-left: 3px;
+      border-radius: 5px;
+    }
+  }
+  .cardContent {
+    padding: 15px 5px;
+    width: 100%;
+    p {
+      margin: 0;
+    }
+    .iconContainer {
+      display: flex;
+      justify-content: first baseline;
+      align-items: center;
+      height: 40px;
+      .icon {
+        background-color: #ffdbf0;
+        padding: 3px;
+        padding-bottom: 0px;
+        border-radius: 4px;
+        align-items: center;
+      }
+    }
+  }
+}

@@ -1,6 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
 .container {
-  width: 25%;
+  font-family: 'Fira Sans';
+
+  width: 30%;
   background-color: #ececec;
   display: inline-block;
-  height: 100fr;
+  height: 100vh;
+}
+.customer {
+  display: flex;
+  justify-content: baseline;
+  align-items: center;
+  margin-left: 15px;
+  .customerInfor {
+    margin: 8px;
+    p {
+      margin: 0;
+      font-size: 12px;
+    }
+  }
+}
+.card {
+  height: 60%;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.hr {
+  border: 0;
+  height: 0.5px;
+  width: 90%;
+  background: #333;
+  margin: 0 auto;
+}
+.cost {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 20px;
+  div {
+    width: 100%;
+    display: flex;
+
+    justify-content: space-between;
+  }
 }
