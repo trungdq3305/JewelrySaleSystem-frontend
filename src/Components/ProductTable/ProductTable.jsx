@@ -104,9 +104,9 @@ const initialFormData = {
   gem: {
     additionalProp1: 0,
     additionalProp2: 0,
-    additionalProp3: 0
+    additionalProp3: 0,
   },
-  markupRate: ''
+  markupRate: '',
 }
 
 const materialMapping = [
@@ -163,7 +163,7 @@ const ProductTable = ({ products }) => {
       'size',
       'amount',
       'desc',
-      'image'
+      'image',
     ]
     const isAnyFieldEmpty = requiredFields.some((field) => !formData[field])
     if (isAnyFieldEmpty) {
@@ -252,7 +252,7 @@ const ProductTable = ({ products }) => {
                   {product.weight}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {product.machiningCost}
+                  {product.price}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   {product.size}
