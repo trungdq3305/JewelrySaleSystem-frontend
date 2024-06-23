@@ -1,15 +1,10 @@
 import axios from 'axios'
 
 const api = 'https://localhost:7093/api'
-export const getAllProducts = async (
-  productId,
-  productName,
-  Category,
-  Material
-) => {
+export const getAllProducts = (productId, productName, Category, Material) => {
   try {
     const query = `?ProductId=${productId}&ProductName=${productName}&Category=${Category}&Material=${Material}`
-    const data = await axios.get(api + '/products/view-product' + query)
+    const data = axios.get(api + '/products/view-product' + query)
     console.log(data)
     return data
   } catch (error) {
@@ -54,7 +49,9 @@ export const addProduct = async (formData) => {
 }
 export const searchProduct = async (searchValue) => {
   try {
-    const data = await axios.get(api + `/products/productid?productId=${searchValue}`)
+    const data = await axios.get(
+      api + `/products/productid?productId=${searchValue}`
+    )
     console.log(data)
     return data
   } catch (error) {

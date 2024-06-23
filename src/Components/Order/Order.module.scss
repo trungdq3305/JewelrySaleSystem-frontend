@@ -2,11 +2,13 @@
 
 .container {
   font-family: 'Fira Sans';
-
   width: 30%;
   background-color: #ececec;
   display: inline-block;
-  height: 100vh;
+  // height: 100vh;
+
+  bottom: 0;
+  right: 0;
 }
 .customer {
   display: flex;
@@ -40,10 +42,10 @@
   justify-content: center;
   align-items: center;
   padding: 0px 20px;
+
   div {
     width: 100%;
     display: flex;
-
     justify-content: space-between;
   }
 }

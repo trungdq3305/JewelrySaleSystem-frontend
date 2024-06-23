@@ -6,6 +6,8 @@ import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import ProtectedRoutes from './ProtectedRoutes'
 import ManagerHomePage from '../Page/ManagerHomePage'
+import ProductDetailPage from '../Page/ProductDetailPage'
+import BillPage from '../Page/BillPage'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -18,7 +20,7 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <StaffHomepage />
           </ProtectedRoutes>
-        )
+        ),
       },
       {
         path: 'AdminPage',
@@ -26,7 +28,7 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[3]}>
             <AdminHomepage />
           </ProtectedRoutes>
-        )
+        ),
       },
       {
         path: 'ManagePage',
@@ -34,7 +36,7 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[2]}>
             <ManagerPage />
           </ProtectedRoutes>
-        )
+        ),
       },
       {
         path: 'ManagerHomePage',
@@ -42,8 +44,24 @@ export const router = createBrowserRouter([
           <ProtectedRoutes allowedRoles={[2]}>
             <ManagerHomePage />
           </ProtectedRoutes>
-        )
-      }
-    ]
-  }
+        ),
+      },
+      {
+        path: 'ViewDetailPage/:id',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <ProductDetailPage />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: 'BillPage',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <BillPage />
+          </ProtectedRoutes>
+        ),
+      },
+    ],
+  },
 ])

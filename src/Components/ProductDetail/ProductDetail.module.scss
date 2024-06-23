@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
+.container {
+  display: 'flex';
+  flex-direction: row;
+  margin: '20px';
+  padding: 80px;
+  font-family: 'Fira Sans', sans-serif;
+}
+.image {
+  width: '100%';
+  object-fit: cover;
+  justify-content: center;
+  img {
+    width: 80%;
+  }
+}
+.details {
+  margin-left: 0px;
+  display: 'flex';
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+.listItem {
+  padding: 0;
+}
+.description {
+  display: flex;
+
+  .left,
+  .right {
+    width: 50%;
+    .props {
+    }
+    p {
+      display: block;
+      font-weight: 350;
+    }
+    .title {
+      font-weight: bolder;
+    }
+  }
+}

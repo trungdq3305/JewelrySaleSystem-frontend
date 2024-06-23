@@ -5,11 +5,19 @@ import Divider from '@mui/material/Divider'
 import OrderCard from '../OrderCard/OrderCard'
 import Button from '@mui/material/Button'
 import OrderCardList from '../OrderCardList/OrderCardList'
-const Order = ({ cardValues, totalCost }) => {
+import { useNavigate } from 'react-router-dom'
+const Order = ({
+  cardValues,
+  totalCost,
+  updateQuantity,
+  increase,
+  decrease,
+}) => {
+  const navigate = useNavigate()
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.customer}>
+        {/* <div className={styles.customer}>
           <div className={styles.customerIcon}>
             <PersonAddAltIcon sx={{ fontSize: 30 }} />
           </div>
@@ -20,9 +28,14 @@ const Order = ({ cardValues, totalCost }) => {
             <p>Point:</p>
           </div>
         </div>
-        <div className={styles.hr}></div>
+        <div className={styles.hr}></div> */}
         <div className={styles.card}>
-          <OrderCardList cardValues={cardValues} />
+          <OrderCardList
+            cardValues={cardValues}
+            updateQuantity={updateQuantity}
+            increase={increase}
+            decrease={decrease}
+          />
         </div>
         <div className={styles.cost}>
           <div>
@@ -36,9 +49,11 @@ const Order = ({ cardValues, totalCost }) => {
             <p>{Number(totalCost).toLocaleString('en')}VND</p>
           </div>
           <Button
+            onClick={() => {
+              navigate('/BillPage')
+            }}
             className={styles.button}
             variant="contained"
-            href="#contained-buttons"
             sx={{
               background: '#ffdbf0',
               color: 'black',

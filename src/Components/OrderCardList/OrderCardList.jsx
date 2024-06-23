@@ -1,19 +1,22 @@
 import React from 'react'
 import OrderCard from '../OrderCard/OrderCard'
 
-const OrderCardList = ({ cardValues }) => {
+const OrderCardList = ({ cardValues, updateQuantity, increase, decrease }) => {
   return (
     <>
       {cardValues !== null ? (
-        cardValues.map((cardValue) => {
+        cardValues.map((cardValue, index) => {
           return (
             <OrderCard
-              key={cardValue.productId}
-              id={cardValue.productId}
-              name={cardValue.productName}
-              price={cardValue.price}
-              priceWithDiscount={cardValue.priceWithDiscount}
-              
+              key={index}
+              id={cardValue.Id}
+              name={cardValue.Name}
+              price={cardValue.Price}
+              quantity={cardValue.Quantity}
+              priceWithDiscount={cardValue.PriceWithDiscount}
+              updateQuantity={updateQuantity}
+              increase={() => increase(cardValue.Id)}
+              decrease={() => decrease(cardValue.Id)}
             />
           )
         })

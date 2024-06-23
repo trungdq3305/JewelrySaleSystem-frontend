@@ -3,20 +3,10 @@ import React from 'react'
 import logo from '../../assets/logo.jpg'
 import CustomizedMenus from '../React-menu/ReactMenu'
 import Button from '@mui/material/Button'
+import { useNavigate } from 'react-router-dom'
 
-const Header = ({ handleButtonClick }) => {
-  const buttons = [
-    'GOLD RATE',
-    'DISCOUNT',
-    'CUSTOMER',
-    'HISTORY',
-    'POLICY',
-    'PROFILE',
-    'LOGOUT',
-  ]
-  const handleClick = (button) => {
-    handleButtonClick(button) // Pass the button value to the parent component
-  }
+const Header = ({ handleCategory }) => {
+  const navigate = useNavigate()
   return (
     <div className={styles.nav}>
       <div className={styles.logo}>
@@ -25,26 +15,99 @@ const Header = ({ handleButtonClick }) => {
       <div className={styles.navbar}>
         <ul>
           <li>
-            <CustomizedMenus />
+            <button
+              onClick={() => {
+                navigate('/StaffPage')
+              }}
+            >
+              <CustomizedMenus handleCategory={handleCategory} />
+            </button>
           </li>
-          {buttons.map((button) => (
-            <li key={button}>
-              <Button
-                id="demo-customized-button"
-                onClick={() => handleClick(button)}
-                sx={{
-                  backgroundColor: '#333',
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: '#ffdbf0',
-                    color: 'black',
-                  },
-                }}
-              >
-                {button}
-              </Button>
-            </li>
-          ))}
+          <li>
+            <Button
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              GOLD RATE
+            </Button>
+          </li>
+
+          <li>
+            <Button
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              DISCOUNT
+            </Button>
+          </li>
+          <li>
+            <Button
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              CUSTOMER
+            </Button>
+          </li>
+          <li>
+            <Button
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              HISTORY
+            </Button>
+          </li>
+          <li>
+            <Button
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              POLICY
+            </Button>
+          </li>
+          <li>
+            <Button
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              PROFILE{' '}
+            </Button>
+          </li>
         </ul>
       </div>
     </div>

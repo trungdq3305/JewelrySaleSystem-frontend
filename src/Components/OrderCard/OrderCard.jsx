@@ -9,10 +9,15 @@ import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Minimize } from '@mui/icons-material'
 
-const OrderCard = ({ name, price, priceWithDiscount }) => {
-  const [value, setValue] = useState(1)
-  const min = 0
-  const max = 10
+const OrderCard = ({
+  id,
+  name,
+  price,
+  priceWithDiscount,
+  quantity,
+  increase,
+  decrease,
+}) => {
   return (
     <>
       <Box
@@ -28,7 +33,7 @@ const OrderCard = ({ name, price, priceWithDiscount }) => {
           {price === priceWithDiscount ? (
             <p style={{ fontWeight: 300, padding: 4 }}>
               {' '}
-              {Number(price * value).toLocaleString('en')}VND
+              {Number(priceWithDiscount).toLocaleString('en')}VND
             </p>
           ) : (
             <>
@@ -39,34 +44,32 @@ const OrderCard = ({ name, price, priceWithDiscount }) => {
                   textDecoration: 'line-through',
                 }}
               >
-                {Number(price * value).toLocaleString('en')}VND
+                {Number(priceWithDiscount).toLocaleString('en')}VND
               </p>
               <p style={{ fontWeight: 300, padding: 4 }}>
-                {Number(priceWithDiscount * value).toLocaleString('en')}VND
+                {Number(priceWithDiscount).toLocaleString('en')}VND
               </p>
             </>
           )}
 
-          <form>
-            <div className={styles.iconContainer}>
-              <TextField
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                variant="standard"
-                value={value}
-                onChange={(e) => {
-                  var value = parseInt(e.target.value, 10)
+          <div className={styles.iconContainer}>
+            <button className={styles.icon} onClick={decrease}>
+              <RemoveIcon />
+            </button>
 
-                  if (value > max) value = max
-                  if (value < min) value = min
-
-                  setValue(value)
-                }}
-              />
+            <div
+              style={{
+                margin: 25,
+              }}
+            >
+              <div>{quantity}</div>
             </div>
-          </form>
+            <div>
+              <button className={styles.icon} onClick={increase}>
+                <AddIcon />
+              </button>
+            </div>
+          </div>
         </div>
       </Box>
     </>

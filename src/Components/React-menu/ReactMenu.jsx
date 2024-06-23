@@ -48,7 +48,7 @@ const StyledMenu = styled((props) => (
   },
 }))
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus({ handleCategory }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -89,30 +89,140 @@ export default function CustomizedMenus() {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose} disableRipple>
-            <a className={styles.option} href="">
+          <MenuItem
+            onClick={handleClose}
+            sx={{
+              background: 'white',
+              '&:hover': {
+                background: '#ececec',
+              },
+            }}
+            disableRipple
+          >
+            <button
+              value="Ring"
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                '&:hover': {
+                  background: '#ececec',
+                },
+              }}
+              onClick={handleCategory}
+            >
+              All
+            </button>
+          </MenuItem>
+          <MenuItem
+            onClick={handleClose}
+            sx={{
+              background: 'white',
+              '&:hover': {
+                background: '#ececec',
+              },
+            }}
+            disableRipple
+          >
+            <button
+              value="Ring"
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                '&:hover': {
+                  background: '#ececec',
+                },
+              }}
+              onClick={handleCategory}
+            >
               Ring
-            </a>
+            </button>
           </MenuItem>
-          <MenuItem onClick={handleClose} disableRipple>
-            <a className={styles.option} href="">
+          <MenuItem
+            onClick={handleClose}
+            sx={{
+              background: 'white',
+              '&:hover': {
+                background: '#ececec',
+              },
+            }}
+            disableRipple
+          >
+            <button
+              value="Ring"
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                '&:hover': {
+                  background: '#ececec',
+                },
+              }}
+              onClick={handleCategory}
+            >
               Necklace
-            </a>
+            </button>
           </MenuItem>
-          <MenuItem onClick={handleClose} disableRipple>
-            <a className={styles.option} href="">
+          <MenuItem
+            onClick={handleClose}
+            sx={{
+              background: 'white',
+              '&:hover': {
+                background: '#ececec',
+              },
+            }}
+            disableRipple
+          >
+            <button
+              value="Ring"
+              style={{
+                width: '100%',
+                textAlign: 'left',
+              }}
+              onClick={handleCategory}
+            >
               Charm
-            </a>
+            </button>
           </MenuItem>
-          <MenuItem onClick={handleClose} disableRipple>
-            <a className={styles.option} href="">
+          <MenuItem
+            onClick={handleClose}
+            sx={{
+              background: 'white',
+              '&:hover': {
+                background: '#ececec',
+              },
+            }}
+            disableRipple
+          >
+            <button
+              value="Ring"
+              style={{
+                width: '100%',
+                textAlign: 'left',
+              }}
+              onClick={handleCategory}
+            >
               Earing
-            </a>
+            </button>
           </MenuItem>
-          <MenuItem onClick={handleClose} disableRipple>
-            <a className={styles.option} href="">
+          <MenuItem
+            onClick={handleClose}
+            sx={{
+              background: 'white',
+              '&:hover': {
+                background: '#ececec',
+              },
+            }}
+            disableRipple
+          >
+            <button
+              value="Ring"
+              style={{
+                width: '100%',
+                textAlign: 'left',
+              }}
+              onClick={handleCategory}
+            >
               Bracelet
-            </a>
+            </button>
           </MenuItem>
         </StyledMenu>
       </div>
