@@ -1,12 +1,20 @@
-a {
+button {
   text-decoration: none;
   color: black;
+  background-color: inherit;
 }
-a:hover {
-  text-decoration: none;
+button:hover {
+  text-decoration: underline;
+  background-color: inherit;
 }
 Button:hover {
   background-color: none;
+}
+MenuItem {
+  background-color: white;
+}
+MenuItem:hover {
+  background-color: white;
 }
 
 // .MenuContainer {

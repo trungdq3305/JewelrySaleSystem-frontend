@@ -3,14 +3,25 @@ import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import EditProductDialog from './EditProductDialog'
-import { Table, TableBody, TableCell, TableFooter, TableContainer, TableHead, TableRow, Paper, Box, TablePagination, Button } from '@mui/material'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  TablePagination,
+  Button,
+} from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 import { editProduct } from '../../Configs/axios'
-
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -46,14 +57,22 @@ function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="previous page"
       >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page"
       >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
@@ -69,7 +88,7 @@ TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired
+  rowsPerPage: PropTypes.number.isRequired,
 }
 
 const initialFormData = {
@@ -85,14 +104,14 @@ const initialFormData = {
   gem: {
     additionalProp1: 0,
     additionalProp2: 0,
-    additionalProp3: 0
+    additionalProp3: 0,
   },
-  markupRate: ''
+  markupRate: '',
 }
 
 const ProductTable = ({ products }) => {
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
   const [openDialog, setOpenDialog] = useState(false)
   const [editData, setEditData] = useState(initialFormData)
 
@@ -101,7 +120,7 @@ const ProductTable = ({ products }) => {
 
     setEditData({
       ...initialFormData,
-      ...product
+      ...product,
     })
   }
   const handleOpenDialog = () => {
@@ -124,29 +143,42 @@ const ProductTable = ({ products }) => {
     setPage(0)
   }
   const handleEditProduct = async (formData) => {
-    const requiredFields = ['productName', 'category','material', 'weigt','machiningCost','size', 'amount','desc','image']
-    const isAnyFieldEmpty = requiredFields.some(field => !formData[field])
+    const requiredFields = [
+      'productName',
+      'category',
+      'material',
+      'weight',
+      'machiningCost',
+      'size',
+      'amount',
+      'desc',
+      'image',
+    ]
+    const isAnyFieldEmpty = requiredFields.some((field) => !formData[field])
     if (isAnyFieldEmpty) {
       window.alert('Please fill out all required fields.')
       return
     }
     try {
-      const result = await editProduct()
+      const result = await editProduct(formData) // Pass formData to the editProduct function
       console.log(result.data)
       // Close the dialog
       handleCloseDialog()
     } catch (error) {
-      console.error('Error edit product:', error)
+      console.error('Error editing product:', error)
       // Handle error state or display error message to user
     }
   }
-  console.log(products)
+
+  // Ensure products is an array
+  const productList = Array.isArray(products) ? products : []
+
   useEffect(() => {
     editProduct()
   }, [])
+
   return (
     <>
-
       <EditProductDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
@@ -154,8 +186,11 @@ const ProductTable = ({ products }) => {
         formData={editData}
         setFormData={setEditData}
       />
-      
-      <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
+
+      <TableContainer
+        component={Paper}
+        sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
+      >
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
@@ -174,8 +209,11 @@ const ProductTable = ({ products }) => {
           </TableHead>
           <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
             {(rowsPerPage > 0
-              ? products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : products
+              ? productList.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : productList
             ).map((product) => (
               <TableRow key={product.productId}>
                 <TableCell component="th" scope="row">
@@ -194,7 +232,7 @@ const ProductTable = ({ products }) => {
                   {product.weight}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {product.machiningCost}
+                  {product.price}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   {product.size}
@@ -209,12 +247,8 @@ const ProductTable = ({ products }) => {
                   {product.image}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  <Button onClick={() => handleEdit(product)}>
-                    Edit
-                  </Button >
-                  <Button>
-                    Delete
-                  </Button>
+                  <Button onClick={() => handleEdit(product)}>Edit</Button>
+                  <Button>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -229,16 +263,16 @@ const ProductTable = ({ products }) => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={11}
-                count={products.length}
+                count={productList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 slotProps={{
                   select: {
                     inputProps: {
-                      'aria-label': 'rows per page'
+                      'aria-label': 'rows per page',
                     },
-                    native: true
-                  }
+                    native: true,
+                  },
                 }}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
@@ -250,6 +284,10 @@ const ProductTable = ({ products }) => {
       </TableContainer>
     </>
   )
+}
+
+ProductTable.propTypes = {
+  products: PropTypes.array.isRequired,
 }
 
 export default ProductTable

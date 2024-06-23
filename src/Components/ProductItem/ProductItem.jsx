@@ -4,8 +4,12 @@ import styles from '../ProductItem/ProductItem.module.scss'
 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import { useNavigate } from 'react-router-dom'
 
 const ProductItem = ({ id, name, price, priceWithDiscount, addProduct }) => {
+  const navigate = useNavigate()
+
+  const viewDetail = () => navigate(`/ViewDetailPage/${id}`)
   return (
     // <div> Hello</div>
     <>
@@ -48,7 +52,8 @@ const ProductItem = ({ id, name, price, priceWithDiscount, addProduct }) => {
                   fontStyle: 'italic',
                   fontSize: '15px',
                 }}
-                href="#"
+                href=""
+                onClick={viewDetail}
               >
                 View Detail{' '}
               </a>
