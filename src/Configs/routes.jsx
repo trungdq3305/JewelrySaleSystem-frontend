@@ -8,6 +8,7 @@ import ProtectedRoutes from './ProtectedRoutes'
 import ManagerHomePage from '../Page/ManagerHomePage'
 import ProductDetailPage from '../Page/ProductDetailPage'
 import BillPage from '../Page/BillPage'
+import ManageProducts from '../Page/ManageProducts'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -45,6 +46,16 @@ export const router = createBrowserRouter([
             <ManagerHomePage />
           </ProtectedRoutes>
         ),
+        children: [
+          {
+            path: 'ManageProducts',
+            element: (
+              <ProtectedRoutes allowedRoles={[2]}>
+                <ManageProducts />
+              </ProtectedRoutes>
+            )
+          }
+        ]
       },
       {
         path: 'ViewDetailPage/:id',

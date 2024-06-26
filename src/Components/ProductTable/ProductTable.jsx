@@ -104,10 +104,21 @@ const initialFormData = {
   gem: {
     additionalProp1: 0,
     additionalProp2: 0,
-    additionalProp3: 0,
+    additionalProp3: 0
   },
-  markupRate: '',
+  markupRate: ''
 }
+
+const materialMapping = [
+  { value: '1', label: 'Vàng SJC 1L - 10L - 1KG' },
+  { value: '2', label: 'Vàng nh?n SJC 99,99 1 ch?, 2 ch?, 5 ch?' },
+  { value: '3', label: 'Vàng nh?n SJC 99,99 0,3 ch?, 0,5 ch?' },
+  { value: '4', label: 'Vàng n? trang 99,99%' },
+  { value: '5', label: 'Vàng n? trang 99%' },
+  { value: '6', label: 'Vàng n? trang 75%' },
+  { value: '7', label: 'Vàng n? trang 58,3%' },
+  { value: '8', label: 'Vàng n? trang 41,7%' }
+]
 
 const ProductTable = ({ products }) => {
   const [page, setPage] = useState(0)
@@ -152,7 +163,7 @@ const ProductTable = ({ products }) => {
       'size',
       'amount',
       'desc',
-      'image',
+      'image'
     ]
     const isAnyFieldEmpty = requiredFields.some((field) => !formData[field])
     if (isAnyFieldEmpty) {
@@ -160,13 +171,22 @@ const ProductTable = ({ products }) => {
       return
     }
     try {
-      const result = await editProduct(formData) // Pass formData to the editProduct function
+      const result = await editProduct(reformatData(formData)) // Pass formData to the editProduct function
       console.log(result.data)
       // Close the dialog
       handleCloseDialog()
     } catch (error) {
       console.error('Error editing product:', error)
       // Handle error state or display error message to user
+    }
+  }
+
+  const reformatData = (formData) => {
+    const item = materialMapping.find(item => item.label === formData.material);
+    const value = item ? item.value : null;
+    return {
+      ...formData,
+      material: value
     }
   }
 
@@ -210,9 +230,9 @@ const ProductTable = ({ products }) => {
           <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
             {(rowsPerPage > 0
               ? productList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
               : productList
             ).map((product) => (
               <TableRow key={product.productId}>
@@ -232,7 +252,7 @@ const ProductTable = ({ products }) => {
                   {product.weight}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {product.price}
+                  {product.machiningCost}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   {product.size}
@@ -248,7 +268,6 @@ const ProductTable = ({ products }) => {
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   <Button onClick={() => handleEdit(product)}>Edit</Button>
-                  <Button>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}

@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 const api = 'https://localhost:7093/api'
-export const getAllProducts = (productId, productName, Category, Material) => {
+export const getAllProducts = async (productId, productName, Category, Material) => {
   try {
-    const query = `?ProductId=${productId}&ProductName=${productName}&Category=${Category}&Material=${Material}`
-    const data = axios.get(api + '/products/view-product' + query)
-    console.log(data)
+    // const query = `?ProductId=${productId}&ProductName=${productName}&Category=${Category}&Material=${Material}`
+    // const data = await axios.get(api + '/products/view-product' + query)
+    const data = await axios.get(api + '/products')
     return data
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -64,9 +64,9 @@ export const searchProduct = async (searchValue) => {
     }
   }
 }
-export const editProduct = async () => {
+export const editProduct = async (formData) => {
   try {
-    const data = await axios.put(api + '/products/productidupdate')
+    const data = await axios.put(api + '/products/productidupdate', formData)
     console.log(data)
     return data
   } catch (error) {

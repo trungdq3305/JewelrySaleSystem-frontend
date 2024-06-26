@@ -91,7 +91,7 @@ export default function ManagerSideBar() {
         <Divider />
         <List>
 
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/Dashboard')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/ManagerHomePage/ManageProducts')}}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -108,7 +108,7 @@ export default function ManagerSideBar() {
               >
                 < HomeOutlinedIcon/>
               </ListItemIcon>
-              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Manage Product" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/Help')}}>
