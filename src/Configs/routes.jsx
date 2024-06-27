@@ -8,6 +8,7 @@ import ProtectedRoutes from './ProtectedRoutes'
 import ManagerHomePage from '../Page/ManagerHomePage'
 import ProductDetailPage from '../Page/ProductDetailPage'
 import BillPage from '../Page/BillPage'
+import VoucherPage from '../Page/VoucherPage'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -59,6 +60,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <BillPage />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: 'VoucherPage',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <VoucherPage />
           </ProtectedRoutes>
         ),
       },

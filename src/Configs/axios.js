@@ -79,3 +79,17 @@ export const editProduct = async () => {
     }
   }
 }
+export const getAllVouchers = async () => {
+  try {
+    const response = await axios.get(api + '/voucher/viewlistvoucher');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('Error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('Unexpected error: ', error);
+      return 'An unexpected error has occurred';
+    }
+  }
+};
