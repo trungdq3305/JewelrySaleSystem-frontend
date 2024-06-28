@@ -66,7 +66,7 @@ export const searchProduct = async (searchValue) => {
 }
 export const editProduct = async () => {
   try {
-    const data = await axios.put(api + '/products/productidupdate')
+    const data = await axios.put(api + '/products/product-update')
     console.log(data)
     return data
   } catch (error) {
@@ -79,17 +79,18 @@ export const editProduct = async () => {
     }
   }
 }
-export const getAllVouchers = async () => {
+
+export const getAllVouchers = async (voucherId, createdBy, expiredDay, publishedDay, cost, customerCustomerId) => {
   try {
-    const response = await axios.get(api + '/voucher/viewlistvoucher');
-    return response.data;
+    const data = await axios.get(api + '/voucher/viewlistvoucher')
+    return data
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('Error message: ', error.message);
-      return error.message;
+      console.log('error massage: ', error.message)
+      return error.message
     } else {
-      console.log('Unexpected error: ', error);
-      return 'An unexpected error has occurred';
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
     }
   }
-};
+}
