@@ -28,7 +28,7 @@ const ManageVoucher = () => {
     month: '',
     day: ''
   },
-  cost: '',
+  cost: 0,
   customerCustomerId: ''
   };
 
@@ -56,7 +56,6 @@ const ManageVoucher = () => {
     const requiredFields = [
       'expiredDay',
       'publishedDay',
-      'cost',
       'customerCustomerId'
     ]
     const isAnyFieldEmpty = requiredFields.some((field) => !formData[field]);

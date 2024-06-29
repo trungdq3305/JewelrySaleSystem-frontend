@@ -6,7 +6,7 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
   const [propChecks, setPropChecks] = useState({
     isExpired: false,
   });
-
+  const [error, setError] = useState(null);
   const handleChange = (event) => {
     const { name, value } = event.target;
     const [mainKey, subKey] = name.split('.');
@@ -77,16 +77,7 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
             value={formData.customerCustomerId}
             onChange={handleChange}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="cost"
-            label="Cost"
-            type="number"
-            value={formData.cost}
-            onChange={handleChange}
-          />
+          
           <div>Expired Day</div>
               <TextField
                 margin="normal"
