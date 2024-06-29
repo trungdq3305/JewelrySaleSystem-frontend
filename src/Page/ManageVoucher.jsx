@@ -18,12 +18,18 @@ const ManageVoucher = () => {
   };
 
   const initialFormData = {
-    voucherId: '',
-    createdBy: '',
-    expiredDay: '',
-    publishedDay: '',
-    cost: '',
-    customerCustomerId: '',
+    expiredDay: {
+    year: '',
+    month: '',
+    day: ''
+  },
+  publishedDay: {
+    year: '',
+    month: '',
+    day: ''
+  },
+  cost: '',
+  customerCustomerId: ''
   };
 
   const onSearchTextChange = async (event) => {
@@ -46,15 +52,32 @@ const ManageVoucher = () => {
     console.log()
   };
 
+  const handleAddVoucher = async (formData) => {
+    const requiredFields = [
+      'expiredDay',
+      'publishedDay',
+      'cost',
+      'customerCustomerId'
+    ]
+    const isAnyFieldEmpty = requiredFields.some((field) => !formData[field]);
 
-  const reformatData = (formData) => {
-    const item = materialMapping.find(item => item.label === formData.material);
-    const value = item ? item.value : null;
-    return {
-      ...formData,
-      material: value
+    if (isAnyFieldEmpty) {
+      window.alert('Please fill out all required fields.');
+      return
     }
-  }
+
+    try {
+      await addVoucher(formData);
+      handleCloseDialog();
+      loadVouchers();
+      console.log(formData)
+    } catch (error) {
+      console.error('Error adding voucher:', error)
+      // Handle error state or display error message to user
+    }
+  };
+
+  
 
   useEffect(() => {
     loadVouchers();
@@ -95,6 +118,12 @@ const ManageVoucher = () => {
             variant="filled"
             style={{ width: '300px' }}
             onChange={onSearchTextChange}
+          />
+          <AddVoucherDialog
+            openDialog={openDialog}
+            handleCloseDialog={handleCloseDialog}
+            onAddVoucher={handleAddVoucher}
+            initialFormData={initialFormData}
           />
           <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
             <VoucherTable vouchers ={ vouchers.data } />
