@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField } from '@mui/material';
 import VoucherTable from '../Components/VoucherTable/VoucherTable';
-import { getAllVouchers } from '../Configs/axios';
-
+import { getAllVouchers, addVoucher } from '../Configs/axios';
+import AddVoucherDialog from '../Components/VoucherTable/AddVoucherDialog';
 
 const ManageVoucher = () => {
   const [vouchers, setVouchers] = useState([])

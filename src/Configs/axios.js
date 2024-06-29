@@ -94,3 +94,18 @@ export const getAllVouchers = async (voucherId, createdBy, expiredDay, published
     }
   }
 }
+
+export const addVoucher = async (formData) => {
+  try {
+    const data = await axios.post(api + '/voucher/createvoucher', formData)
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
+    }
+  }
+}
