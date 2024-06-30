@@ -111,3 +111,18 @@ export const addVoucher = async (formData) => {
     }
   }
 }
+
+export const editVoucher = async (formData) => {
+  try {
+    const response = await axios.put(api + '/voucher/updatedvoucher', formData)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}

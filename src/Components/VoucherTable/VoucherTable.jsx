@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import PropTypes from 'prop-types'
+import EditVoucherDialog from './EditVoucherDialog'
 import {
   Table,
   TableBody,
@@ -20,7 +21,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
-
+import { editVoucher } from '../../Configs/axios'
 function TablePaginationActions(props) {
     const theme = useTheme()
     const { count, page, rowsPerPage, onPageChange } = props
@@ -89,7 +90,6 @@ function TablePaginationActions(props) {
     rowsPerPage: PropTypes.number.isRequired,
   }
   const initialFormData = {
-    voucherId: '',
     createdBy: '',
     expiredDay: '',
     publishedDay: '',
@@ -130,23 +130,57 @@ function TablePaginationActions(props) {
       setPage(0)
     }
 
-  
-    const reformatData = (formData) => {
-      const item = materialMapping.find(item => item.label === formData.material);
-      const value = item ? item.value : null;
-      return {
-        ...formData,
-        material: value
+    const handleEditVoucher = async (formData) => {
+      const requiredFields = [
+        'createdBy',
+        'expiredDay',
+        'publishedDay',
+        'cost',
+        'customerCustomerId'
+      ]
+      const isAnyFieldEmpty = requiredFields.some((field) => formData[field])
+      console.log(isAnyFieldEmpty)
+      console.log(formData)
+      if (isAnyFieldEmpty) {
+        window.alert('Please fill out all required fields.')
+        return
+      }
+      try {
+        const result = await editVoucher(formData)
+        console.log(result)
+        // Close the dialog
+        handleCloseDialog()
+      } catch (error) {
+        console.error('Error editing voucher:', error)
+        // Handle error state or display error message to user
       }
     }
   
+    // const reformatData = (formData) => {
+    //   const item = materialMapping.find(item => item.label === formData.material);
+    //   const value = item ? item.value : null;
+    //   return {
+    //     ...formData,
+    //     material: value
+    //   }
+    // }
+
+    useEffect(() => {
+      editVoucher()
+    }, [])
 
     const voucherList = Array.isArray(vouchers) ? vouchers : []
   
   
     return (
       <>
-
+      <EditVoucherDialog
+        openDialog={openDialog}
+        handleCloseDialog={handleCloseDialog}
+        onEditVoucher={handleEditVoucher}
+        formData={editData}
+        setFormData={setEditData}
+      />
   
         <TableContainer
           component={Paper}
