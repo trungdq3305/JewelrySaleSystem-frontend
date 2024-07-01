@@ -4,7 +4,6 @@ const ManagerPage = () => {
   const navigate = useNavigate()
   const handleManagerButton = () => navigate('/ManagerHomePage')
   const handleStaffButton = () => navigate ('/StaffPage')
-  const handleAdminButton = () => navigate('/AdminPage')
   return (
     <>
       <div>Manager Home page</div>
@@ -14,9 +13,6 @@ const ManagerPage = () => {
       </Button>
       <Button variant= 'outlined' onClick={handleStaffButton}>
         Staff management
-      </Button>
-      <Button variant= 'outlined' onClick={handleAdminButton}>
-        Admin management
       </Button>
     </>
   )
