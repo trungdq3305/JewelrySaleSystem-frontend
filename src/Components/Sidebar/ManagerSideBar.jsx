@@ -14,7 +14,6 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined'
@@ -30,7 +29,7 @@ const openedMixin = (theme) => ({
   }),
   overflowX: 'hidden',
   backgroundColor: '#FFDBF0',
-  color: '#ffffff'
+  color: '#000000'
 })
 
 const closedMixin = (theme) => ({
@@ -91,7 +90,7 @@ export default function ManagerSideBar() {
         <Divider />
         <List>
 
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/Dashboard')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/ManagerHomePage/ManageProducts') }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -106,32 +105,12 @@ export default function ManagerSideBar() {
                   justifyContent: 'center'
                 }}
               >
-                < HomeOutlinedIcon/>
+                < HomeOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Manage Product" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/Help')}}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center'
-                }}
-              >
-                <ErrorOutlineOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Help" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/EmployeeAbsence')}}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/H') }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -148,9 +127,29 @@ export default function ManagerSideBar() {
               >
                 <GroupsOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Employee Absence" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Manage Cashier" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
-          </ListItem><ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/Settings')}}>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/ManagerHomePage/ManageUsers') }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center'
+                }}
+              >
+                <GroupsOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Manage Users" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem><ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/Settings') }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
