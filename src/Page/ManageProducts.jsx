@@ -59,12 +59,10 @@ const ManageProducts = () => {
 
   const loadProducts = async () => {
     setLoading(true)
-    console.log('hello')
-    const result = await getAllProducts('', '', '', '');
-    console.log(result.data)
-    setProducts(result.data);
+    const result = await getAllProducts('', '', '', '')
+    setProducts(result.data)
     setLoading(false)
-  };
+  }
 
   const handleAddProduct = async (formData) => {
     const requiredFields = [
