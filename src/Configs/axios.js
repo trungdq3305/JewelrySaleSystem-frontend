@@ -13,7 +13,7 @@ export const getAllProducts = async (productId, productName, Category, Material)
       return error.message
     } else {
       console.log('Unexpected error: ', error)
-      return 'An unexpected error has occired'
+      return 'An unexpected error has occured'
     }
   }
 }
@@ -76,6 +76,38 @@ export const editProduct = async (formData) => {
     } else {
       console.log('Unxpected error:', error)
       return 'An unexpected error has occured'
+    }
+  }
+}
+export const getAllUsers = async () => {
+  try {
+    const data = await axios.get(api + '/user/view-list-users')
+    return data
+  }
+  catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+export const addUser = async (formData) => {
+  try {
+    const data = await axios.post(api + '/user/create-user', formData)
+    console.log(data)
+    return data
+  }
+  catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorData = error.response?.data || error.message;
+      console.log('error message: ', errorData.message)
+      return errorData
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occurred'
     }
   }
 }
