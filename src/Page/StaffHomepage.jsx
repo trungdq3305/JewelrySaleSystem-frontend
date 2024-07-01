@@ -23,10 +23,10 @@ const StaffHomepage = () => {
   const loadProducts = async () => {
     const result = await getAllProducts('', '', filteredProducts, '')
     if (result !== null) {
-      setProducts(result.data)
+      setProducts(result.data.data)
     }
 
-    console.log(result.data)
+    console.log(result.data.data)
   }
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
