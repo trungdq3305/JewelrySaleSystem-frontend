@@ -15,13 +15,16 @@ import {
   Box,
   TablePagination,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
-import { editVoucher } from '../../Configs/axios'
+import { deleteVoucher, editVoucher } from '../../Configs/axios'
+import CustomerInfoDialog from './CustomerInfoDialog'
 function TablePaginationActions(props) {
     const theme = useTheme()
     const { count, page, rowsPerPage, onPageChange } = props
@@ -97,11 +100,33 @@ function TablePaginationActions(props) {
     customerCustomerId: '',
   }
 
+  const initialSearchFormData = {
+    customerId: '',
+    customerName: '',
+    customerPhone: '',
+    customerEmail: '',
+    expiredDay: '',
+    expiredMonth: '',
+    expiredYear: '',
+  };
   const VoucherTable = ({ vouchers }) => {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [openDialog, setOpenDialog] = useState(false)
     const [editData, setEditData] = useState(initialFormData)
+    const [openCustomerInfoDialog, setOpenCustomerInfoDialog] = useState(false);
+    const [customerInfo, setCustomerInfo] = useState({});
+    const [deleteSuccess, setDeleteSuccess] = useState(null);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleShowCustomerInfo = (voucher) => {
+    setCustomerInfo(voucher.customerCustomer);
+    setOpenCustomerInfoDialog(true);
+  };
+
+  const handleCloseCustomerInfoDialog = () => {
+    setOpenCustomerInfoDialog(false);
+  };
     const handleEdit = (voucher) => {
       handleOpenDialog()
   
@@ -116,7 +141,8 @@ function TablePaginationActions(props) {
     const handleCloseDialog = () => {
       setOpenDialog(false)
     }
-  
+    
+    
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
       page > 0 ? Math.max(0, (1 + page) * rowsPerPage - vouchers.length) : 0
@@ -129,7 +155,24 @@ function TablePaginationActions(props) {
       setRowsPerPage(parseInt(event.target.value, 10))
       setPage(0)
     }
-
+    const handleDelete = async (voucherId) => {
+      try {
+        await deleteVoucher(voucherId);
+        setDeleteSuccess(true);
+        setOpenSnackbar(true);
+        console.log(`Voucher ${voucherId} deleted successfully`);
+      } catch (error) {
+        setDeleteSuccess(false);
+        setOpenSnackbar(true);
+        console.error('Error deleting voucher:', error);
+      } finally {
+        setPage(0); // Reset the page to 0
+        setRowsPerPage(5); // Reset the rows per page to 5
+      }
+    };
+    const handleCloseSnackbar = () => {
+      setOpenSnackbar(false);
+    };
     const handleEditVoucher = async (formData) => {
       const requiredFields = [
         'createdBy',
@@ -141,10 +184,10 @@ function TablePaginationActions(props) {
       const isAnyFieldEmpty = requiredFields.some((field) => formData[field])
       console.log(isAnyFieldEmpty)
       console.log(formData)
-      if (isAnyFieldEmpty) {
-        window.alert('Please fill out all required fields.')
-        return
-      }
+      // if (isAnyFieldEmpty) {
+      //   window.alert('Please fill out all required fields.')
+      //   return
+      // }
       try {
         const result = await editVoucher(formData)
         console.log(result)
@@ -170,7 +213,7 @@ function TablePaginationActions(props) {
     }, [])
 
     const voucherList = Array.isArray(vouchers) ? vouchers : []
-  
+    
   
     return (
       <>
@@ -181,7 +224,18 @@ function TablePaginationActions(props) {
         formData={editData}
         setFormData={setEditData}
       />
-  
+      <Snackbar
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          severity={deleteSuccess? 'uccess' : 'error'}
+          sx={{ width: '100%' }}
+        >
+          {deleteSuccess? 'Voucher deleted successfully!' : 'Error deleting voucher.'}
+        </Alert>
+      </Snackbar>
         <TableContainer
           component={Paper}
           sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
@@ -227,6 +281,8 @@ function TablePaginationActions(props) {
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="right">
                     <Button onClick={() => handleEdit(voucher)}>Edit</Button>
+                    <Button onClick={() => handleShowCustomerInfo(voucher)}>Customer Info</Button>
+                    <Button onClick={() => handleDelete(voucher.voucherId)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -260,6 +316,11 @@ function TablePaginationActions(props) {
             </TableFooter>
           </Table>
         </TableContainer>
+        <CustomerInfoDialog
+        open={openCustomerInfoDialog}
+        onClose={handleCloseCustomerInfoDialog}
+        customerInfo={customerInfo}
+      />
       </>
     )
   }

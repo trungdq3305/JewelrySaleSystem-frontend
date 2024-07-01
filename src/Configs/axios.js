@@ -126,3 +126,12 @@ export const editVoucher = async (formData) => {
     }
   }
 }
+
+export const deleteVoucher = async (voucherId) => {
+  try {
+    const response = await axios.delete(api + `/voucher/deletevoucher?VoucherId=${voucherId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
