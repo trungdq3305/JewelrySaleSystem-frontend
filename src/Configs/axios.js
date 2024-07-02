@@ -80,7 +80,7 @@ export const editProduct = async () => {
   }
 }
 
-export const getAllVouchers = async (voucherId, createdBy, expiredDay, publishedDay, cost, customerCustomerId) => {
+export const getAllVouchers = async () => {
   try {
     const data = await axios.get(api + '/voucher/viewlistvoucher')
     return data
@@ -135,3 +135,14 @@ export const deleteVoucher = async (voucherId) => {
     throw error;
   }
 }
+
+export const getVouchersByExpiredDay = async (Year) => {
+  
+  try {
+    const response = await axios.get(api + `/voucher/viewlistvoucher?expiredDay.Year=${Year}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching vouchers:', error);
+    throw error;
+  }
+};

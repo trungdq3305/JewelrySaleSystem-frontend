@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'ManageVoucher',
+        path: 'ManagerHomePage/ManageVoucher',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <ManageVoucher />

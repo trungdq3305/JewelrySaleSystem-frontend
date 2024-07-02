@@ -16,7 +16,7 @@ import {
   TablePagination,
   Button,
   Snackbar,
-  Alert,
+  Alert,Dialog, DialogTitle, DialogContent, DialogActions,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
@@ -25,6 +25,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 import { deleteVoucher, editVoucher } from '../../Configs/axios'
 import CustomerInfoDialog from './CustomerInfoDialog'
+
 function TablePaginationActions(props) {
     const theme = useTheme()
     const { count, page, rowsPerPage, onPageChange } = props
@@ -118,8 +119,9 @@ function TablePaginationActions(props) {
     const [customerInfo, setCustomerInfo] = useState({});
     const [deleteSuccess, setDeleteSuccess] = useState(null);
     const [openSnackbar, setOpenSnackbar] = useState(false);
-
-  const handleShowCustomerInfo = (voucher) => {
+    const [searchFormData, setSearchFormData] = useState(initialSearchFormData);
+   const [searchResults, setSearchResults] = useState([]);
+   const handleShowCustomerInfo = (voucher) => {
     setCustomerInfo(voucher.customerCustomer);
     setOpenCustomerInfoDialog(true);
   };
@@ -173,7 +175,7 @@ function TablePaginationActions(props) {
     const handleCloseSnackbar = () => {
       setOpenSnackbar(false);
     };
-    const handleEditVoucher = async (formData) => {
+    const handleEditVoucher = async (formData) => { 
       const requiredFields = [
         'createdBy',
         'expiredDay',
@@ -207,10 +209,8 @@ function TablePaginationActions(props) {
     //     material: value
     //   }
     // }
+    
 
-    useEffect(() => {
-      editVoucher()
-    }, [])
 
     const voucherList = Array.isArray(vouchers) ? vouchers : []
     
@@ -321,6 +321,7 @@ function TablePaginationActions(props) {
         onClose={handleCloseCustomerInfoDialog}
         customerInfo={customerInfo}
       />
+      
       </>
     )
   }

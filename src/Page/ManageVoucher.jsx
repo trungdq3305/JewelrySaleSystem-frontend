@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Paper, TextField } from '@mui/material';
+import { Box, Button, Paper, TextField , Menu, MenuItem, IconButton} from '@mui/material';
 import VoucherTable from '../Components/VoucherTable/VoucherTable';
-import { getAllVouchers, addVoucher } from '../Configs/axios';
+import { getAllVouchers, addVoucher, getVouchersByExpiredDay} from '../Configs/axios';
 import AddVoucherDialog from '../Components/VoucherTable/AddVoucherDialog';
-
+import SearchIcon from '@mui/icons-material/Search';
 const ManageVoucher = () => {
   const [vouchers, setVouchers] = useState([])
   const [loading, setLoading] = useState(true)
   const [openDialog, setOpenDialog] = useState(false)
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [searchExpiredDay, setSearchExpiredDay] = useState({
+    year: '',
+    month: '',
+    day: ''
+  })
   const handleOpenDialog = () => {
     setOpenDialog(true)
   };
@@ -16,6 +22,9 @@ const ManageVoucher = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false)
   };
+
+  const handleOpenSearchMenu = (event) => setAnchorEl(event.currentTarget);
+  const handleCloseSearchMenu = () => setAnchorEl(null);
 
   const initialFormData = {
     expiredDay: {
@@ -31,40 +40,16 @@ const ManageVoucher = () => {
   cost: 0,
   customerCustomerId: ''
   };
-
-  const onSearchTextChange = async (event) => {
-    const searchValue = event.target.value;
-    if (searchValue.length === 0) {
-      loadVouchers();
-    } else {
-      const result = await searchVoucher(searchValue);
-      setVouchers(result.data.data);
-    }
-  };
+  
 
   const loadVouchers = async () => {
-    setLoading(true)
-    console.log('hello')
-    const result = await getAllVouchers('', '', '', '', '', '');
-    console.log(result.data)
+    setLoading(true);
+    const result = await getAllVouchers();
     setVouchers(result.data);
-    setLoading(false)
-    console.log()
+    setLoading(false);
   };
 
   const handleAddVoucher = async (formData) => {
-    const requiredFields = [
-      'expiredDay',
-      'publishedDay',
-      'customerCustomerId'
-    ]
-    const isAnyFieldEmpty = requiredFields.some((field) => !formData[field]);
-
-    if (isAnyFieldEmpty) {
-      window.alert('Please fill out all required fields.');
-      return
-    }
-
     try {
       await addVoucher(formData);
       handleCloseDialog();
@@ -76,7 +61,16 @@ const ManageVoucher = () => {
     }
   };
 
-  
+  const handleSearchByExpiredDay = async () => {
+    try {
+      const result = await getVouchersByExpiredDay( year );
+      console.log(result.data)
+      setVouchers(result.data);
+    } catch (error) {
+      console.error('Error searching vouchers:', error)
+      // Handle error state or display error message to user
+    }
+  };
 
   useEffect(() => {
     loadVouchers();
@@ -104,20 +98,29 @@ const ManageVoucher = () => {
             padding: '10px'
           }}
         >
-          <Button
-            sx={{ alignSelf: 'flex-start', marginBottom: '10px' }}
-            onClick={handleOpenDialog}
-          >
+          <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginBottom: '10px'
+          }}
+        >
+          <Button onClick={handleOpenDialog}>
             Add Voucher
           </Button>
-          <TextField
-            id="filled-search"
-            label="Search"
-            type="search"
-            variant="filled"
-            style={{ width: '300px' }}
-            onChange={onSearchTextChange}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <TextField
+                label="Year"
+                value={searchExpiredDay.year}
+                onChange={(e) => setSearchExpiredDay({...searchExpiredDay, year: e.target.value })}
+                size="small"
+              />
+              <IconButton onClick={handleSearchByExpiredDay}>
+                <SearchIcon />
+              </IconButton>
+            </Box>
+        </Box>
+        
           <AddVoucherDialog
             openDialog={openDialog}
             handleCloseDialog={handleCloseDialog}
