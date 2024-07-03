@@ -4,6 +4,7 @@ import VoucherTable from '../Components/VoucherTable/VoucherTable';
 import { getAllVouchers, addVoucher, getVouchersByExpiredDay} from '../Configs/axios';
 import AddVoucherDialog from '../Components/VoucherTable/AddVoucherDialog';
 import SearchIcon from '@mui/icons-material/Search';
+import ManagerSideBar from '../Components/Sidebar/ManagerSideBar';
 const ManageVoucher = () => {
   const [vouchers, setVouchers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -80,6 +81,8 @@ const ManageVoucher = () => {
 
   return (
     <>
+    <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+    <ManagerSideBar />
       <Box
         sx={{
           flexGrow: 1,
@@ -131,6 +134,7 @@ const ManageVoucher = () => {
             <VoucherTable vouchers ={ vouchers.data } />
           </Box>
         </Paper>
+      </Box>
       </Box>
     </>
   )

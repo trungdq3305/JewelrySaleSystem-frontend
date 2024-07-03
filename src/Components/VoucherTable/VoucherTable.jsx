@@ -261,7 +261,7 @@ function TablePaginationActions(props) {
                 : voucherList
               ).map((voucher) => (
                 <TableRow key={voucher.voucherId}>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" style={{ width: 50 }}>
                     {voucher.voucherId}
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="right">
