@@ -35,6 +35,7 @@ const ManageVoucher = () => {
     setLoading(true);
     try {
       const vouchers = await getVouchers(searchParams);
+      console.log(searchParams)
       console.log('Received vouchers:', vouchers);
       setVouchers(vouchers);
     } catch (error) {
@@ -145,7 +146,7 @@ const ManageVoucher = () => {
             Add Voucher
           </Button>
           <form>
-          {/* <label>Expired Day:</label>
+           <label>Expired Day:</label>
           <div>
           <label>Year:</label>
           <input
@@ -180,7 +181,7 @@ const ManageVoucher = () => {
               }))
             }
           />
-        </div> */}
+        </div> 
         
         <br />
         <label>Customer ID:</label>
