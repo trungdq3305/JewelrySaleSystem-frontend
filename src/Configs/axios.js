@@ -136,13 +136,13 @@ export const deleteVoucher = async (voucherId) => {
   }
 }
 
-export const getVouchersByExpiredDay = async (Year) => {
-  
+const getVouchers = async (params) => {
   try {
-    const response = await axios.get(api + `/voucher/viewlistvoucher?expiredDay.Year=${Year}`);
+    const response = await axios.get(api + '/voucher/viewlistvoucher', { params });
     return response.data;
   } catch (error) {
-    console.error('Error fetching vouchers:', error);
-    throw error;
+    console.error(error);
+    return [];
   }
-};
+}
+export { getVouchers };

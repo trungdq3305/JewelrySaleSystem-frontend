@@ -1,21 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField , Menu, MenuItem, IconButton} from '@mui/material';
 import VoucherTable from '../Components/VoucherTable/VoucherTable';
-import { getAllVouchers, addVoucher, getVouchersByExpiredDay} from '../Configs/axios';
+import { getAllVouchers, addVoucher, getVouchers} from '../Configs/axios';
 import AddVoucherDialog from '../Components/VoucherTable/AddVoucherDialog';
 import SearchIcon from '@mui/icons-material/Search';
 import ManagerSideBar from '../Components/Sidebar/ManagerSideBar';
 const ManageVoucher = () => {
   const [vouchers, setVouchers] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [searchExpiredDay, setSearchExpiredDay] = useState({
-    year: '',
-    month: '',
-    day: ''
-  })
+  
   const handleOpenDialog = () => {
     setOpenDialog(true)
   };
@@ -24,8 +20,31 @@ const ManageVoucher = () => {
     setOpenDialog(false)
   };
 
-  const handleOpenSearchMenu = (event) => setAnchorEl(event.currentTarget);
-  const handleCloseSearchMenu = () => setAnchorEl(null);
+  const [searchParams, setSearchParams] = useState({
+    expiredDay: {
+      Year: '',
+      Month: '',
+      Day: '',
+    },
+    customerId: '',
+    customerName: '',
+    customerPhone: '',
+    customerEmail: '',
+  });
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      const vouchers = await getVouchers(searchParams);
+      console.log('Received vouchers:', vouchers);
+      setVouchers(vouchers);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  
 
   const initialFormData = {
     expiredDay: {
@@ -62,19 +81,33 @@ const ManageVoucher = () => {
     }
   };
 
-  const handleSearchByExpiredDay = async () => {
-    try {
-      const result = await getVouchersByExpiredDay( year );
-      console.log(result.data)
-      setVouchers(result.data);
-    } catch (error) {
-      console.error('Error searching vouchers:', error)
-      // Handle error state or display error message to user
-    }
-  };
+  
 
   useEffect(() => {
-    loadVouchers();
+    const fetchVouchers = async () => {
+      setLoading(true);
+      try {
+        const params = {
+          expiredDay: {
+            Year: '',
+            Month: '',
+            Day: '',
+          },
+          customerId: '',
+          customerName: '',
+          customerPhone: '',
+          customerEmail: '',
+        };
+        console.log(params)
+        const vouchers = await getVouchers(params);
+        setVouchers(vouchers);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVouchers();
   }, []);
 
   if (loading) return <div>Loading....</div>;
@@ -111,17 +144,85 @@ const ManageVoucher = () => {
           <Button onClick={handleOpenDialog}>
             Add Voucher
           </Button>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <TextField
-                label="Year"
-                value={searchExpiredDay.year}
-                onChange={(e) => setSearchExpiredDay({...searchExpiredDay, year: e.target.value })}
-                size="small"
-              />
-              <IconButton onClick={handleSearchByExpiredDay}>
-                <SearchIcon />
-              </IconButton>
-            </Box>
+          <form>
+          {/* <label>Expired Day:</label>
+          <div>
+          <label>Year:</label>
+          <input
+            type="number"
+            value={searchParams.expiredDay.Year}
+            onChange={(e) =>
+              setSearchParams((prevParams) => ({
+                ...prevParams,
+                expiredDay: { ...prevParams.expiredDay, Year: e.target.value },
+              }))
+            }
+          />
+          <label>Month:</label>
+          <input
+            type="number"
+            value={searchParams.expiredDay.Month}
+            onChange={(e) =>
+              setSearchParams((prevParams) => ({
+                ...prevParams,
+                expiredDay: { ...prevParams.expiredDay, Month: e.target.value },
+              }))
+            }
+          />
+          <label>Day:</label>
+          <input
+            type="number"
+            value={searchParams.expiredDay.Day}
+            onChange={(e) =>
+              setSearchParams((prevParams) => ({
+                ...prevParams,
+                expiredDay: { ...prevParams.expiredDay, Day: e.target.value },
+              }))
+            }
+          />
+        </div> */}
+        
+        <br />
+        <label>Customer ID:</label>
+        <input
+          type="text"
+          value={searchParams.customerId}
+          onChange={(e) =>
+            setSearchParams((prevParams) => ({ ...prevParams, customerId: e.target.value }))
+          }
+        />
+        <br />
+        <label>Customer Name:</label>
+        <input
+          type="text"
+          value={searchParams.customerName}
+          onChange={(e) =>
+            setSearchParams((prevParams) => ({ ...prevParams, customerName: e.target.value }))
+          }
+        />
+        <br />
+        <label>Customer Phone:</label>
+        <input
+          type="text"
+          value={searchParams.customerPhone}
+          onChange={(e) =>
+            setSearchParams((prevParams) => ({ ...prevParams, customerPhone: e.target.value }))
+          }
+        />
+        <br />
+        <label>Customer Email:</label>
+        <input
+          type="email"
+          value={searchParams.customerEmail}
+          onChange={(e) =>
+            setSearchParams((prevParams) => ({ ...prevParams, customerEmail: e.target.value }))
+          }
+        />
+        <br />
+        <button onClick={handleSearch}>
+          Search
+        </button>
+      </form>
         </Box>
         
           <AddVoucherDialog
