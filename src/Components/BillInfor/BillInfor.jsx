@@ -88,7 +88,22 @@ const BillInfor = ({ handleOpen }) => {
           },
         }}
       >
-        Continue
+        Pay by cash
+      </Button>
+      <Button
+        variant="contained"
+        sx={{
+          background: 'black',
+          color: '#ffdbf0',
+          marginLeft: '90px ',
+          marginTop: '30px',
+          '&:hover': {
+            backgroundColor: '#ffdbf0',
+            color: 'black',
+          },
+        }}
+      >
+        Pay by card
       </Button>
     </div>
   )
