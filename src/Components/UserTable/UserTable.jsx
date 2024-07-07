@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import PropTypes from 'prop-types'
-// import EditProductDialog from './EditProductDialog'
 import {
   Table,
   TableBody,
@@ -21,7 +20,8 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
-import { editProduct } from '../../Configs/axios'
+import { activeDeactiveUser } from '../../Configs/axios'
+import ActiveDeactiveDialog from './ActiveDeactiveDialog'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -90,56 +90,27 @@ TablePaginationActions.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
 }
-
-// const initialFormData = {
-//   productName: '',
-//   category: '',
-//   material: '',
-//   weight: '',
-//   machiningCost: '',
-//   size: '',
-//   amount: '',
-//   desc: '',
-//   image: '',
-//   gem: {
-//     additionalProp1: 0,
-//     additionalProp2: 0,
-//     additionalProp3: 0
-//   },
-//   markupRate: ''
-// }
-
-// const materialMapping = [
-//   { value: '1', label: 'Vàng SJC 1L - 10L - 1KG' },
-//   { value: '2', label: 'Vàng nh?n SJC 99,99 1 ch?, 2 ch?, 5 ch?' },
-//   { value: '3', label: 'Vàng nh?n SJC 99,99 0,3 ch?, 0,5 ch?' },
-//   { value: '4', label: 'Vàng n? trang 99,99%' },
-//   { value: '5', label: 'Vàng n? trang 99%' },
-//   { value: '6', label: 'Vàng n? trang 75%' },
-//   { value: '7', label: 'Vàng n? trang 58,3%' },
-//   { value: '8', label: 'Vàng n? trang 41,7%' }
-// ]
-
 const UserTable = ({ users }) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-  // const [openDialog, setOpenDialog] = useState(false)
-  // const [editData, setEditData] = useState(initialFormData)
-
-  // const handleEdit = (product) => {
-  //   handleOpenDialog()
-
-  //   setEditData({
-  //     ...initialFormData,
-  //     ...product,
-  //   })
-  // }
-  // const handleOpenDialog = () => {
-  //   setOpenDialog(true)
-  // }
-  // const handleCloseDialog = () => {
-  //   setOpenDialog(false)
-  // }
+  const handleActiveDeactive = async (userId) => {
+    try {
+      handleOpenDialog()
+      const result = await activeDeactiveUser(userId)
+      console.log(userId)
+      handleCloseDialog
+    }
+    catch (error) {
+      console.error('Error active/deactive user', error)
+    }
+  }
+  const [openDialog, setOpenDialog] = useState(false)
+  const handleOpenDialog = () => {
+    setOpenDialog(true)
+  }
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -153,60 +124,20 @@ const UserTable = ({ users }) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-  // const handleEditProduct = async (formData) => {
-  //   const requiredFields = [
-  //     'productName',
-  //     'category',
-  //     'material',
-  //     'weight',
-  //     'machiningCost',
-  //     'size',
-  //     'amount',
-  //     'desc',
-  //     'image'
-  //   ]
-  //   const isAnyFieldEmpty = requiredFields.some((field) => !formData[field])
-  //   if (isAnyFieldEmpty) {
-  //     window.alert('Please fill out all required fields.')
-  //     return
-  //   }
-  //   try {
-  //     const result = await editProduct(reformatData(formData)) // Pass formData to the editProduct function
-  //     console.log(result.data)
-  //     // Close the dialog
-  //     // handleCloseDialog()
-  //   } catch (error) {
-  //     console.error('Error editing product:', error)
-  //     // Handle error state or display error message to user
-  //   }
-  // }
-
-  // const reformatData = (formData) => {
-  //   const item = materialMapping.find(item => item.label === formData.material);
-  //   const value = item ? item.value : null;
-  //   return {
-  //     ...formData,
-  //     material: value
-  //   }
-  // }
   const formatStatus = (status) => (status ? 'Active' : 'Inactive');
 
   // Ensure products is an array
   const userList = Array.isArray(users) ? users : []
-
-  // useEffect(() => {
-  //   editProduct()
-  // }, [])
-
+  useEffect(() => {
+    activeDeactiveUser()
+  }, [])
   return (
     <>
-      {/* <EditProductDialog
+      <ActiveDeactiveDialog
         openDialog={openDialog}
-        // handleCloseDialog={handleCloseDialog}
-        onEditProduct={handleEditProduct}
-        formData={editData}
-        setFormData={setEditData}
-      /> */}
+        handleCloseDialog={handleCloseDialog}
+        onActiveDeactive={handleActiveDeactive}
+      />
 
       <TableContainer
         component={Paper}
@@ -261,6 +192,8 @@ const UserTable = ({ users }) => {
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   {/* <Button onClick={() => handleEdit(user)}>Edit</Button> */}
+                  <Button>Update Role</Button>
+                  <Button onClick={() => handleActiveDeactive(user.userId)}>Active/Deactive</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -293,7 +226,6 @@ const UserTable = ({ users }) => {
             </TableRow>
           </TableFooter>
         </Table>
-
       </TableContainer>
 
     </>

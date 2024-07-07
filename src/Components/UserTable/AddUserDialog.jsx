@@ -21,7 +21,7 @@ const AddUserDialog = ({ openDialog, handleCloseDialog, onAddUser, initialFormDa
       const roleItem = roleMapping.find(item => item.label === formData.role);
       const roleValue = roleItem ? roleItem.id : ''
       onAddUser({ ...formData, role: roleValue })
-      setFormData(initialFormData) // Reset form data to initial state
+      setFormData(initialFormData) 
     } else {
       alert('Please fill in all required fields.');
     }
@@ -60,8 +60,8 @@ const AddUserDialog = ({ openDialog, handleCloseDialog, onAddUser, initialFormDa
               {
                 roleMapping.map(item =>
                   <MenuItem key={item.id} value={item.label}>
-          {item.label}
-        </MenuItem>
+                    {item.label}
+                  </MenuItem>
                 )
               }
             </Select>

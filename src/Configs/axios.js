@@ -111,3 +111,37 @@ export const addUser = async (formData) => {
     }
   }
 }
+export const searchUser = async (searchValue) => {
+  try {
+    const data = await axios.get(
+      api + `/user/view-list-users?id=${searchValue}`
+    )
+    console.log(data)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+export const activeDeactiveUser = async (userId) => {
+  try {
+    const data = await axios.put(
+      api + `/user/active-deactive-user?id=${userId}`
+    )
+    console.log(data)
+    return data
+  } catch(error) {
+    if(axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
