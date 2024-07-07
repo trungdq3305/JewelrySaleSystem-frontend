@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 const initialFormData = {
+  gemId: '',
   Name: '',
   Type: '',
   Price: '',
@@ -36,7 +37,7 @@ const GemTable = ({ gems }) => {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setEditData(initialFormData); // Reset form data after closing dialog
+    setEditData(initialFormData);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -122,8 +123,5 @@ const GemTable = ({ gems }) => {
   );
 };
 
-GemTable.propTypes = {
-  gems: PropTypes.array.isRequired,
-};
 
 export default GemTable;
