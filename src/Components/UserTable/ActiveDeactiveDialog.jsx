@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, FormControlLabel, Checkbox, MenuItem, Select, FormControl, InputLabel, Button, Paper } from '@mui/material'
 
 
-const ActiveDeactiveDialog = ({ openDialog, handleCloseDialog, onActiveDeactive}) => {
+const ActiveDeactiveDialog = ({ openDialog, handleCloseDialog, onConfirm}) => {
   return (
     <Dialog open={openDialog} onClose={handleCloseDialog}>
       <DialogTitle>Active/Deactive Account</DialogTitle>
@@ -10,8 +10,8 @@ const ActiveDeactiveDialog = ({ openDialog, handleCloseDialog, onActiveDeactive}
         Active/Deactive this account ?
       </DialogContent>
       <DialogActions>
-        <Button>Cancel</Button>
-        <Button>Confirm</Button>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
+        <Button onClick={onConfirm}>Confirm</Button>
       </DialogActions>
     </Dialog>
   )

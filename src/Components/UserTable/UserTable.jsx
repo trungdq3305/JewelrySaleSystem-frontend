@@ -13,7 +13,7 @@ import {
   Paper,
   Box,
   TablePagination,
-  Button,
+  Button
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
@@ -93,25 +93,28 @@ TablePaginationActions.propTypes = {
 const UserTable = ({ users }) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-  const handleActiveDeactive = async (userId) => {
-    try {
-      handleOpenDialog()
-      const result = await activeDeactiveUser(userId)
-      console.log(userId)
-      handleCloseDialog
-    }
-    catch (error) {
-      console.error('Error active/deactive user', error)
-    }
-  }
   const [openDialog, setOpenDialog] = useState(false)
-  const handleOpenDialog = () => {
+  const [selectedUser, setSelectedUser] = useState(null)
+  const handleOpenDialog = (userId) => {
+    setSelectedUser(userId)
     setOpenDialog(true)
   }
   const handleCloseDialog = () => {
     setOpenDialog(false)
+    setSelectedUser(null)
   }
-
+  const handleActiveDeactive = async () => {
+    if (selectedUser) {
+      try {
+        const result = await activeDeactiveUser(selectedUser)
+        console.log(result)
+      } catch (error) {
+        console.error('Error active/deactive user', error)
+      } finally {
+        handleCloseDialog()
+      }
+    }
+  }
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0
@@ -136,7 +139,7 @@ const UserTable = ({ users }) => {
       <ActiveDeactiveDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        onActiveDeactive={handleActiveDeactive}
+        onConfirm={handleActiveDeactive}
       />
 
       <TableContainer
@@ -191,9 +194,8 @@ const UserTable = ({ users }) => {
                   {formatStatus(user.status)}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {/* <Button onClick={() => handleEdit(user)}>Edit</Button> */}
                   <Button>Update Role</Button>
-                  <Button onClick={() => handleActiveDeactive(user.userId)}>Active/Deactive</Button>
+                  <Button onClick={() => handleOpenDialog(user.userId)}>Active/Deactive</Button>
                 </TableCell>
               </TableRow>
             ))}
