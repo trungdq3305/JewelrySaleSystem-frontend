@@ -1,17 +1,6 @@
 import { useState } from 'react'
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, FormControlLabel, Checkbox, MenuItem, Select, FormControl, InputLabel, Button, Paper } from '@mui/material'
 
-const materialMapping = [
-  { value: '1', label: 'Vàng SJC 1L - 10L - 1KG' },
-  { value: '2', label: 'Vàng nh?n SJC 99,99 1 ch?, 2 ch?, 5 ch?' },
-  { value: '3', label: 'Vàng nh?n SJC 99,99 0,3 ch?, 0,5 ch?' },
-  { value: '4', label: 'Vàng n? trang 99,99%' },
-  { value: '5', label: 'Vàng n? trang 99%' },
-  { value: '6', label: 'Vàng n? trang 75%' },
-  { value: '7', label: 'Vàng n? trang 58,3%' },
-  { value: '8', label: 'Vàng n? trang 41,7%' }
-]
-
 const EditProductDialog = ({ openDialog, handleCloseDialog, onEditProduct, formData, setFormData }) => {
   const [propChecks, setPropChecks] = useState({
     additionalProp1: false,
@@ -50,7 +39,6 @@ const EditProductDialog = ({ openDialog, handleCloseDialog, onEditProduct, formD
       }))
     }
   }
-
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target
@@ -96,26 +84,24 @@ const EditProductDialog = ({ openDialog, handleCloseDialog, onEditProduct, formD
               value={formData.category}
               onChange={handleChange}
             >
-              <MenuItem value="Necklace">Necklace</MenuItem>
-              <MenuItem value="Bracelet">Bracelet</MenuItem>
-              <MenuItem value="Ring">Ring</MenuItem>
+              <MenuItem value="Day Chuyen">Day Chuyen</MenuItem>
+              <MenuItem value="Lac Chan">Lac Chan</MenuItem>
+              <MenuItem value="Nhan">Nhan</MenuItem>
               <MenuItem value="Charm">Charm</MenuItem>
+              <MenuItem value="Mat Day Chuyen">Mat Day Chuyen</MenuItem>
+              <MenuItem value="Vong Tay">Vong Tay</MenuItem>
             </Select>
           </FormControl>
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel>Category</InputLabel>
-            <Select
-              name="material"
-              value={formData.material}
-              onChange={handleChange}
-            >
-              {
-                materialMapping.map(item =>
-                  <MenuItem key={item.value} value={item.label}>{item.label}</MenuItem>
-                )
-              }
-            </Select>
-          </FormControl>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="material"
+            label="Material"
+            type="number"
+            value={formData.material}
+            onChange={handleChange}
+          />
           <TextField
             margin="normal"
             required
