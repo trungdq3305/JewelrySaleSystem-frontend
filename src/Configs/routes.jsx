@@ -11,6 +11,7 @@ import BillPage from '../Page/BillPage'
 import ManageVoucher from '../Page/ManageVoucher'
 import ManageProducts from '../Page/ManageProducts'
 import ManageUsers from '../Page/ManageUsers.jsx'
+import ManageCustomer from '../Page/ManageCustomer.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -89,6 +90,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <ManageVoucher />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: 'ManagerHomePage/ManageCustomer',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <ManageCustomer />
           </ProtectedRoutes>
         ),
       },
