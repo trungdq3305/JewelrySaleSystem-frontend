@@ -106,14 +106,86 @@ export const editProduct = async (formData) => {
     }
   }
 }
+
+export const getAllVouchers = async () => {
+  try {
+    const data = await axios.get(api + '/voucher/viewlistvoucher')
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
+    }
+  }
+}
+
+export const addVoucher = async (formData) => {
+  try {
+    const data = await axios.post(api + '/voucher/createvoucher', formData)
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      alert('PLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY ')
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      alert('An unexpected error has occurred')
+      return 'An unexpected error has occired'
+    }
+  }
+}
+
+export const editVoucher = async (formData) => {
+  try {
+    const response = await axios.put(api + '/voucher/updatedvoucher', formData)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+
+export const deleteVoucher = async (voucherId) => {
+  try {
+    const response = await axios.delete(
+      api + `/voucher/deletevoucher?VoucherId=${voucherId}`
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const getVouchers = async (params) => {
+  try {
+    const response = await axios.get(api + '/voucher/viewlistvoucher', {
+      params,
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+export { getVouchers }
 export const getAllUsers = async () => {
   try {
     const data = await axios.get(api + '/user/view-list-users')
     return data
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error massage: ', error.message)
-      return error.message
+      const errorData = error.response?.data || error.message
+      console.log('error message: ', errorData.message)
+      return errorData
     } else {
       console.log('Unexpected error: ', error)
       return 'An unexpected error has occured'
