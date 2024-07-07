@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import BillProduct from '../Components/BillProduct/BillProduct'
 import styles from '../Page/Scss/Billpage.module.scss'
@@ -74,6 +75,7 @@ const BillPage = () => {
       </div>
     </>
   )
+
 }
 
 export default BillPage
