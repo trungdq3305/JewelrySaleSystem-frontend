@@ -18,21 +18,6 @@ export const getAllProducts = (productId, productName, Category, Material) => {
   }
 }
 
-export const getAllGem = async () => {
-  try {
-    const data = await axios.get(api + '/gem')
-    console.log(data.data)
-    return data.data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log('error massage: ', error.message)
-      return error.message
-    } else {
-      console.log('Unexpected error: ', error)
-      return 'An unexpected error has occired'
-    }
-  }
-}
 export const addProduct = async (formData) => {
   try {
     const data = await axios.post(api + '/products/create-product', formData)
@@ -79,3 +64,60 @@ export const editProduct = async () => {
     }
   }
 }
+export const getAllGem = async () => {
+  try {
+    const data = await axios.get(api + '/gem/viewlistgem')
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
+    }
+  }
+}
+
+export const addGem = async (formData) => {
+  try {
+    const data = await axios.post(api + '/gem/creategem', formData)
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      alert(`PLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY `)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      alert('An unexpected error has occurred')
+      return 'An unexpected error has occired'
+    }
+  }
+}
+
+export const updateGem = async (formData) => {
+  try {
+    const response = await axios.put(api + '/gem/updategem', formData)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+
+const getGems = async (params) => {
+  try {
+    const response = await axios.get(api + '/gem/viewlistgem', { params });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+export { getGems };
