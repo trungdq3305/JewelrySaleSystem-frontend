@@ -17,10 +17,10 @@ import {
 const initialFormData = {
   gemId: '',
   Name: '',
-  Type: '',
-  Price: '',
+  Type: 0,
+  Price: 0,
   Desc: '',
-  rate: '',
+  rate: 0,
 };
 
 const GemTable = ({ gems }) => {

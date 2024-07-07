@@ -84,15 +84,8 @@ export const addGem = async (formData) => {
     const data = await axios.post(api + '/gem/creategem', formData)
     console.log(data)
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log('error massage: ', error.message)
-      alert(`PLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY `)
-      return error.message
-    } else {
-      console.log('Unexpected error: ', error)
-      alert('An unexpected error has occurred')
-      return 'An unexpected error has occired'
-    }
+    console.error('Error adding new gem:', error.response); 
+    throw error; 
   }
 }
 
