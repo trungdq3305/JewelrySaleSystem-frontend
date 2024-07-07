@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
+.container {
+  width: 40%;
+  background-color: whitesmoke;
+  font-family: 'Fira Sans';
+}
+.Customer,
+.Voucher,
+.Payment {
+  padding: 0;
+  margin-left: 20px;
+  height: fit-content;
+}
+.Title {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  button {
+    margin-right: 10px;
+  }
+  h2 {
+    font-weight: 500;
+  }
+}
+.content {
+  margin-bottom: 20px;
+  p {
+    margin: 0;
+  }
+}
+.Payment {
+  .content {
+    button {
+      display: flex;
+      align-items: center;
+
+      padding-bottom: 5px;
+      font-size: 15px;
+      div {
+        margin-right: 20px;
+      }
+    }
+  }
+}
