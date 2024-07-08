@@ -38,7 +38,7 @@ const AddGemDialog = ({ openDialog, handleCloseDialog, onAddGem, initialFormData
     }
 
     onAddGem(formData);
-    setFormData(initialFormData); // Reset the form
+    setFormData(initialFormData); 
   };
 
   const handleSnackbarClose = () => {

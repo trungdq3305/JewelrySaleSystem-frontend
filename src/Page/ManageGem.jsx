@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Paper, TextField, CircularProgress } from '@mui/material';
+import { Box, Button, Paper, TextField, CircularProgress, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import GemTable from '../Components/ManageGem/GemTable';
 import { getAllGem, addGem, getGems } from '../Configs/axios';
 import ManagerSideBar from '../Components/Sidebar/ManagerSideBar';
 import AddGemDialog from '../Components/ManageGem/AddGemDialog';
 
 const ManageGem = () => {
-  const [gems, setGems] = useState([]); // Initialize with an empty array
-  const [loading, setLoading] = useState(false); // Start with loading set to false
+  const [gems, setGems] = useState([]); 
+  const [loading, setLoading] = useState(false); 
   const [openDialog, setOpenDialog] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState('gemId');
   const [inputValue, setInputValue] = useState('');
@@ -29,8 +29,8 @@ const ManageGem = () => {
 
     try {
       const response = await getGems(transformedSearchParams);
-      console.log('Search response data:', response.data); // Debug log
-      setGems(Array.isArray(response.data) ? response.data : []); // Ensure response is an array
+      console.log('Search response data:', response.data); 
+      setGems(Array.isArray(response.data) ? response.data : []); 
     } catch (error) {
       console.error('Search error:', error);
     } finally {
@@ -52,9 +52,7 @@ const ManageGem = () => {
     try {
       const result = await getGems();
       console.log('Load gems data:', result.data); 
-      console.log("=>>>>>>>>>>>");
       setGems(Array.isArray(result.data) ? result.data : []);
-      console.log("=>>>>>>>>>>> result: " + gems );
     } catch (error) {
       console.error('Error loading gems:', error);
     } finally {
@@ -74,7 +72,6 @@ const ManageGem = () => {
   };
 
   useEffect(() => {
-   
     loadGems();
   }, []);
 
@@ -95,6 +92,17 @@ const ManageGem = () => {
             <Button variant="contained" onClick={handleOpenDialog}>
               Add New Gem
             </Button>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Search By</InputLabel>
+              <Select
+                value={searchCriteria}
+                onChange={(e) => setSearchCriteria(e.target.value)}
+                label="Search By"
+              >
+                <MenuItem value="gemId">Gem ID</MenuItem>
+                <MenuItem value="name">Name</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               fullWidth
               label="Search Gem"
@@ -107,7 +115,7 @@ const ManageGem = () => {
               Search
             </Button>
           </Box>
-          <GemTable gems={gems} />
+          <GemTable gems={gems} reload={loadGems}/>
         </Paper>
       </Box>
     </Box>

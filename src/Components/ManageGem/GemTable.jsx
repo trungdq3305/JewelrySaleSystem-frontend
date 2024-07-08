@@ -1,46 +1,34 @@
-import { useEffect, useState } from 'react'
-import React from 'react'
-import { useTheme } from '@mui/material/styles'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, TablePagination, Snackbar } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { useTheme } from '@mui/material/styles';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import { updateGem } from '../../Configs/axios';
 import UpdateGemDialog from './UpdateGemDialog';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Box,
-  TablePagination,
-  Snackbar,
-} from '@mui/material';
-import IconButton from '@mui/material/IconButton'
-import FirstPageIcon from '@mui/icons-material/FirstPage'
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import LastPageIcon from '@mui/icons-material/LastPage'
-import { updateGem } from '../../Configs/axios'
+
 function TablePaginationActions(props) {
-  const theme = useTheme()
-  const { count, page, rowsPerPage, onPageChange } = props
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0)
-  }
+    onPageChange(event, 0);
+  };
 
   const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1)
-  }
+    onPageChange(event, page - 1);
+  };
 
   const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1)
-  }
+    onPageChange(event, page + 1);
+  };
 
   const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
-  }
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
@@ -81,28 +69,26 @@ function TablePaginationActions(props) {
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
-  )
+  );
 }
+
 TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-}
-const initialFormData = {
-  gemId: '',
-  Name: '',
-  Type: 0,
-  Price: 0,
-  Desc: '',
-  rate: 0,
-};
-const initialSearchFormData = {
-  gemId: '',
-  Name: '',
 };
 
-const GemTable = ({ gems }) => {
+const initialFormData = {
+  gemId: '',
+  name: '',
+  type: 0,
+  price: 0,
+  desc: '',
+  rate: 0,
+};
+
+const GemTable = ({ gems, reload }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openDialog, setOpenDialog] = useState(false);
@@ -111,19 +97,36 @@ const GemTable = ({ gems }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleUpdateGem = (gem) => {
-    handleOpenDialog();
-    setEditData({
-      ...initialFormData,
-      ...gem,
-    });
-  };
-
-  const handleOpenDialog = () => {
     setOpenDialog(true);
+    setEditData({ ...initialFormData, ...gem });
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setEditData(initialFormData); 
+  };
+
+  const handleEditGem = async (formData) => {
+    const requiredFields = ['name', 'type', 'price', 'rate'];
+    const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
+
+    if (!isFormValid) {
+      setSnackbarMessage('Please fill in all required fields.');
+      setOpenSnackbar(true);
+      return;
+    }
+
+    try {
+      await updateGem(formData); 
+      setSnackbarMessage('Gem updated successfully!');
+      setOpenSnackbar(true);
+      handleCloseDialog();
+      reload(); // Call reload function to refresh gem list
+    } catch (error) {
+      console.error('Error updating gem:', error);
+      setSnackbarMessage('Error updating gem.');
+      setOpenSnackbar(true);
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -134,29 +137,6 @@ const GemTable = ({ gems }) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
     setRowsPerPage(newRowsPerPage);
     setPage(0);
-  };
-
-  const handleEditGem = async (formData) => {
-    const requiredFields = ['Name', 'Type', 'Price', 'rate'];
-    const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
-
-    if (!isFormValid) {
-      setSnackbarMessage('Please fill in all required fields.');
-      setOpenSnackbar(true);
-      return;
-    }
-
-    try {
-      const result = await onEditGem(formData);
-      console.log(result);
-      setSnackbarMessage('Gem updated successfully!');
-      setOpenSnackbar(true);
-      handleCloseDialog();
-    } catch (error) {
-      console.error('Error updating gem:', error);
-      setSnackbarMessage('Error updating gem.');
-      setOpenSnackbar(true);
-    }
   };
 
   const gemList = Array.isArray(gems) && gems.length > 0 ? gems : [];
@@ -170,14 +150,14 @@ const GemTable = ({ gems }) => {
       <UpdateGemDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        onEditGem={handleEditGem}
+        onUpdateGem={handleEditGem}
         formData={editData}
         setFormData={setEditData}
       />
       <Snackbar
         open={openSnackbar}
-        onClose={() => setOpenSnackbar(false)}
         autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
         message={snackbarMessage}
       />
       <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
@@ -238,6 +218,7 @@ const GemTable = ({ gems }) => {
 
 GemTable.propTypes = {
   gems: PropTypes.array.isRequired,
+  reload: PropTypes.func.isRequired,
 };
 
 export default GemTable;

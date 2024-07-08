@@ -8,15 +8,13 @@ import {
   Button,
   Snackbar,
   Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 
-const UpdateGemDialog = ({
-  openDialog,
-  handleCloseDialog,
-  onUpdateGem,
-  formData,
-  setFormData,
-}) => {
+const UpdateGemDialog = ({ openDialog, handleCloseDialog, onUpdateGem, formData, setFormData }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -28,9 +26,9 @@ const UpdateGemDialog = ({
     }));
   };
 
-  const handleUpdateGem = () => {
-    const requiredFields = ['name', 'type', 'price', 'desc', 'rate'];
-    const isFormValid = requiredFields.every((field) => formData[field] !== '');
+  const handleUpdateGem = async () => {
+    const requiredFields = ['name', 'type', 'price', 'rate'];
+    const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
 
     if (!isFormValid) {
       setSnackbarMessage('Please fill in all required fields.');
@@ -38,7 +36,16 @@ const UpdateGemDialog = ({
       return;
     }
 
-    onUpdateGem(formData);
+    try {
+      await onUpdateGem(formData);
+      setSnackbarMessage('Gem updated successfully!');
+      setSnackbarOpen(true);
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Error updating gem:', error);
+      setSnackbarMessage('Error updating gem.');
+      setSnackbarOpen(true);
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -69,16 +76,19 @@ const UpdateGemDialog = ({
             value={formData.name}
             onChange={handleChange}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="type"
-            label="Type"
-            type="number"
-            value={formData.type}
-            onChange={handleChange}
-          />
+          <FormControl fullWidth margin="normal" required>
+            <InputLabel>Type</InputLabel>
+            <Select
+              name="type"
+              fullWidth
+              value={formData.type}
+              onChange={handleChange}
+              label="Type"
+            >
+              <MenuItem value={1}>Type 1</MenuItem>
+              <MenuItem value={2}>Type 2</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             margin="normal"
             required
@@ -91,7 +101,6 @@ const UpdateGemDialog = ({
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             name="desc"
             label="Description"
@@ -107,13 +116,12 @@ const UpdateGemDialog = ({
             type="number"
             value={formData.rate}
             onChange={handleChange}
+            inputProps={{ step: "0.1" }} 
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleUpdateGem} variant="contained" autoFocus>
-            Update
-          </Button>
+          <Button onClick={handleUpdateGem} variant="contained" autoFocus>Update</Button>
         </DialogActions>
       </Dialog>
       <Snackbar

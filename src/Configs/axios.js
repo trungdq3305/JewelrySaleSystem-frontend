@@ -84,8 +84,15 @@ export const addGem = async (formData) => {
     const data = await axios.post(api + '/gem/creategem', formData)
     console.log(data)
   } catch (error) {
-    console.error('Error adding new gem:', error.response); 
-    throw error; 
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      alert('PLEASE ENTER NAME OF DIAMOND OR THAT IS NAME WAS EXISTED')
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      alert('An unexpected error has occurred')
+      return 'An unexpected error has occired'
+    }
   }
 }
 
