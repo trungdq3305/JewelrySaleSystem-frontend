@@ -208,3 +208,18 @@ export const addUser = async (formData) => {
     }
   }
 }
+export const getCustomer = async () => {
+  try {
+    const data = await axios.get(api + '/customers/get-customers')
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorData = error.response?.data || error.message
+      console.log('error message: ', errorData.message)
+      return errorData
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}

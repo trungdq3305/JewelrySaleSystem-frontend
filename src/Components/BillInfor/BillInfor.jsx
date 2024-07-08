@@ -9,12 +9,13 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 
-const BillInfor = ({ handleOpen }) => {
-  const [age, setAge] = React.useState('')
-
-  const handleChange = (event) => {
-    setAge(event.target.value)
-  }
+const BillInfor = ({
+  handleOpen,
+  customer,
+  vouchers,
+  selectVoucher,
+  handleChange,
+}) => {
   return (
     <div className={styles.container}>
       <div className={styles.Customer}>
@@ -25,8 +26,15 @@ const BillInfor = ({ handleOpen }) => {
           </button>
         </div>
         <div className={styles.content}>
-          <p>Nguyen Van A</p>
-          <p>Point: 1000</p>
+          {customer !== undefined ? (
+            <>
+              <p>Name: {customer.fullName}</p>
+              <p>Phone: {customer.phone}</p>
+              <p>Point: {customer.point}</p>
+            </>
+          ) : (
+            <p>No customer</p>
+          )}
         </div>
       </div>
       <hr></hr>
@@ -38,24 +46,32 @@ const BillInfor = ({ handleOpen }) => {
         </div>
         <div className={styles.content}>
           <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-filled-label">
+              Voucher
+            </InputLabel>
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
-              value={age}
               onChange={handleChange}
+              value={vouchers.voucherId}
             >
-              <MenuItem value="">
+              <MenuItem value="none">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {vouchers !== undefined ? (
+                vouchers.map((item) => (
+                  <MenuItem key={item.voucherId} value={item.voucherId}>
+                    {item.voucherId} - {Number(item.cost).toLocaleString('vn')}
+                  </MenuItem>
+                ))
+              ) : (
+                <></>
+              )}
             </Select>
           </FormControl>
         </div>
       </div>
-      <hr></hr>
+
       {/* <div className={styles.Payment}>
         <div className={styles.Title}>
           <PointOfSaleIcon sx={{ fontSize: 25 }} />
@@ -81,7 +97,7 @@ const BillInfor = ({ handleOpen }) => {
           background: 'black',
           color: '#ffdbf0',
           marginLeft: '90px ',
-          marginTop: '30px',
+          marginTop: '10px',
           '&:hover': {
             backgroundColor: '#ffdbf0',
             color: 'black',
@@ -96,7 +112,7 @@ const BillInfor = ({ handleOpen }) => {
           background: 'black',
           color: '#ffdbf0',
           marginLeft: '90px ',
-          marginTop: '30px',
+          marginTop: '10px',
           '&:hover': {
             backgroundColor: '#ffdbf0',
             color: 'black',
