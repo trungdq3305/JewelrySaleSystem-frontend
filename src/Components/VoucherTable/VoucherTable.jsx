@@ -16,7 +16,11 @@ import {
   TablePagination,
   Button,
   Snackbar,
-  Alert,Dialog, DialogTitle, DialogContent, DialogActions,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
@@ -27,196 +31,192 @@ import { deleteVoucher, editVoucher } from '../../Configs/axios'
 import CustomerInfoDialog from './CustomerInfoDialog'
 
 function TablePaginationActions(props) {
-    const theme = useTheme()
-    const { count, page, rowsPerPage, onPageChange } = props
-  
-    const handleFirstPageButtonClick = (event) => {
-      onPageChange(event, 0)
-    }
-  
-    const handleBackButtonClick = (event) => {
-      onPageChange(event, page - 1)
-    }
-  
-    const handleNextButtonClick = (event) => {
-      onPageChange(event, page + 1)
-    }
-  
-    const handleLastPageButtonClick = (event) => {
-      onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
-    }
-  
-    return (
-      <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-        <IconButton
-          onClick={handleFirstPageButtonClick}
-          disabled={page === 0}
-          aria-label="first page"
-        >
-          {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-        </IconButton>
-        <IconButton
-          onClick={handleBackButtonClick}
-          disabled={page === 0}
-          aria-label="previous page"
-        >
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-        </IconButton>
-        <IconButton
-          onClick={handleNextButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="next page"
-        >
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </IconButton>
-        <IconButton
-          onClick={handleLastPageButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="last page"
-        >
-          {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-        </IconButton>
-      </Box>
-    )
-  }
-  TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-  }
-  const initialFormData = {
-    createdBy: '',
-    expiredDay: '',
-    publishedDay: '',
-    cost: '',
-    customerCustomerId: '',
+  const theme = useTheme()
+  const { count, page, rowsPerPage, onPageChange } = props
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0)
   }
 
-  const initialSearchFormData = {
-    customerId: '',
-    customerName: '',
-    customerPhone: '',
-    customerEmail: '',
-    expiredDay: '',
-    expiredMonth: '',
-    expiredYear: '',
-  };
-  const VoucherTable = ({ vouchers }) => {
-    const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
-    const [openDialog, setOpenDialog] = useState(false)
-    const [editData, setEditData] = useState(initialFormData)
-    const [openCustomerInfoDialog, setOpenCustomerInfoDialog] = useState(false);
-    const [customerInfo, setCustomerInfo] = useState({});
-    const [deleteSuccess, setDeleteSuccess] = useState(null);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [searchFormData, setSearchFormData] = useState(initialSearchFormData);
-   const [searchResults, setSearchResults] = useState([]);
-   const handleShowCustomerInfo = (voucher) => {
-    setCustomerInfo(voucher.customerCustomer);
-    setOpenCustomerInfoDialog(true);
-  };
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1)
+  }
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1)
+  }
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
+  }
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  )
+}
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+}
+
+const initialFormData = {
+  createdBy: '',
+  expiredDay: '',
+  publishedDay: '',
+  cost: '',
+  customerCustomerId: '',
+}
+
+const initialSearchFormData = {
+  customerId: '',
+  customerName: '',
+  customerPhone: '',
+  customerEmail: '',
+  expiredDay: '',
+  expiredMonth: '',
+  expiredYear: '',
+}
+
+const VoucherTable = ({ vouchers, reloadVouchers }) => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [openDialog, setOpenDialog] = useState(false)
+  const [editData, setEditData] = useState(initialFormData)
+  const [openCustomerInfoDialog, setOpenCustomerInfoDialog] = useState(false)
+  const [customerInfo, setCustomerInfo] = useState({})
+  const [deleteSuccess, setDeleteSuccess] = useState(null)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [searchFormData, setSearchFormData] = useState(initialSearchFormData)
+  const [searchResults, setSearchResults] = useState([])
+
+  const handleShowCustomerInfo = (voucher) => {
+    setCustomerInfo(voucher.customerCustomer)
+    setOpenCustomerInfoDialog(true)
+  }
 
   const handleCloseCustomerInfoDialog = () => {
-    setOpenCustomerInfoDialog(false);
-  };
-    const handleEdit = (voucher) => {
-      handleOpenDialog()
-  
-      setEditData({
-        ...initialFormData,
-        ...voucher,
-      })
+    setOpenCustomerInfoDialog(false)
+  }
+
+  const handleEdit = (voucher) => {
+    handleOpenDialog()
+
+    setEditData({
+      ...initialFormData,
+      ...voucher,
+    })
+  }
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true)
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+  }
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - vouchers.length) : 0
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
+  const handleDelete = async (voucherId) => {
+    try {
+      await deleteVoucher(voucherId)
+      setDeleteSuccess(true)
+      setOpenSnackbar(true)
+      reloadVouchers() // Reload vouchers after deleting
+      console.log(`Voucher ${voucherId} deleted successfully`)
+    } catch (error) {
+      setDeleteSuccess(false)
+      setOpenSnackbar(true)
+      console.error('Error deleting voucher:', error)
+    } finally {
+      setPage(0) // Reset the page to 0
+      setRowsPerPage(5) // Reset the rows per page to 5
     }
-    const handleOpenDialog = () => {
-      setOpenDialog(true)
-    }
-    const handleCloseDialog = () => {
-      setOpenDialog(false)
-    }
-    
-    
-    // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - vouchers.length) : 0
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage)
-    }
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10))
-      setPage(0)
-    }
-    const handleDelete = async (voucherId) => {
-      try {
-        await deleteVoucher(voucherId);
-        setDeleteSuccess(true);
-        setOpenSnackbar(true);
-        console.log(`Voucher ${voucherId} deleted successfully`);
-      } catch (error) {
-        setDeleteSuccess(false);
-        setOpenSnackbar(true);
-        console.error('Error deleting voucher:', error);
-      } finally {
-        setPage(0); // Reset the page to 0
-        setRowsPerPage(5); // Reset the rows per page to 5
-      }
-    };
-    const handleCloseSnackbar = () => {
-      setOpenSnackbar(false);
-    };
-    const handleEditVoucher = async (formData) => { 
-      const requiredFields = [
-        'createdBy',
-        'expiredDay',
-        'publishedDay',
-        'cost',
-        'customerCustomerId'
-      ]
-      const isAnyFieldEmpty = requiredFields.some((field) => formData[field])
-      console.log(isAnyFieldEmpty)
-      console.log(formData)
-      // if (isAnyFieldEmpty) {
-      //   window.alert('Please fill out all required fields.')
-      //   return
-      // }
-      try {
-        const result = await editVoucher(formData)
-        console.log(result)
-        // Close the dialog
-        handleCloseDialog()
-      } catch (error) {
-        console.error('Error editing voucher:', error)
-        // Handle error state or display error message to user
-      }
-    }
-  
-    // const reformatData = (formData) => {
-    //   const item = materialMapping.find(item => item.label === formData.material);
-    //   const value = item ? item.value : null;
-    //   return {
-    //     ...formData,
-    //     material: value
-    //   }
+  }
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false)
+  }
+
+  const handleEditVoucher = async (formData) => {
+    const requiredFields = [
+      'createdBy',
+      'expiredDay',
+      'publishedDay',
+      'cost',
+      'customerCustomerId',
+    ]
+    const isAnyFieldEmpty = requiredFields.some((field) => !formData[field])
+    console.log(isAnyFieldEmpty)
+    console.log(formData)
+    // if (isAnyFieldEmpty) {
+    //   window.alert('Please fill out all required fields.')
+    //   return
     // }
-    
+    try {
+      const result = await editVoucher(formData)
+      console.log(result)
+      handleCloseDialog()
+      reloadVouchers() // Reload vouchers after editing
+    } catch (error) {
+      console.error('Error editing voucher:', error)
+      // Handle error state or display error message to user
+    }
+  }
 
+  const voucherList = Array.isArray(vouchers) ? vouchers : []
 
-    const voucherList = Array.isArray(vouchers) ? vouchers : []
-    
-  
-    return (
-      <>
+  return (
+    <>
       <EditVoucherDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
@@ -229,104 +229,95 @@ function TablePaginationActions(props) {
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert
-          severity={deleteSuccess? 'uccess' : 'error'}
-          sx={{ width: '100%' }}
-        >
-          {deleteSuccess? 'Voucher deleted successfully!' : 'Error deleting voucher.'}
+        <Alert severity={deleteSuccess ? 'success' : 'error'} sx={{ width: '100%' }}>
+          {deleteSuccess ? 'Voucher deleted successfully!' : 'Error deleting voucher.'}
         </Alert>
       </Snackbar>
-        <TableContainer
-          component={Paper}
-          sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
-        >
-          <Table stickyHeader aria-label="custom pagination table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell align="right">Created By</TableCell>
-                <TableCell align="right">Expired Day</TableCell>
-                <TableCell align="right">Published Day</TableCell>
-                <TableCell align="right">Cost</TableCell>
-                <TableCell align="right">Customer Id</TableCell>
-                <TableCell align="right">Options</TableCell>
+      <TableContainer component={Paper} sx={{ maxHeight: 5000, display: 'flex', flexDirection: 'column' }}>
+        <Table stickyHeader aria-label="custom pagination table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell align="right">Created By</TableCell>
+              <TableCell align="right">Expired Day</TableCell>
+              <TableCell align="right">Published Day</TableCell>
+              <TableCell align="right">Cost</TableCell>
+              <TableCell align="right">Customer Id</TableCell>
+              <TableCell align="right">Options</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
+            {(rowsPerPage > 0
+              ? voucherList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : voucherList
+            ).map((voucher) => (
+              <TableRow key={voucher.voucherId}>
+                <TableCell component="th" scope="row" style={{ width: 50 }}>
+                  {voucher.voucherId}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {voucher.createdBy}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {voucher.expiredDay}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {voucher.publishedDay}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {voucher.cost}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {voucher.customerCustomerId}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  <Button onClick={() => handleEdit(voucher)}>Edit</Button>
+                  <Button onClick={() => handleShowCustomerInfo(voucher)}>Customer Info</Button>
+                  <Button onClick={() => handleDelete(voucher.voucherId)}>Delete</Button>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
-              {(rowsPerPage > 0
-                ? voucherList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-                : voucherList
-              ).map((voucher) => (
-                <TableRow key={voucher.voucherId}>
-                  <TableCell component="th" scope="row" style={{ width: 50 }}>
-                    {voucher.voucherId}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {voucher.createdBy}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {voucher.expiredDay}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {voucher.publishedDay}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {voucher.cost}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    {voucher.customerCustomerId}
-                  </TableCell>
-                  <TableCell style={{ width: 160 }} align="right">
-                    <Button onClick={() => handleEdit(voucher)}>Edit</Button>
-                    <Button onClick={() => handleShowCustomerInfo(voucher)}>Customer Info</Button>
-                    <Button onClick={() => handleDelete(voucher.voucherId)}>Delete</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={11} />
-                </TableRow>
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                  colSpan={11}
-                  count={voucherList.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  slotProps={{
-                    select: {
-                      inputProps: {
-                        'aria-label': 'rows per page',
-                      },
-                      native: true,
+            ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={11} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={11}
+                count={voucherList.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                slotProps={{
+                  select: {
+                    inputProps: {
+                      'aria-label': 'rows per page',
                     },
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-        <CustomerInfoDialog
+                    native: true,
+                  },
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+      <CustomerInfoDialog
         open={openCustomerInfoDialog}
         onClose={handleCloseCustomerInfoDialog}
         customerInfo={customerInfo}
       />
-      
-      </>
-    )
-  }
-  VoucherTable.propTypes = {
-    vouchers: PropTypes.array.isRequired,
-  }
-  
-  export default VoucherTable
+    </>
+  )
+}
+VoucherTable.propTypes = {
+  vouchers: PropTypes.array.isRequired,
+  reloadVouchers: PropTypes.func.isRequired, // Add this line
+}
+
+export default VoucherTable

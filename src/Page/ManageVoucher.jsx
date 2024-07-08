@@ -320,7 +320,7 @@ const ManageVoucher = () => {
               initialFormData={initialFormData}
             />
             <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
-              <VoucherTable vouchers={vouchers.data} />
+              <VoucherTable vouchers={vouchers.data} reloadVouchers={loadVouchers}/>
             </Box>
           </Paper>
         </Box>

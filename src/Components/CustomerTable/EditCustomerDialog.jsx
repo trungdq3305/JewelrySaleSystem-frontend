@@ -1,11 +1,7 @@
 import { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, FormControlLabel, Checkbox, Button, Paper, Snackbar, Alert } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Paper, Snackbar, Alert } from '@mui/material';
 
-const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initialFormData }) => {
-  const [formData, setFormData] = useState(initialFormData);
-  const [propChecks, setPropChecks] = useState({
-    isExpired: false,
-  });
+const EditCustomerDialog = ({ openDialog, handleCloseDialog, onEditCustomer, formData, setFormData }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -13,52 +9,32 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
     const { name, value } = event.target;
     const [mainKey, subKey] = name.split('.');
 
+    const isNumericField = ['cost'].includes(name);
+
+    if (isNumericField && value !== '' && isNaN(value)) {
+      return;
+    }
+
+    const parsedValue = isNumericField ? parseInt(value, 10) : value;
+
     if (subKey) {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [mainKey]: {
           ...prevFormData[mainKey],
-          [subKey]: value,
-        },
+          [subKey]: parsedValue
+        }
       }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: value,
+        [name]: parsedValue
       }));
     }
   };
 
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setPropChecks((prevChecks) => ({
-      ...prevChecks,
-      [name]: checked,
-    }));
-
-    if (checked) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        expiredDay: {
-          year: '',
-          month: '',
-          day: '',
-        },
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        expiredDay: {
-          year: 0,
-          month: 0,
-          day: 0,
-        },
-      }));
-    }
-  };
-
-  const handleAddVoucher = () => {
-    const requiredFields = ['customerCustomerId', 'expiredDay.year', 'expiredDay.month', 'expiredDay.day', 'publishedDay.year', 'publishedDay.month', 'publishedDay.day'];
+  const handleEditCustomer = () => {
+    const requiredFields = ['fullName', 'doB.year', 'doB.month', 'doB.day', 'address', 'email', 'phone', 'point', 'rate'];
     const isFormValid = requiredFields.every(field => {
       const [mainKey, subKey] = field.split('.');
       return subKey ? formData[mainKey] && formData[mainKey][subKey] : formData[mainKey];
@@ -70,11 +46,16 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
       return;
     }
 
-    onAddVoucher(formData);
-    setFormData(initialFormData); // Reset the form
-    setPropChecks({
-      isExpired: false,
-    });
+    // Format the date of birth to ISO 8601 format
+    const year = formData.doB.year;
+    const month = formData.doB.month - 1; // Months are 0-indexed in JS Date
+    const day = formData.doB.day;
+    const formattedDOB = new Date(Date.UTC(year, month, day)).toISOString();
+
+    // Create a new form data object with formatted DOB
+    const updatedFormData = { ...formData, doB: formattedDOB };
+    console.log(updatedFormData)
+    onEditCustomer(updatedFormData);
   };
 
   const handleSnackbarClose = () => {
@@ -84,88 +65,99 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
   return (
     <>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Add Voucher</DialogTitle>
+        <DialogTitle>Edit Customer</DialogTitle>
         <DialogContent>
           <Paper variant="outlined" component="form" sx={{ margin: 2, padding: 2 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="customerCustomerId"
-              label="Customer ID"
-              value={formData.customerCustomerId}
+              name="fullName"
+              label="Name"
+              value={formData.fullName}
               onChange={handleChange}
             />
-            
-            <div>Expired Day</div>
+            <div>Date of Birth</div>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="expiredDay.year"
+              name="doB.year"
               label="Year"
               type="number"
-              value={formData.expiredDay.year}
+              value={formData.doB.year}
               onChange={handleChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="expiredDay.month"
+              name="doB.month"
               label="Month"
               type="number"
-              value={formData.expiredDay.month}
+              value={formData.doB.month}
               onChange={handleChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="expiredDay.day"
+              name="doB.day"
               label="Day"
               type="number"
-              value={formData.expiredDay.day}
-              onChange={handleChange}
-            />
-            <div>Published Day</div>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="publishedDay.year"
-              label="Year"
-              type="number"
-              value={formData.publishedDay.year}
+              value={formData.doB.day}
               onChange={handleChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="publishedDay.month"
-              label="Month"
-              type="number"
-              value={formData.publishedDay.month}
+              name="address"
+              label="Address"
+              value={formData.address}
               onChange={handleChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="publishedDay.day"
-              label="Day"
-              type="number"
-              value={formData.publishedDay.day}
+              name="email"
+              label="Email"
+              value={formData.email}
               onChange={handleChange}
             />
-            
-            
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="phone"
+              label="Phone"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="point"
+              label="Point"
+              value={formData.point}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="rate"
+              label="Rate"
+              value={formData.rate}
+              onChange={handleChange}
+            />
           </Paper>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleAddVoucher} variant="contained" autoFocus>
+          <Button onClick={handleEditCustomer} variant="contained" autoFocus>
             Confirm
           </Button>
         </DialogActions>
@@ -183,4 +175,4 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
   );
 };
 
-export default AddVoucherDialog;
+export default EditCustomerDialog;
