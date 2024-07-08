@@ -55,12 +55,12 @@ const BillInfor = ({
               onChange={handleChange}
               value={vouchers.voucherId}
             >
-              <MenuItem value="none">
+              <MenuItem value="0">
                 <em>None</em>
               </MenuItem>
               {vouchers !== undefined ? (
                 vouchers.map((item) => (
-                  <MenuItem key={item.voucherId} value={item.voucherId}>
+                  <MenuItem key={item.voucherId} value={item.cost}>
                     {item.voucherId} - {Number(item.cost).toLocaleString('vn')}
                   </MenuItem>
                 ))

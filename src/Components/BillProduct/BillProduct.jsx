@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../BillProduct/BillProduct.module.scss'
 
-const BillProduct = ({ products, totalCost }) => {
+const BillProduct = ({ products, totalCost, voucherCost, costWithVoucher }) => {
   return (
     <div className={styles.bill}>
       <div className={styles.billTableWrapper}>
@@ -63,8 +63,8 @@ const BillProduct = ({ products, totalCost }) => {
         <div className={styles.summaryContain}>
           <p>{products.length}</p>
           <p>{Number(totalCost.toFixed(0)).toLocaleString('vn')}</p>
-          <p>0</p>
-          <p>9000000000</p>
+          <p>{Number(voucherCost.toFixed(0)).toLocaleString('vn')}</p>
+          <p>{Number(costWithVoucher.toFixed(0)).toLocaleString('vn')}</p>
         </div>
       </div>
     </div>

@@ -32,7 +32,8 @@ const BillPage = () => {
   const [customerList, setCustomerList] = useState([])
   const [customer, setCustomer] = useState()
   const [voucherList, setVoucherList] = useState([])
-  const [voucher, setVoucher] = React.useState('')
+  const [voucher, setVoucher] = React.useState(0)
+  const [costWithVoucher, setCostwithVoucher] = useState(0)
 
   const handleChange = (event) => {
     setVoucher(event.target.value)
@@ -85,17 +86,31 @@ const BillPage = () => {
     setTotalCost(cost)
   }
 
+  const calculateCostwVoucher = () => {
+    // const cost = billProduct.reduce(
+    //   (total, card) => total + card.PriceWithDiscount * card.Quantity,
+    //   0
+    // )
+    const result = totalCost - voucher
+    setCostwithVoucher(result)
+  }
+
   const addCustomer = (cus) => {
     setCustomer(cus)
     handleClose()
   }
   useEffect(() => {
     loadBillProduct()
-    calculateCost()
     loadCustomers()
     loadVouchers()
   }, [])
 
+  useEffect(() => {
+    calculateCostwVoucher()
+  }, [voucher, calculateCostwVoucher])
+  useEffect(() => {
+    calculateCost()
+  }, [billProduct])
   return (
     <>
       <div className={styles.container}>
@@ -125,7 +140,12 @@ const BillPage = () => {
                 />
               </Box>
             </Modal>
-            <BillProduct products={billProduct} totalCost={totalCost} VND />
+            <BillProduct
+              products={billProduct}
+              totalCost={totalCost}
+              voucherCost={voucher}
+              costWithVoucher={costWithVoucher}
+            />
           </div>
         </div>
       </div>
