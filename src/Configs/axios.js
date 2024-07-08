@@ -66,8 +66,8 @@ export const editProduct = async () => {
 }
 export const getAllGem = async () => {
   try {
-    const data = await axios.get(api + '/gem/viewlistgem')
-    return data
+    const reponse = await axios.get(api + '/gem/viewlistgem')
+    return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error massage: ', error.message)

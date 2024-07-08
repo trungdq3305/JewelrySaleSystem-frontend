@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react'
+import React from 'react'
+import { useTheme } from '@mui/material/styles'
+import PropTypes from 'prop-types'
 import UpdateGemDialog from './UpdateGemDialog';
 import {
   Table,
@@ -10,10 +12,83 @@ import {
   TableRow,
   Paper,
   Button,
+  Box,
   TablePagination,
   Snackbar,
 } from '@mui/material';
+import IconButton from '@mui/material/IconButton'
+import FirstPageIcon from '@mui/icons-material/FirstPage'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import LastPageIcon from '@mui/icons-material/LastPage'
+import { updateGem } from '../../Configs/axios'
+function TablePaginationActions(props) {
+  const theme = useTheme()
+  const { count, page, rowsPerPage, onPageChange } = props
 
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0)
+  }
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1)
+  }
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1)
+  }
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
+  }
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  )
+}
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+}
 const initialFormData = {
   gemId: '',
   Name: '',
@@ -22,6 +97,10 @@ const initialFormData = {
   Desc: '',
   rate: 0,
 };
+const initialSearchFormData = {
+  gemId: '',
+  Name: '',
+};
 
 const GemTable = ({ gems }) => {
   const [page, setPage] = useState(0);
@@ -29,15 +108,22 @@ const GemTable = ({ gems }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editData, setEditData] = useState(initialFormData);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleUpdateGem = (gem) => {
-    setEditData(gem);
+    handleOpenDialog();
+    setEditData({
+      ...initialFormData,
+      ...gem,
+    });
+  };
+
+  const handleOpenDialog = () => {
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setEditData(initialFormData);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -45,18 +131,39 @@ const GemTable = ({ gems }) => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
 
   const handleEditGem = async (formData) => {
-    console.log('Editing gem:', formData);
-    handleCloseDialog();
+    const requiredFields = ['Name', 'Type', 'Price', 'rate'];
+    const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
+
+    if (!isFormValid) {
+      setSnackbarMessage('Please fill in all required fields.');
+      setOpenSnackbar(true);
+      return;
+    }
+
+    try {
+      const result = await onEditGem(formData);
+      console.log(result);
+      setSnackbarMessage('Gem updated successfully!');
+      setOpenSnackbar(true);
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Error updating gem:', error);
+      setSnackbarMessage('Error updating gem.');
+      setOpenSnackbar(true);
+    }
   };
 
-  const gemList = Array.isArray(gems) ? gems : [];
+  const gemList = Array.isArray(gems) && gems.length > 0 ? gems : [];
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, gemList.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - gemList.length) : 0;
+
+  const displayRows = rowsPerPage > 0 ? gemList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : gemList;
 
   return (
     <>
@@ -71,7 +178,7 @@ const GemTable = ({ gems }) => {
         open={openSnackbar}
         onClose={() => setOpenSnackbar(false)}
         autoHideDuration={6000}
-        message="Gem updated successfully!"
+        message={snackbarMessage}
       />
       <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
@@ -87,24 +194,29 @@ const GemTable = ({ gems }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {gemList
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((gem) => (
-                <TableRow key={gem.gemId}>
-                  <TableCell>{gem.gemId}</TableCell>
-                  <TableCell align="right">{gem.name}</TableCell>
-                  <TableCell align="right">{gem.type}</TableCell>
-                  <TableCell align="right">{gem.price}</TableCell>
-                  <TableCell align="right">{gem.desc}</TableCell>
-                  <TableCell align="right">{gem.rate}</TableCell>
-                  <TableCell align="right">
-                    <Button onClick={() => handleUpdateGem(gem)}>Edit</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {displayRows.map((gem) => (
+              <TableRow key={gem.gemId}>
+                <TableCell>{gem.gemId}</TableCell>
+                <TableCell align="right">{gem.name}</TableCell>
+                <TableCell align="right">{gem.type}</TableCell>
+                <TableCell align="right">{gem.price}</TableCell>
+                <TableCell align="right">{gem.desc}</TableCell>
+                <TableCell align="right">{gem.rate}</TableCell>
+                <TableCell align="right">
+                  <Button onClick={() => handleUpdateGem(gem)}>Edit</Button>
+                </TableCell>
+              </TableRow>
+            ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={7} />
+              </TableRow>
+            )}
+            {gemList.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={7} align="center">
+                  No gems found.
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -118,10 +230,14 @@ const GemTable = ({ gems }) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        ActionsComponent={TablePaginationActions}
       />
     </>
   );
 };
 
+GemTable.propTypes = {
+  gems: PropTypes.array.isRequired,
+};
 
 export default GemTable;
