@@ -265,3 +265,26 @@ export const updateCustomerStatus = async (customerId) => {
     throw error; // Throw error for handling in the component
   }
 };
+
+export const getCustomersByName = async (searchCustomerName) => {
+  try {
+    const response = await axios.get(api +'/customers/get-customers-by-name', {
+      params: { searchCustomerName },
+    });
+    return response.data; // Trả về dữ liệu từ phản hồi của API
+  } catch (error) {
+    throw new Error('Error fetching customers by name: ' + error.message);
+  }
+};
+
+export const getCustomerByPhone = async (phone) => {
+  try {
+    const response = await axios.get(api +'/customers/get-customer-by-phone', {
+      params: { phone },
+    });
+    console.log(response)
+    return response.data; // Trả về dữ liệu từ phản hồi của API
+  } catch (error) {
+    throw new Error('Error fetching customer by phone: ' + error.message);
+  }
+};
