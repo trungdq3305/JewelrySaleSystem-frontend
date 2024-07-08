@@ -10,8 +10,8 @@ const ManageCustomer = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [searchCustomerName, setSearchCustomerName] = useState('');
-  const [searchPhone, setSearchPhone] = useState('');
+  const [searchCriteria, setSearchCriteria] = useState('name'); // Default search criteria
+  const [searchValue, setSearchValue] = useState('');
   const [error, setError] = useState('');
 
   const handleOpenDialog = () => {
@@ -58,38 +58,27 @@ const ManageCustomer = () => {
     }
   };
 
-  const handleSearchByName = async () => {
+  const handleSearch = async () => {
     setLoading(true);
     try {
-      const result = await getCustomersByName(searchCustomerName);
-      setCustomers(result.data);
+      if (searchCriteria === 'name') {
+        const result = await getCustomersByName(searchValue);
+        setCustomers(result.data);
+      } else if (searchCriteria === 'phone') {
+        const result = await getCustomerByPhone(searchValue);
+        setCustomers(result.data); // Ensure that the result returned is an array for use with CustomerTable component
+      }
+      setError(''); // Clear any previous error message
     } catch (error) {
-      console.error('Error fetching customers by name:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearchByPhone = async () => {
-    setLoading(true);
-    try {
-      const result = await getCustomerByPhone(searchPhone);
-      setCustomers(result.data); // Đảm bảo kết quả được trả về là một mảng để sử dụng với CustomerTable component
-      setError(''); // Xóa thông báo lỗi nếu trước đó có lỗi
-    } catch (error) {
-      console.error('Error fetching customer by phone:', error);
-      setError('Error fetching customer by phone. Please try again.'); // Đặt thông báo lỗi
+      console.error(`Error fetching customers by ${searchCriteria}:`, error);
+      setError(`Error fetching customers by ${searchCriteria}. Please try again.`);
     } finally {
       setLoading(false);
     }
   };
 
   const handleInputChange = (e) => {
-    setSearchCustomerName(e.target.value);
-  };
-
-  const handlePhoneInputChange = (e) => {
-    setSearchPhone(e.target.value);
+    setSearchValue(e.target.value);
   };
 
   useEffect(() => {
@@ -130,23 +119,20 @@ const ManageCustomer = () => {
               <Button onClick={handleOpenDialog}>Add Customer</Button>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <TextField
-                  label="Search by Name"
+                  label="Search"
                   variant="outlined"
-                  value={searchCustomerName}
+                  value={searchValue}
                   onChange={handleInputChange}
                 />
-                <Button onClick={handleSearchByName} sx={{ ml: 2 }}>
-                  Search
-                </Button>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TextField
-                  label="Search by Phone"
-                  variant="outlined"
-                  value={searchPhone}
-                  onChange={handlePhoneInputChange}
-                />
-                <Button onClick={handleSearchByPhone} sx={{ ml: 2 }}>
+                <select
+                  value={searchCriteria}
+                  onChange={(e) => setSearchCriteria(e.target.value)}
+                  style={{ marginLeft: '10px' }}
+                >
+                  <option value="name">Name</option>
+                  <option value="phone">Phone</option>
+                </select>
+                <Button onClick={handleSearch} sx={{ ml: 2 }}>
                   Search
                 </Button>
               </Box>
