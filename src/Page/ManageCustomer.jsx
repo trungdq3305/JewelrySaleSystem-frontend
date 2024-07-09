@@ -125,13 +125,19 @@ const ManageCustomer = () => {
                   onChange={handleInputChange}
                 />
                 <select
-                  value={searchCriteria}
-                  onChange={(e) => setSearchCriteria(e.target.value)}
-                  style={{ marginLeft: '10px' }}
-                >
-                  <option value="name">Name</option>
-                  <option value="phone">Phone</option>
-                </select>
+  value={searchCriteria}
+  onChange={(e) => setSearchCriteria(e.target.value)}
+  style={{
+    marginLeft: '10px',
+    padding: '8px',
+    fontSize: '16px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+  }}
+>
+  <option value="name">Name</option>
+  <option value="phone">Phone</option>
+</select>
                 <Button onClick={handleSearch} sx={{ ml: 2 }}>
                   Search
                 </Button>

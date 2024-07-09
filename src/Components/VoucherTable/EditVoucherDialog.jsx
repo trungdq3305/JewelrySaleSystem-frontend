@@ -70,6 +70,12 @@ const EditVoucherDialog = ({ openDialog, handleCloseDialog, onEditVoucher, formD
             />
             <TextField
               margin="normal"
+              label="Expired Day"
+              value={formData.expiredDay}
+              disabled
+            />
+            <TextField
+              margin="normal"
               required
               fullWidth
               name="expiredDay.year"
@@ -97,6 +103,12 @@ const EditVoucherDialog = ({ openDialog, handleCloseDialog, onEditVoucher, formD
               type="number"
               value={formData.expiredDay.day}
               onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              label="Published Day"
+              value={formData.publishedDay}
+              disabled
             />
             <TextField
               margin="normal"
