@@ -58,7 +58,7 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
   };
 
   const handleAddVoucher = () => {
-    const requiredFields = ['customerCustomerId', 'expiredDay.year', 'expiredDay.month', 'expiredDay.day', 'publishedDay.year', 'publishedDay.month', 'publishedDay.day'];
+    const requiredFields = ['cost','customerCustomerId', 'expiredDay.year', 'expiredDay.month', 'expiredDay.day', 'publishedDay.year', 'publishedDay.month', 'publishedDay.day'];
     const isFormValid = requiredFields.every(field => {
       const [mainKey, subKey] = field.split('.');
       return subKey ? formData[mainKey] && formData[mainKey][subKey] : formData[mainKey];
@@ -94,6 +94,15 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
               name="customerCustomerId"
               label="Customer ID"
               value={formData.customerCustomerId}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="cost"
+              label="Cost ( < 100000 )"
+              value={formData.cost}
               onChange={handleChange}
             />
             
