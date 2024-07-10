@@ -121,3 +121,56 @@ const getGems = async (params) => {
   }
 }
 export { getGems };
+
+export const updateDiscount = async (formData) => {
+  try {
+    const response = await axios.put(api + '/discount/update-discount', formData)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+
+export const addDiscount = async (formData) => {
+  try {
+    const data = await axios.post(api + '/discount/create-discount', formData)
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      alert('Cost >= 10000 /nExpired Day must be later than publish day')
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      alert('An unexpected error has occurred')
+      return 'An unexpected error has occired'
+    }
+  }
+}
+
+const getDiscount = async (params) => {
+  try {
+    const response = await axios.get(api + '/discount/view-discount', { params });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+export { getDiscount };
+export const deleteDiscount = async (discountid) => {
+  try {
+    const response = await axios.delete(
+      api + `/discount/delete-discount?discountid=${discountid}`
+    )
+    return response.data
+  } catch (error) {
+    console.error(error)
+  }
+}
