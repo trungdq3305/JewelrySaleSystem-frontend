@@ -28,24 +28,33 @@ const UpdateDiscountDialog = ({ openDialog, handleCloseDialog, onUpdateDiscount,
       [name]: value,
     }));
   };
+  const initialFormData = {
+    discountId: '',
+    createdBy: '',
+    expiredDay: '',
+    publishDay: '',
+    amount: 0,
+    cost: 0,
+  };
 
   const handleUpdateDiscount = async () => {
     const requiredFields = ['discountId', 'expiredDay', 'publishDay', 'cost'];
+    console.log('Form Data:', formData);
+    
     const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
-
+  
     if (!isFormValid) {
       setSnackbarMessage('Please fill in all required fields.');
       setSnackbarOpen(true);
       return;
     }
-
-    // Convert dates to ISO format
+  
     const updatedFormData = {
       ...formData,
-      expiredDay: new Date(formData.expiredDay).toISOString().split('T')[0], // Format to YYYY-MM-DD
-      publishDay: new Date(formData.publishDay).toISOString().split('T')[0], // Format to YYYY-MM-DD
+      expiredDay: new Date(formData.expiredDay).toISOString().split('T')[0],
+      publishDay: new Date(formData.publishDay).toISOString().split('T')[0],
     };
-
+  
     try {
       await onUpdateDiscount(updatedFormData);
       setSnackbarMessage('Discount updated successfully!');
@@ -57,6 +66,7 @@ const UpdateDiscountDialog = ({ openDialog, handleCloseDialog, onUpdateDiscount,
       setSnackbarOpen(true);
     }
   };
+  
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -83,8 +93,8 @@ const UpdateDiscountDialog = ({ openDialog, handleCloseDialog, onUpdateDiscount,
             fullWidth
             name="expiredDay"
             label="Expired Day"
-            type="date" // Use "date" for DateOnly
-            value={formData.expiredDay ? formData.expiredDay.slice(0, 10) : ''} // Format to YYYY-MM-DD
+            type="date"
+            value={formData.expiredDay ? formData.expiredDay.slice(0, 10) : ''} 
             onChange={handleChange}
             InputLabelProps={{
               shrink: true,
@@ -96,8 +106,8 @@ const UpdateDiscountDialog = ({ openDialog, handleCloseDialog, onUpdateDiscount,
             fullWidth
             name="publishDay"
             label="Publish Day"
-            type="date" // Use "date" for DateOnly
-            value={formData.publishDay ? formData.publishDay.slice(0, 10) : ''} // Format to YYYY-MM-DD
+            type="date" 
+            value={formData.publishDay ? formData.publishDay.slice(0, 10) : ''} 
             onChange={handleChange}
             InputLabelProps={{
               shrink: true,

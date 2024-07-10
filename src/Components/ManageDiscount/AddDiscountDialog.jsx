@@ -34,6 +34,7 @@ const AddDiscountDialog = ({ openDialog, handleCloseDialog, onAddDiscount, initi
     if (!isFormValid) {
       setSnackbarMessage('Please fill in all required fields.');
       setSnackbarOpen(true);
+      handleCloseDialog();
       return;
     }
 

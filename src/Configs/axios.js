@@ -124,18 +124,23 @@ export { getGems };
 
 export const updateDiscount = async (formData) => {
   try {
-    const response = await axios.put(api + '/discount/update-discount', formData)
-    return response.data
+    const response = await axios.put(api + '/discount/update-discount', formData);
+    if (response.status !== 200) {
+      throw new Error(`Error: ${response.status}`);
+    }
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message)
-      return error.message
+      console.log('error message:', error.message);
+      throw new Error(error.message); // Re-throw the error for the caller to handle
     } else {
-      console.log('Unxpected error:', error)
-      return 'An unexpected error has occured'
+      console.log('Unexpected error:', error);
+      throw new Error('An unexpected error has occurred'); // Re-throw the error for the caller to handle
     }
   }
 }
+
+
 
 export const addDiscount = async (formData) => {
   try {

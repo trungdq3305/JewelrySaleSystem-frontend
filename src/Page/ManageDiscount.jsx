@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Paper, TextField, CircularProgress, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, Button, Paper, TextField, CircularProgress, Select, MenuItem, FormControl, InputLabel, Snackbar, Alert } from '@mui/material';
 import DiscountTable from '../Components/ManageDiscount/DiscountTable';
 import { addDiscount, getDiscount } from '../Configs/axios';
 import ManagerSideBar from '../Components/Sidebar/ManagerSideBar';
@@ -10,8 +10,10 @@ const ManageDiscount = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState('id');
-  const [statusFilter, setStatusFilter] = useState('all'); // New state for status filter
+  const [statusFilter, setStatusFilter] = useState('all'); 
   const [inputValue, setInputValue] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -26,11 +28,11 @@ const ManageDiscount = () => {
     setLoading(true);
     const transformedSearchParams = {
       [searchCriteria]: inputValue,
-      status: statusFilter === 'all' ? undefined : statusFilter, // Include status filter if not 'all'
+      status: statusFilter === 'all' ? undefined : statusFilter, 
     };
 
     try {
-      const response = await getDiscount(transformedSearchParams); // Ensure correct function name
+      const response = await getDiscount(transformedSearchParams); 
       console.log('Search response data:', response.data);
       setDiscounts(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -52,7 +54,7 @@ const ManageDiscount = () => {
   const loadDiscounts = async () => {
     setLoading(true);
     try {
-      const result = await getDiscount(); // Ensure correct function name
+      const result = await getDiscount(); 
       console.log('Load discounts data:', result.data);
       setDiscounts(Array.isArray(result.data) ? result.data : []);
     } catch (error) {
@@ -65,13 +67,17 @@ const ManageDiscount = () => {
   const handleAddNewDiscount = async (formData) => {
     try {
       await addDiscount(formData);
-      if(formData=== undefined){
-        await loadDiscounts(); 
-      handleCloseDialog();}
+      await loadDiscounts(); 
+      setSnackbarMessage('Discount added succesfully');
+      setSnackbarOpen(true);
+      handleCloseDialog();
       console.log('New discount added successfully:', formData);
     } catch (error) {
       console.error('Error adding new discount:', error);
     }
+  };
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   useEffect(() => {
@@ -81,6 +87,16 @@ const ManageDiscount = () => {
   if (loading) return <CircularProgress />;
 
   return (
+    <>
+    <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarMessage.includes('Error') ? 'error' : 'success'} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       <ManagerSideBar />
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
@@ -133,6 +149,7 @@ const ManageDiscount = () => {
         </Paper>
       </Box>
     </Box>
+    </>
   );
 };
 

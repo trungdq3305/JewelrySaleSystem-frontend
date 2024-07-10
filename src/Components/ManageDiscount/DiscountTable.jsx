@@ -150,7 +150,8 @@ const DiscountTable = ({ discounts, reload }) => {
 
     try {
       await updateDiscount(formData);
-      if(formData === undefined){setDiscountList(discountList.map(discount => discount.discountId === formData.discountId ? formData : discount));}
+      if(formData !== undefined){setDiscountList(discountList.map(discount => discount.discountId === formData.discountId ? formData : discount));}
+ 
     } catch (error) {
       setOpenSnackbar(true);
       console.error('Error updating discount:', error);
