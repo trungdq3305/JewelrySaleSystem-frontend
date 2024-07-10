@@ -22,6 +22,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 import { activeDeactiveUser } from '../../Configs/axios'
 import ActiveDeactiveDialog from './ActiveDeactiveDialog'
+import UpdateRoleDialog from './UpdateRoleDialog'
+
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -95,6 +97,8 @@ const UserTable = ({ users }) => {
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [openDialog, setOpenDialog] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
+  const [openRoleDialog, setOpenRoleDialog] = useState(false)
+
   const handleOpenDialog = (userId) => {
     setSelectedUser(userId)
     setOpenDialog(true)
@@ -114,6 +118,15 @@ const UserTable = ({ users }) => {
         handleCloseDialog()
       }
     }
+  }
+  const handleOpenRoleDialog = (user) => {
+    setSelectedUser(user)
+    setOpenRoleDialog(true)
+  }
+
+  const handleCloseRoleDialog = () => {
+    setOpenRoleDialog(false)
+    setSelectedUser(null)
   }
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -140,6 +153,12 @@ const UserTable = ({ users }) => {
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
         onConfirm={handleActiveDeactive}
+      />
+
+      <UpdateRoleDialog
+        open={openRoleDialog}
+        onClose={handleCloseRoleDialog}
+        user={selectedUser}
       />
 
       <TableContainer
@@ -194,7 +213,7 @@ const UserTable = ({ users }) => {
                   {formatStatus(user.status)}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  <Button>Update Role</Button>
+                  <Button onClick={() => handleOpenRoleDialog(user)}>Update Role</Button>
                   <Button onClick={() => handleOpenDialog(user.userId)}>Active/Deactive</Button>
                 </TableCell>
               </TableRow>

@@ -135,11 +135,31 @@ export const activeDeactiveUser = async (userId) => {
     )
     console.log(data)
     return data
-  } catch(error) {
-    if(axios.isAxiosError(error)) {
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
       console.log('error message: ', error.message)
       return error.message
     } else {
+      console.log('Unexpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+export const updateRole = async (userId, newRole) => {
+  try {
+    const data = await axios.put(api + '/user/update-role', {
+      id: userId,
+      role: newRole
+    })
+    console.log(data)
+    return data
+  }
+  catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message', error.message)
+      return error.message
+    }
+    else {
       console.log('Unexpected error:', error)
       return 'An unexpected error has occured'
     }

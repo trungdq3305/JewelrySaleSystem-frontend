@@ -21,7 +21,7 @@ const AddUserDialog = ({ openDialog, handleCloseDialog, onAddUser, initialFormDa
       const roleItem = roleMapping.find(item => item.label === formData.role);
       const roleValue = roleItem ? roleItem.id : ''
       onAddUser({ ...formData, role: roleValue })
-      setFormData(initialFormData) 
+      setFormData(initialFormData)
     } else {
       alert('Please fill in all required fields.');
     }

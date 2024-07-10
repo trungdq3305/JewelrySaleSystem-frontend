@@ -17,13 +17,12 @@ const ManageUsers = () => {
       setUsers(result.data.data);
     }
   };
-
   const handleOpenDialog = () => {
     setOpenDialog(true)
-  };
+  }
   const handleCloseDialog = () => {
     setOpenDialog(false)
-  };
+  }
   const initialFormData = {
     role: '',
     fullName: '',
