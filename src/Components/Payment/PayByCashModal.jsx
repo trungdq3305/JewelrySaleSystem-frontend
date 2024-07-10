@@ -1,7 +1,9 @@
 import React from 'react'
 
 const PayByCashModal = () => {
-  return <div>PayByCashModal</div>
+  return <>
+  
+  </>
 }
 
 export default PayByCashModal
