@@ -326,3 +326,172 @@ export const addGem = async (formData) => {
     }
   }
 }
+
+export const getAllCustomers = async () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  try {
+    const data = await axios.get(api + '/customers/get-customers')
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
+
+    }
+  }
+}
+
+export const addCustomer = async (formData) => {
+  try {
+    const data = await axios.post(api + '/customers/create-customer', formData)
+
+
+
+
+
+
+
+
+
+
+
+
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+
+
+      return 'An unexpected error has occired'
+    }
+  }
+}
+
+export const editCustomer = async (formData) => {
+  try {
+    const response = await axios.put(api + '/customers/customer-update', formData)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+
+export const updateCustomerStatus = async (customerId) => {
+  try {
+    const response = await axios.put(api +`/customers/status-update?id=${customerId}`, {
+       // Assuming your API expects a 'status' field for updating
+    });
+    return response.data; // Return response data if needed
+  } catch (error) {
+    throw error; // Throw error for handling in the component
+  }
+};
+
+export const getCustomersByName = async (searchCustomerName) => {
+  try {
+    const response = await axios.get(api +'/customers/get-customers-by-name', {
+      params: { searchCustomerName },
+    });
+    return response.data; // Trả về dữ liệu từ phản hồi của API
+  } catch (error) {
+    throw new Error('Error fetching customers by name: ' + error.message);
+  }
+};
+
+export const getCustomerByPhone = async (phone) => {
+  try {
+    const response = await axios.get(api +'/customers/get-customer-by-phone', {
+      params: { phone },
+    });
+    console.log(response)
+    return response.data; // Trả về dữ liệu từ phản hồi của API
+  } catch (error) {
+    throw new Error('Error fetching customer by phone: ' + error.message);
+  }
+};
+
