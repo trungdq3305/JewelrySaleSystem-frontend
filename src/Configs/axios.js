@@ -129,7 +129,7 @@ export const addVoucher = async (formData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error massage: ', error.message)
-      alert('PLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY ')
+      alert('\nPLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY \nCOST > 100000')
       return error.message
     } else {
       console.log('Unexpected error: ', error)
