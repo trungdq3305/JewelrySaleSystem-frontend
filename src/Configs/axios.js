@@ -125,6 +125,7 @@ export const getAllVouchers = async () => {
 export const addVoucher = async (formData) => {
   try {
     const data = await axios.post(api + '/voucher/createvoucher', formData)
+export const addGem = async (formData) => {
     console.log(data)
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -317,5 +318,22 @@ export const getVouchersv2 = async (params) => {
   } catch (error) {
     console.error(error)
     return []
+  }
+}
+export const addGem = async (formData) => {
+  try {
+    const data = await axios.post(api + '/gem/creategem', formData)
+
+    console.log(data)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      alert('PLEASE ENTER NAME OF DIAMOND OR THAT IS NAME WAS EXISTED')
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      alert('An unexpected error has occurred')
+      return 'An unexpected error has occired'
+    }
   }
 }
