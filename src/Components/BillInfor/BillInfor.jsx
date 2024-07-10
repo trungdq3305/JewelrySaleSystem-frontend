@@ -13,8 +13,8 @@ const BillInfor = ({
   handleOpen,
   customer,
   vouchers,
-  selectVoucher,
   handleChange,
+  handleOpenCash,
 }) => {
   return (
     <div className={styles.container}>
@@ -55,12 +55,12 @@ const BillInfor = ({
               onChange={handleChange}
               value={vouchers.voucherId}
             >
-              <MenuItem value="0">
+              <MenuItem value="none">
                 <em>None</em>
               </MenuItem>
               {vouchers !== undefined ? (
                 vouchers.map((item) => (
-                  <MenuItem key={item.voucherId} value={item.cost}>
+                  <MenuItem key={item.voucherId} value={item.voucherId}>
                     {item.voucherId} - {Number(item.cost).toLocaleString('vn')}
                   </MenuItem>
                 ))
@@ -92,6 +92,7 @@ const BillInfor = ({
         </div>
       </div> */}
       <Button
+        onClick={handleOpenCash}
         variant="contained"
         sx={{
           background: 'black',

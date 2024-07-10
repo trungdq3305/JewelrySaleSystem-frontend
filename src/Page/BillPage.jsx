@@ -8,7 +8,8 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import CustomerList from '../Components/CustomerList/CustomerList'
-import { getCustomer, getVouchers } from '../Configs/axios'
+import { getCustomer, getVouchers, getVouchersv2 } from '../Configs/axios'
+import PayByCashModal from '../Components/Payment/PayByCashModal'
 
 const BillPage = () => {
   const style = {
@@ -25,6 +26,9 @@ const BillPage = () => {
     overflowY: 'auto',
   }
   const [open, setOpen] = React.useState(false)
+  const [openCash, setOpenCash] = useState(false)
+  const handleOpenCash = () => setOpenCash(true)
+  const handleCloseCash = () => setOpenCash(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const [billProduct, setBillProduct] = useState([])
@@ -35,8 +39,29 @@ const BillPage = () => {
   const [voucher, setVoucher] = React.useState(0)
   const [costWithVoucher, setCostwithVoucher] = useState(0)
 
-  const handleChange = (event) => {
-    setVoucher(event.target.value)
+  const handleChange = async (event) => {
+    if (event.target.value !== 'none') {
+      const params = {
+        publishDay: {
+          Year: '',
+          Month: '',
+          Day: '',
+        },
+        customerId: customer.customerId,
+        customerName: '',
+        customerPhone: '',
+        customerEmail: '',
+        isActive: true,
+        Id: event.target.value,
+      }
+      console.log(params)
+      const vouchers = await getVouchersv2(params)
+      console.log(vouchers.data)
+      console.log(vouchers.data[0].cost)
+      setVoucher(vouchers.data[0].cost)
+    } else {
+      setVoucher(0)
+    }
     console.log(event.target.value)
   }
 
@@ -52,18 +77,20 @@ const BillPage = () => {
   const loadVouchers = async () => {
     try {
       const params = {
-        expiredDay: {
+        publishDay: {
           Year: '',
           Month: '',
           Day: '',
         },
-        customerId: '',
+        customerId: customer.customerId,
         customerName: '',
         customerPhone: '',
         customerEmail: '',
+        isActive: true,
+        Id: '',
       }
       console.log(params)
-      const vouchers = await getVouchers(params)
+      const vouchers = await getVouchersv2(params)
       console.log(vouchers.data)
       setVoucherList(vouchers.data)
     } catch (error) {
@@ -102,9 +129,10 @@ const BillPage = () => {
   useEffect(() => {
     loadBillProduct()
     loadCustomers()
-    loadVouchers()
   }, [])
-
+  useEffect(() => {
+    loadVouchers()
+  }, [customer])
   useEffect(() => {
     calculateCostwVoucher()
   }, [voucher, calculateCostwVoucher])
@@ -126,6 +154,7 @@ const BillPage = () => {
               customer={customer}
               vouchers={voucherList}
               handleChange={handleChange}
+              handleOpenCash={handleOpenCash}
             />
             <Modal
               open={open}
@@ -138,6 +167,16 @@ const BillPage = () => {
                   customerList={customerList}
                   addCustomer={addCustomer}
                 />
+              </Box>
+            </Modal>
+            <Modal
+              open={openCash}
+              onClose={handleCloseCash}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <PayByCashModal />
               </Box>
             </Modal>
             <BillProduct

@@ -208,6 +208,90 @@ export const addUser = async (formData) => {
     }
   }
 }
+export const getAllGem = async () => {
+  try {
+    const reponse = await axios.get(api + '/gem/viewlistgem')
+    return reponse.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occired'
+    }
+  }
+}
+export const addGem = async (formData) => {
+  try {
+    const data = await axios.post(api + '/gem/creategem', formData)
+    console.log(data)
+  } catch (error) {
+    console.error('Error adding new gem:', error.response)
+    throw error
+  }
+}
+
+export const updateGem = async (formData) => {
+  try {
+    const response = await axios.put(api + '/gem/updategem', formData)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+
+const getGems = async (params) => {
+  try {
+    const response = await axios.get(api + '/gem/viewlistgem', { params })
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+export { getGems }
+export const activeDeactiveUser = async (userId) => {
+  try {
+    const data = await axios.put(
+      api + `/user/active-deactive-user?id=${userId}`
+    )
+    console.log(data)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+export const searchUser = async (searchValue) => {
+  try {
+    const data = await axios.get(
+      api + `/user/view-list-users?id=${searchValue}`
+    )
+    console.log(data)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message)
+      return error.message
+    } else {
+      console.log('Unxpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+
 export const getCustomer = async () => {
   try {
     const data = await axios.get(api + '/customers/get-customers')
@@ -221,5 +305,17 @@ export const getCustomer = async () => {
       console.log('Unexpected error: ', error)
       return 'An unexpected error has occured'
     }
+  }
+}
+
+export const getVouchersv2 = async (params) => {
+  try {
+    const response = await axios.get(api + '/voucher/viewlistvoucherv2', {
+      params,
+    })
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return []
   }
 }
