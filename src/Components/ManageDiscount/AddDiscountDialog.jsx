@@ -56,7 +56,7 @@ const AddDiscountDialog = ({ openDialog, handleCloseDialog, onAddDiscount, initi
             fullWidth
             name="publishDay"
             label="Publish Day"
-            type="date"
+            type="datetime-local"
             InputLabelProps={{
               shrink: true,
             }}
@@ -69,7 +69,7 @@ const AddDiscountDialog = ({ openDialog, handleCloseDialog, onAddDiscount, initi
             fullWidth
             name="expiredDay"
             label="Expired Day"
-            type="date"
+            type="datetime-local"
             InputLabelProps={{
               shrink: true,
             }}
