@@ -20,9 +20,8 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { updateDiscount, deleteDiscount } from '../../Configs/axios';
-import { Discount } from '@mui/icons-material';
-import UpdateDiscountDialog from './UpdateDiscountDialog'
+import { updateDiscount } from '../../Configs/axios';
+import UpdateDiscountDialog from './UpdateDiscountDialog';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -111,8 +110,9 @@ const DiscountTable = ({ discounts, reload }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleUpdateDiscount = (discount) => {
+    // Set the edit data to the discount selected
+    setEditData(discount);
     setOpenDialog(true);
-    setEditData({ ...initialFormData, ...discount});
   };
 
   const handleCloseDialog = () => {
@@ -121,7 +121,7 @@ const DiscountTable = ({ discounts, reload }) => {
   };
 
   const handleEditDiscount = async (formData) => {
-    const requiredFields = ['name', 'type', 'price', 'rate'];
+    const requiredFields = ['discountId', 'expiredDay', 'publishDay', 'cost'];
     const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
 
     if (!isFormValid) {
@@ -164,7 +164,7 @@ const DiscountTable = ({ discounts, reload }) => {
       <UpdateDiscountDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        onUdateDiscount={handleEditDiscount}
+        onUpdateDiscount={handleEditDiscount}
         formData={editData}
         setFormData={setEditData}
       />
@@ -174,7 +174,7 @@ const DiscountTable = ({ discounts, reload }) => {
         onClose={() => setOpenSnackbar(false)}
         message={snackbarMessage}
       >
-        <Alert onClose={() => setOpenSnackbar(false)} severity="warning" sx={{ width: '100%' }}>
+        <Alert onClose={() => setOpenSnackbar(false)} severity={snackbarMessage.includes('Error') ? 'error' : 'success'} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -188,6 +188,7 @@ const DiscountTable = ({ discounts, reload }) => {
               <TableCell align="right">Publish Day</TableCell>
               <TableCell align="right">Amount</TableCell>
               <TableCell align="right">Cost</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -200,18 +201,18 @@ const DiscountTable = ({ discounts, reload }) => {
                 <TableCell align="right">{discount.amount}</TableCell>
                 <TableCell align="right">{discount.cost}</TableCell>
                 <TableCell align="right">
-                  <Button onClick={() => handleUpdateDiscount(Discount)}>Edit</Button>
+                  <Button onClick={() => handleUpdateDiscount(discount)}>Edit</Button>
                 </TableCell>
               </TableRow>
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
+                <TableCell colSpan={7} />
               </TableRow>
             )}
             {discountList.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} align="center">
+                <TableCell colSpan={7} align="center">
                   No discounts found.
                 </TableCell>
               </TableRow>
