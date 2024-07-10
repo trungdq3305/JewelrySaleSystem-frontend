@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -20,7 +20,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { updateDiscount } from '../../Configs/axios';
+import { updateDiscount, deleteDiscount } from '../../Configs/axios';
 import UpdateDiscountDialog from './UpdateDiscountDialog';
 
 function TablePaginationActions(props) {
@@ -108,16 +108,34 @@ const DiscountTable = ({ discounts, reload }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editData, setEditData] = useState(initialFormData);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [discountList, setDiscountList] = useState(discounts);
+  const snackbarMessageRef = useRef(''); 
+
+  useEffect(() => {
+    setDiscountList(discounts);
+  }, [discounts]);
+
+  const handleDelete = async (discountId) => {
+    try {
+      await deleteDiscount(discountId);
+      setDiscountList(discountList.filter(discount => discount.discountId !== discountId));
+      setSnackbarMessage(`Discount ${discountId} deleted successfully`);
+      setOpenSnackbar(true);
+    } catch (error) {
+      setSnackbarMessage('Error deleting discount.');
+      setOpenSnackbar(true);
+      console.error('Error deleting discount:', error);
+    }
+  };
 
   const handleUpdateDiscount = (discount) => {
-    // Set the edit data to the discount selected
     setEditData(discount);
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setEditData(initialFormData); 
+    setEditData(initialFormData);
   };
 
   const handleEditDiscount = async (formData) => {
@@ -131,15 +149,13 @@ const DiscountTable = ({ discounts, reload }) => {
     }
 
     try {
-      await updateDiscount(formData); 
-      setSnackbarMessage('Discount updated successfully!');
-      setOpenSnackbar(true);
-      handleCloseDialog();
-      reload();
+      await updateDiscount(formData);
+      if(formData === undefined){setDiscountList(discountList.map(discount => discount.discountId === formData.discountId ? formData : discount));}
     } catch (error) {
-      console.error('Error updating discount:', error);
-      setSnackbarMessage('Error updating discount.');
       setOpenSnackbar(true);
+      console.error('Error updating discount:', error);
+    } finally {
+      handleCloseDialog();
     }
   };
 
@@ -152,8 +168,6 @@ const DiscountTable = ({ discounts, reload }) => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-
-  const discountList = Array.isArray(discounts) && discounts.length > 0 ? discounts : [];
 
   const emptyRows = rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - discountList.length) : 0;
 
@@ -171,10 +185,22 @@ const DiscountTable = ({ discounts, reload }) => {
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-        message={snackbarMessage}
+        onClose={() => {
+          setOpenSnackbar(false);
+          setSnackbarMessage('');
+          snackbarMessageRef.current = ''; 
+        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert onClose={() => setOpenSnackbar(false)} severity={snackbarMessage.includes('Error') ? 'error' : 'success'} sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => {
+            setOpenSnackbar(false);
+            setSnackbarMessage('');
+            snackbarMessageRef.current = ''; 
+          }}
+          severity={snackbarMessage.includes('Error') ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -202,6 +228,7 @@ const DiscountTable = ({ discounts, reload }) => {
                 <TableCell align="right">{discount.cost}</TableCell>
                 <TableCell align="right">
                   <Button onClick={() => handleUpdateDiscount(discount)}>Edit</Button>
+                  <Button onClick={() => handleDelete(discount.discountId)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}
