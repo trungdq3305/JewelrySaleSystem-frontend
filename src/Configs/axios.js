@@ -125,8 +125,6 @@ export const getAllVouchers = async () => {
 export const addVoucher = async (formData) => {
   try {
     const data = await axios.post(api + '/voucher/createvoucher', formData)
-export const addGem = async (formData) => {
-    console.log(data)
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error massage: ', error.message)
@@ -221,15 +219,6 @@ export const getAllGem = async () => {
       console.log('Unexpected error: ', error)
       return 'An unexpected error has occired'
     }
-  }
-}
-export const addGem = async (formData) => {
-  try {
-    const data = await axios.post(api + '/gem/creategem', formData)
-    console.log(data)
-  } catch (error) {
-    console.error('Error adding new gem:', error.response)
-    throw error
   }
 }
 
