@@ -100,11 +100,7 @@ TablePaginationActions.propTypes = {
 
 const initialFormData = {
   fullName: '',
-  doB: {
-    year: '',
-    month: '',
-    day: '',
-  },
+  doB: '',
   address: '',
   email: '',
   phone: '',

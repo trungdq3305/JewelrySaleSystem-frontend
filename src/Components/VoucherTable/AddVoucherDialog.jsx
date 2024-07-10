@@ -1,58 +1,28 @@
 import { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, FormControlLabel, Checkbox, Button, Paper, Snackbar, Alert } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Paper, Snackbar, Alert } from '@mui/material';
 
 const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initialFormData }) => {
   const [formData, setFormData] = useState(initialFormData);
-  const [propChecks, setPropChecks] = useState({
-    isExpired: false,
-  });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    const [mainKey, subKey] = name.split('.');
 
-    if (subKey) {
+    if (name === 'expiredDay' || name === 'publishedDay') {
+      const date = new Date(value);
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [mainKey]: {
-          ...prevFormData[mainKey],
-          [subKey]: value,
+        [name]: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
         },
       }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
-      }));
-    }
-  };
-
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setPropChecks((prevChecks) => ({
-      ...prevChecks,
-      [name]: checked,
-    }));
-
-    if (checked) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        expiredDay: {
-          year: '',
-          month: '',
-          day: '',
-        },
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        expiredDay: {
-          year: 0,
-          month: 0,
-          day: 0,
-        },
       }));
     }
   };
@@ -72,9 +42,6 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
 
     onAddVoucher(formData);
     setFormData(initialFormData); // Reset the form
-    setPropChecks({
-      isExpired: false,
-    });
   };
 
   const handleSnackbarClose = () => {
@@ -111,30 +78,11 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
               margin="normal"
               required
               fullWidth
-              name="expiredDay.year"
-              label="Year"
-              type="number"
-              value={formData.expiredDay.year}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="expiredDay.month"
-              label="Month"
-              type="number"
-              value={formData.expiredDay.month}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="expiredDay.day"
-              label="Day"
-              type="number"
-              value={formData.expiredDay.day}
+              name="expiredDay"
+              label="Expired Date"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={`${formData.expiredDay.year}-${String(formData.expiredDay.month).padStart(2, '0')}-${String(formData.expiredDay.day).padStart(2, '0')}T00:00`}
               onChange={handleChange}
             />
             <div>Published Day</div>
@@ -142,34 +90,13 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
               margin="normal"
               required
               fullWidth
-              name="publishedDay.year"
-              label="Year"
-              type="number"
-              value={formData.publishedDay.year}
+              name="publishedDay"
+              label="Published Date"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={`${formData.publishedDay.year}-${String(formData.publishedDay.month).padStart(2, '0')}-${String(formData.publishedDay.day).padStart(2, '0')}T00:00`}
               onChange={handleChange}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="publishedDay.month"
-              label="Month"
-              type="number"
-              value={formData.publishedDay.month}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="publishedDay.day"
-              label="Day"
-              type="number"
-              value={formData.publishedDay.day}
-              onChange={handleChange}
-            />
-            
-            
           </Paper>
         </DialogContent>
         <DialogActions>

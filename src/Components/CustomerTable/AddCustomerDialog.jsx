@@ -9,30 +9,16 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    const [mainKey, subKey] = name.split('.');
 
-    if (subKey) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [mainKey]: {
-          ...prevFormData[mainKey],
-          [subKey]: value,
-        },
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleAddCustomer = () => {
-    const requiredFields = ['fullName', 'doB.year', 'doB.month', 'doB.day', 'address', 'email', 'phone'];
-    const isFormValid = requiredFields.every(field => {
-      const [mainKey, subKey] = field.split('.');
-      return subKey ? formData[mainKey] && formData[mainKey][subKey] : formData[mainKey];
-    });
+    const requiredFields = ['fullName', 'doB', 'address', 'email', 'phone'];
+    const isFormValid = requiredFields.every(field => formData[field]);
 
     if (!isFormValid) {
       setSnackbarMessage('Please fill in all required fields.');
@@ -40,16 +26,8 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
       return;
     }
 
-    // Combine year, month, and day into a single ISO date string
-    const { year, month, day } = formData.doB;
-    const doB = moment.utc({ year, month: month - 1, day }).toISOString();
-
     const formattedFormData = {
-      fullName: formData.fullName,
-      doB,
-      address: formData.address,
-      email: formData.email,
-      phone: formData.phone,
+      ...formData,
       status: true, // Automatically set status to true
     };
 
@@ -76,35 +54,15 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
               value={formData.fullName}
               onChange={handleChange}
             />
-            <div>Date of Birth</div>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="doB.year"
-              label="Year"
-              type="number"
-              value={formData.doB.year}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="doB.month"
-              label="Month"
-              type="number"
-              value={formData.doB.month}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="doB.day"
-              label="Day"
-              type="number"
-              value={formData.doB.day}
+              name="doB"
+              label="Date of Birth"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formData.doB}
               onChange={handleChange}
             />
             <TextField
@@ -132,15 +90,6 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
               name="phone"
               label="Phone"
               value={formData.phone}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="status"
-              label="Status"
-              value={formData.status}
               onChange={handleChange}
             />
           </Paper>
