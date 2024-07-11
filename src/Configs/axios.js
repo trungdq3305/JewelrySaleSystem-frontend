@@ -125,11 +125,12 @@ export const getAllVouchers = async () => {
 export const addVoucher = async (formData) => {
   try {
     const data = await axios.post(api + '/voucher/createvoucher', formData)
+    alert('\nAdd voucher succesfully')
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error massage: ', error.message)
       alert(
-        '\nPLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY \nCOST > 100000'
+        '\nPlease enter exist User ID\nPublished Day < Expired Day \nCost > 100000'
       )
       return error.message
     } else {
@@ -143,6 +144,7 @@ export const addVoucher = async (formData) => {
 export const editVoucher = async (formData) => {
   try {
     const response = await axios.put(api + '/voucher/updatedvoucher', formData)
+    alert('\nEdit voucher succesfully')
     return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -160,6 +162,7 @@ export const deleteVoucher = async (voucherId) => {
     const response = await axios.delete(
       api + `/voucher/deletevoucher?VoucherId=${voucherId}`
     )
+    alert('\nDelete voucher succesfully')
     return response.data
   } catch (error) {
     console.error(error)
@@ -347,7 +350,7 @@ export const getAllCustomers = async () => {
 export const addCustomer = async (formData) => {
   try {
     const data = await axios.post(api + '/customers/create-customer', formData)
-
+    alert('\nAdd customer succesfully')
     console.log(data)
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -368,6 +371,7 @@ export const editCustomer = async (formData) => {
       api + '/customers/customer-update',
       formData
     )
+    alert('\nEdit customer succesfully')
     return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -387,6 +391,7 @@ export const updateCustomerStatus = async (customerId) => {
       // Assuming your API expects a 'status' field for updating
     }
   )
+  alert('\nUpdate status succesfully')
   return response.data // Return response data if needed
 }
 
