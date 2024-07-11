@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, TablePagination, Snackbar } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Box,
+  TablePagination,
+  Snackbar,
+  Alert
+} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { updateGem } from '../../Configs/axios';
-import UpdateGemDialog from './UpdateGemDialog';
+import { updateDiscount, deleteDiscount } from '../../Configs/axios';
+import UpdateDiscountDialog from './UpdateDiscountDialog';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -80,34 +93,53 @@ TablePaginationActions.propTypes = {
 };
 
 const initialFormData = {
-  gemId: '',
-  name: '',
-  type: 0,
-  price: 0,
-  desc: '',
-  rate: 0,
+  discountId: '',
+  createdBy: '',
+  expiredDay: '',
+  publishDay: '',
+  amount: 0,
+  cost: 0,
 };
 
-const GemTable = ({ gems, reload }) => {
+const DiscountTable = ({ discounts, reload }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [editData, setEditData] = useState(initialFormData);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [discountList, setDiscountList] = useState(discounts);
+  const snackbarMessageRef = useRef(''); 
 
-  const handleUpdateGem = (gem) => {
+  useEffect(() => {
+    setDiscountList(discounts);
+  }, [discounts]);
+
+  const handleDelete = async (discountId) => {
+    try {
+      await deleteDiscount(discountId);
+      setDiscountList(discountList.filter(discount => discount.discountId !== discountId));
+      setSnackbarMessage(`Discount ${discountId} deleted successfully`);
+      setOpenSnackbar(true);
+    } catch (error) {
+      setSnackbarMessage('Error deleting discount.');
+      setOpenSnackbar(true);
+      console.error('Error deleting discount:', error);
+    }
+  };
+
+  const handleUpdateDiscount = (discount) => {
+    setEditData(discount);
     setOpenDialog(true);
-    setEditData({ ...initialFormData, ...gem });
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setEditData(initialFormData); 
+    setEditData(initialFormData);
   };
 
-  const handleEditGem = async (formData) => {
-    const requiredFields = ['name', 'type', 'price', 'rate'];
+  const handleEditDiscount = async (formData) => {
+    const requiredFields = ['discountId', 'expiredDay', 'publishDay', 'cost'];
     const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
 
     if (!isFormValid) {
@@ -117,15 +149,14 @@ const GemTable = ({ gems, reload }) => {
     }
 
     try {
-      await updateGem(formData); 
-      setSnackbarMessage('Gem updated successfully!');
-      setOpenSnackbar(true);
-      handleCloseDialog();
-      reload();
+      await updateDiscount(formData);
+      if(formData !== undefined){setDiscountList(discountList.map(discount => discount.discountId === formData.discountId ? formData : discount));}
+ 
     } catch (error) {
-      console.error('Error updating gem:', error);
-      setSnackbarMessage('Error updating gem.');
       setOpenSnackbar(true);
+      console.error('Error updating discount:', error);
+    } finally {
+      handleCloseDialog();
     }
   };
 
@@ -139,51 +170,66 @@ const GemTable = ({ gems, reload }) => {
     setPage(0);
   };
 
-  const gemList = Array.isArray(gems) && gems.length > 0 ? gems : [];
+  const emptyRows = rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - discountList.length) : 0;
 
-  const emptyRows = rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - gemList.length) : 0;
-
-  const displayRows = rowsPerPage > 0 ? gemList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : gemList;
+  const displayRows = rowsPerPage > 0 ? discountList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : discountList;
 
   return (
     <>
-      <UpdateGemDialog
+      <UpdateDiscountDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        onUpdateGem={handleEditGem}
+        onUpdateDiscount={handleEditDiscount}
         formData={editData}
         setFormData={setEditData}
       />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-        message={snackbarMessage}
-      />
+        onClose={() => {
+          setOpenSnackbar(false);
+          setSnackbarMessage('');
+          snackbarMessageRef.current = ''; 
+        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={() => {
+            setOpenSnackbar(false);
+            setSnackbarMessage('');
+            snackbarMessageRef.current = ''; 
+          }}
+          severity={snackbarMessage.includes('Error') ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Type</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Desc</TableCell>
-              <TableCell align="right">Rate</TableCell>
-              <TableCell align="right">Options</TableCell>
+              <TableCell>Discount ID</TableCell>
+              <TableCell align="right">Created By</TableCell>
+              <TableCell align="right">Expired Day</TableCell>
+              <TableCell align="right">Publish Day</TableCell>
+              <TableCell align="right">Amount</TableCell>
+              <TableCell align="right">Cost</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {displayRows.map((gem) => (
-              <TableRow key={gem.gemId}>
-                <TableCell>{gem.gemId}</TableCell>
-                <TableCell align="right">{gem.name}</TableCell>
-                <TableCell align="right">{gem.type}</TableCell>
-                <TableCell align="right">{gem.price}</TableCell>
-                <TableCell align="right">{gem.desc}</TableCell>
-                <TableCell align="right">{gem.rate}</TableCell>
+            {displayRows.map((discount) => (
+              <TableRow key={discount.discountId}>
+                <TableCell>{discount.discountId}</TableCell>
+                <TableCell align="right">{discount.createdBy}</TableCell>
+                <TableCell align="right">{discount.expiredDay}</TableCell>
+                <TableCell align="right">{discount.publishDay}</TableCell>
+                <TableCell align="right">{discount.amount}</TableCell>
+                <TableCell align="right">{discount.cost}</TableCell>
                 <TableCell align="right">
-                  <Button onClick={() => handleUpdateGem(gem)}>Edit</Button>
+                  <Button onClick={() => handleUpdateDiscount(discount)}>Edit</Button>
+                  <Button onClick={() => handleDelete(discount.discountId)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -192,10 +238,10 @@ const GemTable = ({ gems, reload }) => {
                 <TableCell colSpan={7} />
               </TableRow>
             )}
-            {gemList.length === 0 && (
+            {discountList.length === 0 && (
               <TableRow>
                 <TableCell colSpan={7} align="center">
-                  No gems found.
+                  No discounts found.
                 </TableCell>
               </TableRow>
             )}
@@ -205,7 +251,7 @@ const GemTable = ({ gems, reload }) => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
         component="div"
-        count={gemList.length}
+        count={discountList.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -216,9 +262,9 @@ const GemTable = ({ gems, reload }) => {
   );
 };
 
-GemTable.propTypes = {
-  gems: PropTypes.array.isRequired,
+DiscountTable.propTypes = {
+  discounts: PropTypes.array.isRequired,
   reload: PropTypes.func.isRequired,
 };
 
-export default GemTable;
+export default DiscountTable;

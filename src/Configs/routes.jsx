@@ -13,6 +13,7 @@ import ManageGem from '../Page/ManageGem'
 import ManageProducts from '../Page/ManageProducts'
 import ManageUsers from '../Page/ManageUsers.jsx'
 import ManageCustomer from '../Page/ManageCustomer.jsx'
+import ManageDiscount from '../Page/ManageDiscount'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -107,6 +108,22 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <ManageCustomer />
+          </ProtectedRoutes>
+        ),
+      },
+       {
+        path: 'ManagerHomePage/ManageDiscount',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <ManageDiscount />
+
+
+
+
+
+
+
+
           </ProtectedRoutes>
         ),
       },
