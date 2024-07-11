@@ -7,34 +7,27 @@ const EditVoucherDialog = ({ openDialog, handleCloseDialog, onEditVoucher, formD
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    const [mainKey, subKey] = name.split('.');
 
-    const isNumericField = ['cost'].includes(name);
-
-    if (isNumericField && value !== '' && isNaN(value)) {
-      return;
-    }
-
-    const parsedValue = isNumericField ? parseInt(value, 10) : value;
-
-    if (subKey) {
+    if (name === 'expiredDay' || name === 'publishedDay') {
+      const date = new Date(value);
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [mainKey]: {
-          ...prevFormData[mainKey],
-          [subKey]: parsedValue
-        }
+        [name]: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+        },
       }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: parsedValue
+        [name]: value,
       }));
     }
   };
 
   const handleEditVoucher = () => {
-    const requiredFields = ['createdBy', 'expiredDay.year', 'expiredDay.month', 'expiredDay.day', 'publishedDay.year', 'publishedDay.month', 'publishedDay.day', 'cost', 'customerCustomerId'];
+    const requiredFields = ['createdBy', 'expiredDay.year', 'expiredDay.month', 'expiredDay.day', 'cost', 'customerCustomerId'];
     const isFormValid = requiredFields.every(field => {
       const [mainKey, subKey] = field.split('.');
       return subKey ? formData[mainKey] && formData[mainKey][subKey] : formData[mainKey];
@@ -53,6 +46,14 @@ const EditVoucherDialog = ({ openDialog, handleCloseDialog, onEditVoucher, formD
     setSnackbarOpen(false);
   };
 
+  const formatDateString = (date) => {
+    if (!date) return '';
+    const year = date.year || 0;
+    const month = String(date.month || 0).padStart(2, '0');
+    const day = String(date.day || 0).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -68,78 +69,19 @@ const EditVoucherDialog = ({ openDialog, handleCloseDialog, onEditVoucher, formD
               value={formData.createdBy}
               onChange={handleChange}
             />
-            <TextField
-              margin="normal"
-              label="Expired Day"
-              value={formData.expiredDay}
-              disabled
-            />
+            
             <TextField
               margin="normal"
               required
               fullWidth
-              name="expiredDay.year"
-              label="Expired Year"
-              type="number"
-              value={formData.expiredDay.year}
+              name="expiredDay"
+              label="Expired Date"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formatDateString(formData.expiredDay)}
               onChange={handleChange}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="expiredDay.month"
-              label="Expired Month"
-              type="number"
-              value={formData.expiredDay.month}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="expiredDay.day"
-              label="Expired Day"
-              type="number"
-              value={formData.expiredDay.day}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              label="Published Day"
-              value={formData.publishedDay}
-              disabled
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="publishedDay.year"
-              label="Published Year"
-              type="number"
-              value={formData.publishedDay.year}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="publishedDay.month"
-              label="Published Month"
-              type="number"
-              value={formData.publishedDay.month}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="publishedDay.day"
-              label="Published Day"
-              type="number"
-              value={formData.publishedDay.day}
-              onChange={handleChange}
-            />
+            
             <TextField
               margin="normal"
               required

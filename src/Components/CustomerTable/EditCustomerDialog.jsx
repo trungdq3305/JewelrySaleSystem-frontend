@@ -109,37 +109,35 @@ const EditCustomerDialog = ({
               value={formData.fullName}
               onChange={handleChange}
             />
-            <div>Date of Birth</div>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="doB.year"
-              label="Year"
-              type="number"
-              value={formData.doB.year}
-              onChange={handleChange}
+              label="Date of Birth"
+              type="date"
+              value={`${formData.doB.year}-${(formData.doB.month || '').toString().padStart(2, '0')}-${(formData.doB.day || '').toString().padStart(2, '0')}`}
+              onChange={(e) => {
+                const dateValue = e.target.value; // Format: yyyy-MM-dd
+                const year = dateValue.substring(0, 4);
+                const month = dateValue.substring(5, 7);
+                const day = dateValue.substring(8, 10);
+
+                handleChange({
+                  target: {
+                    name: 'doB',
+                    value: {
+                      year: year,
+                      month: month,
+                      day: day
+                    }
+                  }
+                });
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="doB.month"
-              label="Month"
-              type="number"
-              value={formData.doB.month}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="doB.day"
-              label="Day"
-              type="number"
-              value={formData.doB.day}
-              onChange={handleChange}
-            />
+
             <TextField
               margin="normal"
               required

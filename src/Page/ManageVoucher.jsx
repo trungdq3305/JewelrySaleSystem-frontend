@@ -119,7 +119,7 @@ const ManageVoucher = () => {
       month: '',
       day: '',
     },
-    cost: 0,
+    cost: '',
     customerCustomerId: '',
   };
 
