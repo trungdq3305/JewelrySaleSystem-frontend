@@ -1,73 +1,105 @@
-import { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Paper, Snackbar, Alert } from '@mui/material';
+import { useState } from 'react'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Button,
+  Paper,
+  Snackbar,
+  Alert,
+} from '@mui/material'
 
-const EditCustomerDialog = ({ openDialog, handleCloseDialog, onEditCustomer, formData, setFormData }) => {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+const EditCustomerDialog = ({
+  openDialog,
+  handleCloseDialog,
+  onEditCustomer,
+  formData,
+  setFormData,
+}) => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    const [mainKey, subKey] = name.split('.');
+    const { name, value } = event.target
+    const [mainKey, subKey] = name.split('.')
 
-    const isNumericField = ['cost'].includes(name);
+    const isNumericField = ['cost'].includes(name)
 
     if (isNumericField && value !== '' && isNaN(value)) {
-      return;
+      return
     }
 
-    const parsedValue = isNumericField ? parseInt(value, 10) : value;
+    const parsedValue = isNumericField ? parseInt(value, 10) : value
 
     if (subKey) {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [mainKey]: {
           ...prevFormData[mainKey],
-          [subKey]: parsedValue
-        }
-      }));
+          [subKey]: parsedValue,
+        },
+      }))
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: parsedValue
-      }));
+        [name]: parsedValue,
+      }))
     }
-  };
+  }
 
   const handleEditCustomer = () => {
-    const requiredFields = ['fullName', 'doB.year', 'doB.month', 'doB.day', 'address', 'email', 'phone', 'point', 'rate'];
-    const isFormValid = requiredFields.every(field => {
-      const [mainKey, subKey] = field.split('.');
-      return subKey ? formData[mainKey] && formData[mainKey][subKey] : formData[mainKey];
-    });
+    const requiredFields = [
+      'fullName',
+      'doB.year',
+      'doB.month',
+      'doB.day',
+      'address',
+      'email',
+      'phone',
+      'point',
+      'rate',
+    ]
+    const isFormValid = requiredFields.every((field) => {
+      const [mainKey, subKey] = field.split('.')
+      return subKey
+        ? formData[mainKey] && formData[mainKey][subKey]
+        : formData[mainKey]
+    })
 
     if (!isFormValid) {
-      setSnackbarMessage('Please fill in all required fields.');
-      setSnackbarOpen(true);
-      return;
+      setSnackbarMessage('Please fill in all required fields.')
+      setSnackbarOpen(true)
+      return
     }
 
     // Format the date of birth to ISO 8601 format
-    const year = formData.doB.year;
-    const month = formData.doB.month - 1; // Months are 0-indexed in JS Date
-    const day = formData.doB.day;
-    const formattedDOB = new Date(Date.UTC(year, month, day)).toISOString();
+    const year = formData.doB.year
+    const month = formData.doB.month - 1 // Months are 0-indexed in JS Date
+    const day = formData.doB.day
+    const formattedDOB = new Date(Date.UTC(year, month, day)).toISOString()
 
     // Create a new form data object with formatted DOB
-    const updatedFormData = { ...formData, doB: formattedDOB };
+    const updatedFormData = { ...formData, doB: formattedDOB }
     console.log(updatedFormData)
-    onEditCustomer(updatedFormData);
-  };
+    onEditCustomer(updatedFormData)
+  }
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
+    setSnackbarOpen(false)
+  }
 
   return (
     <>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Edit Customer</DialogTitle>
         <DialogContent>
-          <Paper variant="outlined" component="form" sx={{ margin: 2, padding: 2 }}>
+          <Paper
+            variant="outlined"
+            component="form"
+            sx={{ margin: 2, padding: 2 }}
+          >
             <TextField
               margin="normal"
               required
@@ -165,12 +197,16 @@ const EditCustomerDialog = ({ openDialog, handleCloseDialog, onEditCustomer, for
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="warning"
+          sx={{ width: '100%' }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </>
-  );
-};
+  )
+}
 
-export default EditCustomerDialog;
+export default EditCustomerDialog

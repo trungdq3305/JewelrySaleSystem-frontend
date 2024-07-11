@@ -135,7 +135,8 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
     setOpenDialog(false)
   }
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customers.length) : 0
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customers.length) : 0
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -224,7 +225,10 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
           </TableHead>
           <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
             {(rowsPerPage > 0
-              ? customerList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ? customerList.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
               : customerList
             ).map((customer) => (
               <TableRow key={customer.customerId}>
@@ -257,7 +261,9 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   <Button onClick={() => handleEdit(customer)}>Edit</Button>
-                  <Button onClick={() => handleChangeStatus(customer.customerId)}>
+                  <Button
+                    onClick={() => handleChangeStatus(customer.customerId)}
+                  >
                     Change Status
                   </Button>
                   <Button onClick={() => handleShowBills(customer)}>Show Bills</Button>

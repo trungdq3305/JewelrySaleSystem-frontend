@@ -9,9 +9,11 @@ import ManagerHomePage from '../Page/ManagerHomePage'
 import ProductDetailPage from '../Page/ProductDetailPage'
 import BillPage from '../Page/BillPage'
 import ManageVoucher from '../Page/ManageVoucher'
+import ManageGem from '../Page/ManageGem'
 import ManageProducts from '../Page/ManageProducts'
 import ManageUsers from '../Page/ManageUsers.jsx'
 import ManageCustomer from '../Page/ManageCustomer.jsx'
+import ManageDiscount from '../Page/ManageDiscount'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -86,6 +88,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'ManagerHomePage/ManageGem',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <ManageGem />
+          </ProtectedRoutes>
+        ),
+      },
+       {
         path: 'ManagerHomePage/ManageVoucher',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
@@ -98,6 +108,22 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <ManageCustomer />
+          </ProtectedRoutes>
+        ),
+      },
+       {
+        path: 'ManagerHomePage/ManageDiscount',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <ManageDiscount />
+
+
+
+
+
+
+
+
           </ProtectedRoutes>
         ),
       },
