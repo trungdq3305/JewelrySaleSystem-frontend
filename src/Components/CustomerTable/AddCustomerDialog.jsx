@@ -1,15 +1,30 @@
-import { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Paper, Snackbar, Alert } from '@mui/material';
-import moment from 'moment';
+import { useState } from 'react'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Button,
+  Paper,
+  Snackbar,
+  Alert,
+} from '@mui/material'
+import moment from 'moment'
 
-const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initialFormData }) => {
-  const [formData, setFormData] = useState(initialFormData);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+const AddCustomerDialog = ({
+  openDialog,
+  handleCloseDialog,
+  onAddCustomer,
+  initialFormData,
+}) => {
+  const [formData, setFormData] = useState(initialFormData)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    const [mainKey, subKey] = name.split('.');
+    const { name, value } = event.target
+    const [mainKey, subKey] = name.split('.')
 
     if (subKey) {
       setFormData((prevFormData) => ({
@@ -18,31 +33,41 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
           ...prevFormData[mainKey],
           [subKey]: value,
         },
-      }));
+      }))
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
-      }));
+      }))
     }
-  };
+  }
 
   const handleAddCustomer = () => {
-    const requiredFields = ['fullName', 'doB.year', 'doB.month', 'doB.day', 'address', 'email', 'phone'];
-    const isFormValid = requiredFields.every(field => {
-      const [mainKey, subKey] = field.split('.');
-      return subKey ? formData[mainKey] && formData[mainKey][subKey] : formData[mainKey];
-    });
+    const requiredFields = [
+      'fullName',
+      'doB.year',
+      'doB.month',
+      'doB.day',
+      'address',
+      'email',
+      'phone',
+    ]
+    const isFormValid = requiredFields.every((field) => {
+      const [mainKey, subKey] = field.split('.')
+      return subKey
+        ? formData[mainKey] && formData[mainKey][subKey]
+        : formData[mainKey]
+    })
 
     if (!isFormValid) {
-      setSnackbarMessage('Please fill in all required fields.');
-      setSnackbarOpen(true);
-      return;
+      setSnackbarMessage('Please fill in all required fields.')
+      setSnackbarOpen(true)
+      return
     }
 
     // Combine year, month, and day into a single ISO date string
-    const { year, month, day } = formData.doB;
-    const doB = moment.utc({ year, month: month - 1, day }).toISOString();
+    const { year, month, day } = formData.doB
+    const doB = moment.utc({ year, month: month - 1, day }).toISOString()
 
     const formattedFormData = {
       fullName: formData.fullName,
@@ -51,22 +76,26 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
       email: formData.email,
       phone: formData.phone,
       status: true, // Automatically set status to true
-    };
+    }
 
-    onAddCustomer(formattedFormData);
-    setFormData(initialFormData); // Reset the form
-  };
+    onAddCustomer(formattedFormData)
+    setFormData(initialFormData) // Reset the form
+  }
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
+    setSnackbarOpen(false)
+  }
 
   return (
     <>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Add Customer</DialogTitle>
         <DialogContent>
-          <Paper variant="outlined" component="form" sx={{ margin: 2, padding: 2 }}>
+          <Paper
+            variant="outlined"
+            component="form"
+            sx={{ margin: 2, padding: 2 }}
+          >
             <TextField
               margin="normal"
               required
@@ -157,12 +186,16 @@ const AddCustomerDialog = ({ openDialog, handleCloseDialog, onAddCustomer, initi
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="warning"
+          sx={{ width: '100%' }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </>
-  );
-};
+  )
+}
 
-export default AddCustomerDialog;
+export default AddCustomerDialog

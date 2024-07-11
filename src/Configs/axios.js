@@ -409,3 +409,19 @@ export const getCustomerByPhone = async (phone) => {
     throw new Error('Error fetching customer by phone: ' + error.message)
   }
 }
+
+export const createBill = async (formData) => {
+  try {
+    const data = await axios.post(api + '/bill/create-bill', formData)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+
+      return 'An unexpected error has occired'
+    }
+  }
+}
