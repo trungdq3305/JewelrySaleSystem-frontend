@@ -48,6 +48,14 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
     setSnackbarOpen(false);
   };
 
+  const formatDateString = (date) => {
+    if (!date) return '';
+    const year = date.year || 0;
+    const month = String(date.month || 0).padStart(2, '0');
+    const day = String(date.day || 0).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -82,7 +90,7 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
               label="Expired Date"
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={`${formData.expiredDay.year}-${String(formData.expiredDay.month).padStart(2, '0')}-${String(formData.expiredDay.day).padStart(2, '0')}T00:00`}
+              value={formatDateString(formData.expiredDay)}
               onChange={handleChange}
             />
             <div>Published Day</div>
@@ -94,7 +102,7 @@ const AddVoucherDialog = ({ openDialog, handleCloseDialog, onAddVoucher, initial
               label="Published Date"
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={`${formData.publishedDay.year}-${String(formData.publishedDay.month).padStart(2, '0')}-${String(formData.publishedDay.day).padStart(2, '0')}T00:00`}
+              value={formatDateString(formData.publishedDay)}
               onChange={handleChange}
             />
           </Paper>

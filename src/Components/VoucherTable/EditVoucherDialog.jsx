@@ -78,7 +78,7 @@ const EditVoucherDialog = ({ openDialog, handleCloseDialog, onEditVoucher, formD
               label="Expired Date"
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={formData.expiredDay}
+              value={formatDateString(formData.expiredDay)}
               onChange={handleChange}
             />
             
