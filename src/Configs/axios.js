@@ -128,7 +128,9 @@ export const addVoucher = async (formData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error massage: ', error.message)
-      alert('\nPLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY \nCOST > 100000')
+      alert(
+        '\nPLEASE ENTER EXISTED USERID\nPUBLISH DAY < EXPIRED DAY \nCOST > 100000'
+      )
       return error.message
     } else {
       console.log('Unexpected error: ', error)
@@ -426,27 +428,27 @@ export const createBill = async (formData) => {
     }
   }
 }
-export { getGems };
 
 export const updateDiscount = async (formData) => {
   try {
-    const response = await axios.put(api + '/discount/update-discount', formData);
+    const response = await axios.put(
+      api + '/discount/update-discount',
+      formData
+    )
     if (response.status !== 200) {
-      throw new Error(`Error: ${response.status}`);
+      throw new Error(`Error: ${response.status}`)
     }
-    return response.data;
+    return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error message:', error.message);
-      throw new Error(error.message); // Re-throw the error for the caller to handle
+      console.log('error message:', error.message)
+      throw new Error(error.message) // Re-throw the error for the caller to handle
     } else {
-      console.log('Unexpected error:', error);
-      throw new Error('An unexpected error has occurred'); // Re-throw the error for the caller to handle
+      console.log('Unexpected error:', error)
+      throw new Error('An unexpected error has occurred') // Re-throw the error for the caller to handle
     }
   }
 }
-
-
 
 export const addDiscount = async (formData) => {
   try {
@@ -467,14 +469,16 @@ export const addDiscount = async (formData) => {
 
 const getDiscount = async (params) => {
   try {
-    const response = await axios.get(api + '/discount/view-discount', { params });
-    return response.data;
+    const response = await axios.get(api + '/discount/view-discount', {
+      params,
+    })
+    return response.data
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
+    return []
   }
 }
-export { getDiscount };
+export { getDiscount }
 export const deleteDiscount = async (discountid) => {
   try {
     const response = await axios.delete(
