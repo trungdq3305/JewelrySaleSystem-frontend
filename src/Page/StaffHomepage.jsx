@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header/Header'
 import Sidebar from '../Components/Sidebar/Sidebar'
-import { getAllGem, getAllProducts } from '../Configs/axios'
+import { getAllGem, getAllProducts, getAllProductsv2 } from '../Configs/axios'
 import Pagination from '@mui/material/Pagination'
 
 import ProductList from '../Components/ProductList/ProductList'
@@ -21,12 +21,12 @@ const StaffHomepage = () => {
   const [searchQuery, setSearchQuery] = useState('')
 
   const loadProducts = async () => {
-    const result = await getAllProducts('', '', filteredProducts, '')
+    const result = await getAllProductsv2('', '', filteredProducts, '')
     if (result !== null) {
-      setProducts(result.data)
+      setProducts(result.data.data)
     }
 
-    console.log(result.data)
+    console.log(result.data.data)
   }
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
@@ -37,7 +37,7 @@ const StaffHomepage = () => {
 
   const addProduct = async (e) => {
     e.preventDefault()
-    const card = await getAllProducts(e.target[0].value, '', '', '')
+    const card = await getAllProductsv2(e.target[0].value, '', '', '')
     const newProduct = card.data.data[0]
     var getOldData = JSON.parse(sessionStorage.getItem('cardValues'))
     if (getOldData == null || getOldData.length == 0) {
@@ -134,7 +134,7 @@ const StaffHomepage = () => {
     }
   }
   const increase = async (id) => {
-    const card = await getAllProducts(id, '', '', '')
+    const card = await getAllProductsv2(id, '', '', '')
     const newProduct = card.data.data[0]
     var getOldData = JSON.parse(sessionStorage.getItem('cardValues'))
     getOldData.forEach((element) => {
@@ -146,7 +146,7 @@ const StaffHomepage = () => {
     })
   }
   const decrease = async (id) => {
-    const card = await getAllProducts(id, '', '', '')
+    const card = await getAllProductsv2(id, '', '', '')
     const newProduct = card.data.data[0]
     var getOldData = JSON.parse(sessionStorage.getItem('cardValues'))
 
@@ -172,11 +172,21 @@ const StaffHomepage = () => {
     console.log(searchQuery)
 
     if (searchBy == 'Id') {
-      const result = await getAllProducts(searchQuery, '', filteredProducts, '')
+      const result = await getAllProductsv2(
+        searchQuery,
+        '',
+        filteredProducts,
+        ''
+      )
       console.log('Id')
       setProducts(result.data.data)
     } else if (searchBy == 'Name') {
-      const result = await getAllProducts('', searchQuery, filteredProducts, '')
+      const result = await getAllProductsv2(
+        '',
+        searchQuery,
+        filteredProducts,
+        ''
+      )
       console.log('Name')
       setProducts(result.data.data)
     }

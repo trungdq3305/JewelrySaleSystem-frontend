@@ -89,8 +89,49 @@ export default function ManagerSideBar() {
         </DrawerHeader>
         <Divider />
         <List>
+        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/ManagerHomePage/ManageGem')}}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center'
+                }}
+              >
+                < HomeOutlinedIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Manage Gem" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
 
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/ManagerHomePage/ManageProducts') }}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/ManagerHomePage/ManageDiscount')}}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center'
+                }}
+              >
+                < HomeOutlinedIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Manage Discount" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/Dashboard')}}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -149,7 +190,48 @@ export default function ManagerSideBar() {
               </ListItemIcon>
               <ListItemText primary="Manage Users" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
-          </ListItem><ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/Settings') }}>
+          </ListItem>
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/ManagerHomePage/ManageCustomer')}}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center'
+                }}
+              >
+                < HomeOutlinedIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Manage Customer" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {navigate('/ManagerHomePage/ManageVoucher')}}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center'
+                }}
+              >
+                < HomeOutlinedIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Manage Voucher" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/Settings') }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
