@@ -3,6 +3,7 @@ import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import EditCustomerDialog from './EditCustomerDialog'
+import CustomerBillDialog from './CustomerBillDialog'
 import {
   Table,
   TableBody,
@@ -17,10 +18,6 @@ import {
   Button,
   Snackbar,
   Alert,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
@@ -115,6 +112,8 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
   const [editData, setEditData] = useState(initialFormData)
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [openBillDialog, setOpenBillDialog] = useState(false)
+  const [bills, setBills] = useState([])
 
   const handleEdit = (customer) => {
     handleOpenDialog()
@@ -177,6 +176,12 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
     }
   }
 
+  const handleShowBills = (customer) => {
+    // Assuming customer contains bill information; if not, fetch it here.
+    setBills(customer.bills) // Assuming `customer.bills` is the list of bills
+    setOpenBillDialog(true)
+  }
+
   const customerList = Array.isArray(customers) ? customers : []
 
   return (
@@ -197,10 +202,12 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
-      <TableContainer
-        component={Paper}
-        sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
-      >
+      <CustomerBillDialog
+        open={openBillDialog}
+        onClose={() => setOpenBillDialog(false)}
+        bills={bills}
+      />
+      <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
@@ -259,6 +266,7 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
                   >
                     Change Status
                   </Button>
+                  <Button onClick={() => handleShowBills(customer)}>Show Bills</Button>
                 </TableCell>
               </TableRow>
             ))}

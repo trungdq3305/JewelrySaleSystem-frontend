@@ -14,6 +14,7 @@ import ManageProducts from '../Page/ManageProducts'
 import ManageUsers from '../Page/ManageUsers.jsx'
 import ManageCustomer from '../Page/ManageCustomer.jsx'
 import ManageDiscount from '../Page/ManageDiscount'
+import StaffCustomer from '../Page/StaffCustomer.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -124,6 +125,15 @@ export const router = createBrowserRouter([
 
 
 
+          </ProtectedRoutes>
+        ),
+        
+      },
+      {
+        path: 'StaffPage/StaffCustomer',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <StaffCustomer />
           </ProtectedRoutes>
         ),
       },

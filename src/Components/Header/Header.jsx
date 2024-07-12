@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom'
 
 const Header = ({ handleCategory }) => {
   const navigate = useNavigate()
+  const handleNavigateToManageCustomer = () => {
+    navigate('/StaffPage/StaffCustomer')
+  }
   return (
     <div className={styles.nav}>
       <div className={styles.logo}>
@@ -53,7 +56,8 @@ const Header = ({ handleCategory }) => {
             </Button>
           </li>
           <li>
-            <Button
+          <Button
+              onClick={handleNavigateToManageCustomer}
               sx={{
                 backgroundColor: '#333',
                 color: 'white',
