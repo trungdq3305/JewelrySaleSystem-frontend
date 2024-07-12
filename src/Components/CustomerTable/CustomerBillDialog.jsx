@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, List, ListItem, ListItemText } from '@mui/material'
 
 const formatDate = (dateString) => {
@@ -36,20 +35,4 @@ const CustomerBillDialog = ({ open, onClose, bills }) => {
   )
 }
 
-CustomerBillDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  bills: PropTypes.arrayOf(
-    PropTypes.shape({
-      billId: PropTypes.string.isRequired,
-      totalCost: PropTypes.number.isRequired,
-      publishDay: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
-
-CustomerBillDialog.defaultProps = {
-  bills: [],
-};
-
-export default CustomerBillDialog;
+export default CustomerBillDialog
