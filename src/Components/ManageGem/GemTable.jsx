@@ -105,7 +105,14 @@ const GemTable = ({ gems, reload }) => {
     setOpenDialog(false);
     setEditData(initialFormData); 
   };
-
+  const buttonStyle = {
+    width: '100px', 
+    margin: '5px',
+    backgroundColor: 'white',
+    '&:hover': {
+      backgroundColor: 'white',
+    },
+  };
   const handleEditGem = async (formData) => {
     const requiredFields = ['name', 'type', 'price', 'rate'];
     const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
@@ -164,13 +171,13 @@ const GemTable = ({ gems, reload }) => {
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Type</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Desc</TableCell>
-              <TableCell align="right">Rate</TableCell>
-              <TableCell align="right">Options</TableCell>
+              <TableCell style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Id</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Name</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Type</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Price</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Desc</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Rate</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Options</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -183,7 +190,17 @@ const GemTable = ({ gems, reload }) => {
                 <TableCell align="right">{gem.desc}</TableCell>
                 <TableCell align="right">{gem.rate}</TableCell>
                 <TableCell align="right">
-                  <Button onClick={() => handleUpdateGem(gem)}>Edit</Button>
+                  <Button onClick={() => handleUpdateGem(gem)}
+                    sx={{
+                      ...buttonStyle,
+                      backgroundColor: 'white',
+                      color: '#FFA500',
+                      border: '1px solid #FFA500',
+                      '&:hover': {
+                        backgroundColor: 'white',
+                        borderColor: '#FFA500',
+                      },
+                    }}>Edit</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -202,7 +219,7 @@ const GemTable = ({ gems, reload }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      <TablePagination style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}
         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
         component="div"
         count={gemList.length}
