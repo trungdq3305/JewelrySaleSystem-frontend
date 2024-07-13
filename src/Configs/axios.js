@@ -10,7 +10,7 @@ export const getAllProducts = async (
   try {
     // const query = `?ProductId=${productId}&ProductName=${productName}&Category=${Category}&Material=${Material}`
     // const data = await axios.get(api + '/products/view-product' + query)
-    const data = await axios.get(api + '/products')
+    const data = await axios.get(api + '/products/get-products')
     return data
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -77,7 +77,7 @@ export const addProduct = async (formData) => {
 export const searchProduct = async (searchValue) => {
   try {
     const data = await axios.get(
-      api + `/products/productid?productId=${searchValue}`
+      api + `/products/get-by-id?productId=${searchValue}`
     )
     console.log(data)
     return data
@@ -93,7 +93,7 @@ export const searchProduct = async (searchValue) => {
 }
 export const editProduct = async (formData) => {
   try {
-    const data = await axios.put(api + '/products/productidupdate', formData)
+    const data = await axios.put(api + '/products/product-update', formData)
     console.log(data)
     return data
   } catch (error) {
@@ -209,13 +209,35 @@ export const addUser = async (formData) => {
     }
   }
 }
-export const searchUser = async (searchValue) => {
+export const updateRole = async (userId, newRole) => {
   try {
-    const data = await axios.get(
-      api + `/user/view-list-users?id=${searchValue}`
-    )
+    const data = await axios.put(api + '/user/update-role', {
+      id: userId,
+      role: newRole
+    })
     console.log(data)
     return data
+  }
+  catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message', error.message)
+      return error.message
+    }
+    else {
+      console.log('Unexpected error:', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}
+// export const searchUser = async (searchValue) => {
+//   try {
+//     const data = await axios.get(
+//       api + `/user/view-list-users?id=${searchValue}`
+//     )
+//     console.log(data)
+//     return data
+//   }
+// }
 export const getAllGem = async () => {
   try {
     const reponse = await axios.get(api + '/gem/viewlistgem')
