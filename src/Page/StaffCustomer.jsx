@@ -97,7 +97,7 @@ const StaffCustomer = () => {
   return (
     <>
     <Header></Header>
-      <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
         <Box
           sx={{
             flexGrow: 1,
@@ -111,7 +111,7 @@ const StaffCustomer = () => {
               flexGrow: 1,
               display: 'flex',
               flexDirection: 'column',
-              maxHeight: '80vh',
+
               overflow: 'hidden',
               padding: '10px',
             }}
@@ -123,29 +123,54 @@ const StaffCustomer = () => {
                 marginBottom: '10px',
               }}
             >
-              <Button onClick={handleOpenDialog}>Add Customer</Button>
+              <Button onClick={handleOpenDialog}
+              sx={{
+                backgroundColor: 'white',
+                color: '#3baf80', 
+                border: '1px solid #3baf80',
+                '&:hover': {
+                  backgroundColor: 'white',
+                  borderColor: '#3baf80',
+                },
+                height:'50px'
+              }}>Add Customer</Button>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TextField
-                  label="Search"
-                  variant="outlined"
-                  value={searchValue}
-                  onChange={handleInputChange}
-                />
                 <select
                   value={searchCriteria}
                   onChange={(e) => setSearchCriteria(e.target.value)}
                   style={{
-                    marginLeft: '10px',
-                    padding: '8px',
-                    fontSize: '16px',
-                    borderRadius: '4px',
+                    padding: '10px',
+                    borderRadius: '5px',
                     border: '1px solid #ccc',
+                    backgroundColor: '#f9f9f9',
+                    fontSize: '16px',
+                    color: '#333',
+                    outline: 'none',
+                    marginRight: '10px',
+                     height: '55px' // Added margin for spacing between elements
                   }}
                 >
                   <option value="name">Name</option>
                   <option value="phone">Phone</option>
                 </select>
-                <Button onClick={handleSearch} sx={{ ml: 2 }}>
+
+                <TextField
+                  label="Search"
+                  variant="outlined"
+                  value={searchValue}
+                  onChange={handleInputChange}
+                  style={{ flex: 1, marginRight: '10px', 
+                    }} // Added flex: 1 to take remaining space
+                />
+
+                <Button onClick={handleSearch} sx={{ ml: 2 ,
+                    backgroundColor: 'white',
+                color: '#2596be', 
+                border: '1px solid #2596be',
+                '&:hover': {
+                  backgroundColor: 'white',
+                  borderColor: '#2596be',
+                },}}>
                   Search
                 </Button>
               </Box>

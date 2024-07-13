@@ -161,7 +161,14 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
       console.error('Error editing customer:', error)
     }
   }
-
+  const buttonStyle = {
+    width: '100%', 
+    margin: '5px',
+    backgroundColor: 'white',
+    '&:hover': {
+      backgroundColor: 'white',
+    },
+  };
   const handleChangeStatus = async (customerId) => {
     try {
       const result = await updateCustomerStatus(customerId)
@@ -207,28 +214,28 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
         onClose={() => setOpenBillDialog(false)}
         bills={bills}
       />
-      <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
+      <TableContainer component={Paper} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Birth</TableCell>
-              <TableCell align="right">Address</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Phone</TableCell>
-              <TableCell align="right">Point</TableCell>
-              <TableCell align="right">Rate</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right">Options</TableCell>
+            <TableRow >
+              <TableCell style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>ID</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Name</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Birth</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Address</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Email</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Phone</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Point</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Rate</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Status</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Options</TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
             {(rowsPerPage > 0
               ? customerList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
               : customerList
             ).map((customer) => (
               <TableRow key={customer.customerId}>
@@ -260,13 +267,47 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
                   {customer.status ? 'Active' : 'Inactive'}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  <Button onClick={() => handleEdit(customer)}>Edit</Button>
+                  <Button
+                    onClick={() => handleEdit(customer)}
+                    sx={{
+                      ...buttonStyle,
+                      backgroundColor: 'white',
+                      color: '#FFA500',
+                      border: '1px solid #FFA500',
+                      '&:hover': {
+                        backgroundColor: 'white',
+                        borderColor: '#FFA500',
+                      },
+                    }}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     onClick={() => handleChangeStatus(customer.customerId)}
+                    sx={{
+                      ...buttonStyle,
+                      backgroundColor: 'white',
+                      color: 'black', 
+                      border: '1px solid black',
+                      '&:hover': {
+                        backgroundColor: 'white',
+                        borderColor: 'black',
+                      },
+                    }}
                   >
                     Change Status
                   </Button>
-                  <Button onClick={() => handleShowBills(customer)}>Show Bills</Button>
+                  <Button onClick={() => handleShowBills(customer)} 
+                  sx={{
+                    ...buttonStyle,
+                      backgroundColor: 'white',
+                      color: '#2596be', 
+                      border: '1px solid #2596be',
+                      '&:hover': {
+                        backgroundColor: 'white',
+                        borderColor: '#2596be',
+                      },
+                    }}>Bills</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -287,6 +328,7 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
+                style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}
               />
             </TableRow>
           </TableFooter>

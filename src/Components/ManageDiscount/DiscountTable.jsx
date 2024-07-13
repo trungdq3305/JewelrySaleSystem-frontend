@@ -159,7 +159,14 @@ const DiscountTable = ({ discounts, reload }) => {
       handleCloseDialog();
     }
   };
-
+  const buttonStyle = {
+    width: '100%', 
+    margin: '5px',
+    backgroundColor: 'white',
+    '&:hover': {
+      backgroundColor: 'white',
+    },
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -209,13 +216,13 @@ const DiscountTable = ({ discounts, reload }) => {
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell>Discount ID</TableCell>
-              <TableCell align="right">Created By</TableCell>
-              <TableCell align="right">Expired Day</TableCell>
-              <TableCell align="right">Publish Day</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Cost</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Discount ID</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Created By</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Expired Day</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Publish Day</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Amount</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Cost</TableCell>
+              <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -228,8 +235,29 @@ const DiscountTable = ({ discounts, reload }) => {
                 <TableCell align="right">{discount.amount}</TableCell>
                 <TableCell align="right">{discount.cost}</TableCell>
                 <TableCell align="right">
-                  <Button onClick={() => handleUpdateDiscount(discount)}>Edit</Button>
-                  <Button onClick={() => handleDelete(discount.discountId)}>Delete</Button>
+                  <Button onClick={() => handleUpdateDiscount(discount)}
+                    sx={{
+                      ...buttonStyle,
+                      backgroundColor: 'white',
+                      color: '#FFA500',
+                      border: '1px solid #FFA500',
+                      '&:hover': {
+                        backgroundColor: 'white',
+                        borderColor: '#FFA500',
+                      },
+                    }}>Edit</Button>
+                  <br></br>
+                  <Button onClick={() => handleDelete(discount.discountId)}
+                    sx={{
+                      ...buttonStyle,
+                      backgroundColor: 'white',
+                      color: 'red', 
+                      border: '1px solid red',
+                      '&:hover': {
+                        backgroundColor: 'white',
+                        borderColor: 'red',
+                      },
+                    }}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -248,7 +276,7 @@ const DiscountTable = ({ discounts, reload }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      <TablePagination style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}
         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
         component="div"
         count={discountList.length}
