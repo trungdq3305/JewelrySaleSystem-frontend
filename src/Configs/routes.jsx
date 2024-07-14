@@ -81,14 +81,14 @@ export const router = createBrowserRouter([
               </ProtectedRoutes>
             ),
           },
-{
+          {
             path: 'ManageCashier',
             element: (
               <ProtectedRoutes allowedRoles={[2]}>
                 <ManageCashier />
               </ProtectedRoutes>
-            )
-          }
+            ),
+          },
         ],
       },
       {
@@ -146,7 +146,6 @@ export const router = createBrowserRouter([
             <StaffDiscount />
           </ProtectedRoutes>
         ),
-        
       },
       {
         path: 'StaffPage/StaffCustomer',

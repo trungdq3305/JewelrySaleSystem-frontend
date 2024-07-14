@@ -204,7 +204,7 @@ export default function ManagerSideBar() {
                 disablePadding
                 sx={{ display: 'block' }}
                 onClick={() => {
-                  navigate('/ManagerHomePage/ManageProduct')
+                  navigate('/ManagerHomePage/ManageProducts')
                 }}
               >
                 <ListItemButton
