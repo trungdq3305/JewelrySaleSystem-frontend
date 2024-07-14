@@ -216,17 +216,15 @@ export const updateRole = async (userId, newRole) => {
   try {
     const data = await axios.put(api + '/user/update-role', {
       id: userId,
-      role: newRole
+      role: newRole,
     })
     console.log(data)
     return data
-  }
-  catch (error) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message', error.message)
       return error.message
-    }
-    else {
+    } else {
       console.log('Unexpected error:', error)
       return 'An unexpected error has occured'
     }
@@ -266,14 +264,13 @@ export const updateGem = async (formData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message:', error.message)
-      throw new Error(error.message) 
+      throw new Error(error.message)
     } else {
       console.log('Unexpected error:', error)
-      throw new Error('An unexpected error has occurred') 
+      throw new Error('An unexpected error has occurred')
     }
   }
 }
-
 
 const getGems = async (params) => {
   try {
@@ -349,18 +346,21 @@ export const getVouchersv2 = async (params) => {
 }
 export const addGem = async (formData) => {
   try {
-    const response = await axios.post(api + '/gem/creategem', formData);
-    return { isSuccess: true, data: response.data }; 
+    const response = await axios.post(api + '/gem/creategem', formData)
+    return { isSuccess: true, data: response.data }
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('Error message: ', error.message);
-      return { isSuccess: false, message: error.response?.data?.message || error.message }; 
+      console.log('Error message: ', error.message)
+      return {
+        isSuccess: false,
+        message: error.response?.data?.message || error.message,
+      }
     } else {
-      console.log('Unexpected error: ', error);
-      return { isSuccess: false, message: 'An unexpected error has occurred' }; 
+      console.log('Unexpected error: ', error)
+      return { isSuccess: false, message: 'An unexpected error has occurred' }
     }
   }
-};
+}
 
 export const getAllCustomers = async () => {
   try {
@@ -477,7 +477,7 @@ export const updateDiscount = async (formData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message:', error.message)
-      throw new Error(error.message) 
+      throw new Error(error.message)
     } else {
       console.log('Unexpected error:', error)
       throw new Error('An unexpected error has occurred')
@@ -487,20 +487,24 @@ export const updateDiscount = async (formData) => {
 
 export const addDiscount = async (formData) => {
   try {
-    const response = await axios.post(api + '/discount/create-discount', formData);
-    return { isSuccess: true, data: response.data }; 
+    const response = await axios.post(
+      api + '/discount/create-discount',
+      formData
+    )
+    return { isSuccess: true, data: response.data }
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('Error message: ', error.message);
-      return { isSuccess: false, message: error.response?.data?.message || error.message }; 
+      console.log('Error message: ', error.message)
+      return {
+        isSuccess: false,
+        message: error.response?.data?.message || error.message,
+      }
     } else {
-      console.log('Unexpected error: ', error);
-      return { isSuccess: false, message: 'An unexpected error has occurred' }; 
+      console.log('Unexpected error: ', error)
+      return { isSuccess: false, message: 'An unexpected error has occurred' }
     }
   }
-};
-
-
+}
 
 const getDiscount = async (params) => {
   try {
@@ -546,9 +550,9 @@ export const deleteGold = async () => {
   }
 }
 
-export const createGold = async () => {
+export const updateGold = async (params) => {
   try {
-    const response = await axios.post(api + '/gold/create-gold')
+    const response = await axios.put(api + '/gold/gold-update', params)
     return response
   } catch (error) {
     console.error(error)
@@ -618,16 +622,13 @@ export const updateCashier = async (formData) => {
     const response = await axios.put(api + '/cashier/cashier-update', formData)
     console.log(response)
     return response.data
-  }
-  catch (error) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message: ', error.message)
       return error.message
-
     } else {
       console.log('Unexpected error: ', error)
       return 'An unexpected error has occured'
-
     }
   }
 }

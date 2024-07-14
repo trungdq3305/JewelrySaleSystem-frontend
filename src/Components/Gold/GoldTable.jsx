@@ -12,7 +12,7 @@ import {
   TablePagination,
   Snackbar,
 } from '@mui/material'
-const GoldTable = ({ goldList }) => {
+const GoldTable = ({ goldList, handleFetchGold }) => {
   return (
     <>
       <TableContainer
@@ -78,28 +78,51 @@ const GoldTable = ({ goldList }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell> G001</TableCell>
-              <TableCell> Vàng SJC 1L - 10L - 1KG</TableCell>
-
-              <TableCell align="right">
-                {Number(10000000).toLocaleString('en')}
-              </TableCell>
-              <TableCell align="right">
-                {Number(10000000).toLocaleString('en')}
-              </TableCell>
-              <TableCell align="right">
-                {Number(10000000).toLocaleString('en')}
-              </TableCell>
-              <TableCell align="right">USR05</TableCell>
-              <TableCell align="right">15/07/2024</TableCell>
-
-              <TableCell align="right">24K</TableCell>
-              <TableCell align="right">99.9%</TableCell>
-            </TableRow>
+            {goldList.map((gold, index) => (
+              <TableRow key={index}>
+                <TableCell>{gold.goldId}</TableCell>
+                <TableCell>{gold.goldName}</TableCell>
+                <TableCell align="right">
+                  {gold.purchasePrice
+                    ? Number(gold.purchasePrice).toLocaleString('en')
+                    : 'N/A'}
+                </TableCell>
+                <TableCell align="right">
+                  {gold.salePrice
+                    ? Number(gold.salePrice).toLocaleString('en')
+                    : 'N/A'}
+                </TableCell>
+                <TableCell align="right">
+                  {gold.worldPrice
+                    ? Number(gold.worldPrice).toLocaleString('en')
+                    : 'N/A'}
+                </TableCell>
+                <TableCell align="right">{gold.modifiedBy}</TableCell>
+                <TableCell align="right">
+                  {new Date(gold.modifiedDate).toLocaleDateString()}
+                </TableCell>
+                <TableCell align="right">{gold.kara || 'N/A'}</TableCell>
+                <TableCell align="right">{gold.goldPercent || 'N/A'}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>{' '}
+      <Button
+        onClick={handleFetchGold}
+        variant="contained"
+        sx={{
+          background: 'black',
+          color: '#ffdbf0',
+          marginTop: '10px',
+          '&:hover': {
+            backgroundColor: '#ffdbf0',
+            color: 'black',
+          },
+        }}
+      >
+        Get Gold Price
+      </Button>
     </>
   )
 }
