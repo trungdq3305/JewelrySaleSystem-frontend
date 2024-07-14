@@ -15,6 +15,8 @@ import ManageUsers from '../Page/ManageUsers.jsx'
 import ManageCustomer from '../Page/ManageCustomer.jsx'
 import ManageDiscount from '../Page/ManageDiscount'
 import StaffCustomer from '../Page/StaffCustomer.jsx'
+import GoldPage from '../Page/GoldPage.jsx'
+import ManageGold from '../Page/ManageGold.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -59,18 +61,25 @@ export const router = createBrowserRouter([
               <ProtectedRoutes allowedRoles={[2]}>
                 <ManageProducts />
               </ProtectedRoutes>
-            )
+            ),
           },
           {
             path: 'ManageUsers',
             element: (
               <ProtectedRoutes allowedRoles={[2, 3]}>
-                <ManageUsers/>
+                <ManageUsers />
               </ProtectedRoutes>
-            )
-
-          }
-        ]
+            ),
+          },
+          {
+            path: 'ManageGold',
+            element: (
+              <ProtectedRoutes allowedRoles={[2, 3]}>
+                <ManageGold />
+              </ProtectedRoutes>
+            ),
+          },
+        ],
       },
       {
         path: 'ViewDetailPage/:id',
@@ -96,7 +105,7 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
-       {
+      {
         path: 'ManagerHomePage/ManageVoucher',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
@@ -112,28 +121,27 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
-       {
+      {
         path: 'ManagerHomePage/ManageDiscount',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <ManageDiscount />
-
-
-
-
-
-
-
-
           </ProtectedRoutes>
         ),
-        
       },
       {
         path: 'StaffPage/StaffCustomer',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
             <StaffCustomer />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: 'StaffPage/Goldrate',
+        element: (
+          <ProtectedRoutes allowedRoles={[1, 2]}>
+            <GoldPage />
           </ProtectedRoutes>
         ),
       },

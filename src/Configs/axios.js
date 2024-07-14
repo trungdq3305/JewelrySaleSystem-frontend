@@ -494,3 +494,44 @@ export const deleteDiscount = async (discountid) => {
     console.error(error)
   }
 }
+
+export const fetchGold = async () => {
+  try {
+    const response = await axios.get(
+      'http://api.btmc.vn/api/BTMCAPI/getpricebtmc?key=3kd8ub1llcg9t45hnoh8hmn7t5kc2v'
+    )
+    return response
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const deleteGold = async () => {
+  try {
+    const response = await axios.delete(api + '/gold/delete-golds')
+    return response
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const createGold = async () => {
+  try {
+    const response = await axios.post(api + '/gold/create-gold')
+    return response
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const getAllGold = async () => {
+  try {
+    const response = await axios.get(api + '/gold/get-golds')
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
