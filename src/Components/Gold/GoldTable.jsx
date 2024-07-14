@@ -15,9 +15,16 @@ import {
 const GoldTable = ({ goldList }) => {
   return (
     <>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        margin: '20px', 
+      }}
+    >
       <TableContainer
         component={Paper}
-        sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
+        sx={{ maxHeight: 600,  display: 'flex', flexDirection: 'column' }}
       >
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
@@ -100,7 +107,9 @@ const GoldTable = ({ goldList }) => {
           </TableBody>
         </Table>
       </TableContainer>{' '}
+      </Box>
     </>
+    
   )
 }
 
