@@ -42,7 +42,7 @@ const UpdateCashierDialog = ({ openDialog, handleCloseDialog, onUpdateCashier, f
   };
 
   const handleUpdateCashier = () => {
-    onUpdateCashier(updatedFormData); // Call API or update state with updatedFormData
+    onUpdateCashier(updatedFormData);
     handleCloseDialog();
   };
 

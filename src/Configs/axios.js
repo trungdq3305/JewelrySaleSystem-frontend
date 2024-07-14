@@ -566,17 +566,21 @@ export const searchCashier = async (searchValue) => {
     }
   }
 }
-export const updateCashier = async () => {
+export const updateCashier = async (formData) => {
   try {
-    const data = await axios.put(api + '/cashier/cashier-update')
-    console.log(data)
-    return data
+    const response = await axios.put(api + '/cashier/cashier-update', formData)
+    console.log(response)
+    return response.data
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message: ', error.message)
+      return error.message
+
     } else {
       console.log('Unexpected error: ', error)
+      return 'An unexpected error has occured'
+
     }
   }
 }

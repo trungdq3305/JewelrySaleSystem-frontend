@@ -20,6 +20,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import UpdateCashierDialog from './UpdateCashierDialog';
+import { updateCashier } from '../../Configs/axios';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -95,6 +96,7 @@ const initialFormData = {
   endCash: '',
   cashNumber: '',
   userId: '',
+  status: ''
 };
 
 const CashierTable = ({ cashiers }) => {
@@ -103,12 +105,14 @@ const CashierTable = ({ cashiers }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [updateData, setUpdateData] = useState(initialFormData);
 
-  const handleUpdate = (cashier) => {
-    handleOpenDialog();
-    setUpdateData({
-      ...initialFormData,
-      ...cashier,
-    });
+  const handleUpdate = async () => {
+    try {
+      const result = await updateCashier(updateData)
+      console.log(result.data)
+      handleCloseDialog()
+    } catch (error) {
+      console.error('Error editing product:', error)
+    }
   };
 
   const handleOpenDialog = () => {
@@ -132,15 +136,16 @@ const CashierTable = ({ cashiers }) => {
   };
 
   const cashierList = Array.isArray(cashiers) ? cashiers : [];
-
+  useEffect(() => {
+    updateCashier()
+  }, [])
   return (
     <>
       <UpdateCashierDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        onEditProduct={handleUpdate}
+        onUpdateCashier={handleUpdate}
         formData={updateData}
-        setFormData={setUpdateData}
       />
       <TableContainer
         component={Paper}
@@ -162,9 +167,9 @@ const CashierTable = ({ cashiers }) => {
           <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
             {(rowsPerPage > 0
               ? cashierList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
               : cashierList
             ).map((cashier) => (
               <TableRow key={cashier.cashId}>
@@ -190,7 +195,13 @@ const CashierTable = ({ cashiers }) => {
                   {cashier.status}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  <Button onClick={() => handleUpdate(cashier)}>Update</Button>
+                  <Button onClick={() => {
+                    handleOpenDialog();
+                    setUpdateData({
+                      ...initialFormData,
+                      ...cashier,
+                    })
+                  }}>Update</Button>
                 </TableCell>
               </TableRow>
             ))}
