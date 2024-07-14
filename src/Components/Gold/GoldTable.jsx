@@ -15,16 +15,9 @@ import {
 const GoldTable = ({ goldList, handleFetchGold }) => {
   return (
     <>
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        margin: '20px', 
-      }}
-    >
       <TableContainer
         component={Paper}
-        sx={{ maxHeight: 600,  display: 'flex', flexDirection: 'column' }}
+        sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
       >
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
@@ -131,7 +124,6 @@ const GoldTable = ({ goldList, handleFetchGold }) => {
         Get Gold Price
       </Button>
     </>
-    
   )
 }
 
