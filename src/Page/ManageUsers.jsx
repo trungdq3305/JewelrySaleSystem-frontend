@@ -1,20 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField } from '@mui/material';
-import { addUser, getAllUsers } from '../Configs/axios'
+import { addUser, getAllUsers, searchUser } from '../Configs/axios'
 import UserTable from '../Components/UserTable/UserTable';
 import AddUserDialog from '../Components/UserTable/AddUserDialog';
 const ManageUsers = () => {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [openDialog, setOpenDialog] = useState(false)
-
+  const onSearchTextChange = async (event) => {
+    const searchValue = event.target.value;
+    if (searchValue.length === 0) {
+      loadAllUsers();
+    } else {
+      const result = await searchUser(searchValue);
+      setUsers(result.data.data);
+    }
+  };
   const handleOpenDialog = () => {
     setOpenDialog(true)
-  };
+  }
   const handleCloseDialog = () => {
     setOpenDialog(false)
-  };
+  }
   const initialFormData = {
     role: '',
     fullName: '',
@@ -55,7 +63,17 @@ const ManageUsers = () => {
   if (loading) return <div>Loading....</div>;
   return (
     <>
-      <Button onClick={handleOpenDialog}>
+    
+   
+      <TextField
+        id="filled-search"
+        label="Search"
+        type="search"
+        variant="filled"
+        style={{ width: '300px' }}
+        onChange={onSearchTextChange}
+      />
+         <Button onClick={handleOpenDialog}>
         Add User
       </Button>
       <AddUserDialog
@@ -63,10 +81,11 @@ const ManageUsers = () => {
         handleCloseDialog={handleCloseDialog}
         onAddUser={handleAddUser}
         initialFormData={initialFormData}
-        roleMapping={roleMapping} // Pass roleMapping to AddUserDialog
+        roleMapping={roleMapping}
 
       />
       <UserTable users={users} />
+      
     </>
   )
 }

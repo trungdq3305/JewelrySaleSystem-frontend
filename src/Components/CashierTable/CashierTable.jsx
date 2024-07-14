@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
-import React from 'react'
-import { useTheme } from '@mui/material/styles'
-import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
@@ -13,37 +12,35 @@ import {
   Paper,
   Box,
   TablePagination,
-  Button
-} from '@mui/material'
-import IconButton from '@mui/material/IconButton'
-import FirstPageIcon from '@mui/icons-material/FirstPage'
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import LastPageIcon from '@mui/icons-material/LastPage'
-import { activeDeactiveUser } from '../../Configs/axios'
-import ActiveDeactiveDialog from './ActiveDeactiveDialog'
-import UpdateRoleDialog from './UpdateRoleDialog'
-
+  Button,
+  IconButton,
+} from '@mui/material';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import UpdateCashierDialog from './UpdateCashierDialog';
+import { updateCashier } from '../../Configs/axios';
 
 function TablePaginationActions(props) {
-  const theme = useTheme()
-  const { count, page, rowsPerPage, onPageChange } = props
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0)
-  }
+    onPageChange(event, 0);
+  };
 
   const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1)
-  }
+    onPageChange(event, page - 1);
+  };
 
   const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1)
-  }
+    onPageChange(event, page + 1);
+  };
 
   const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
-  }
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
@@ -84,137 +81,127 @@ function TablePaginationActions(props) {
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
-  )
+  );
 }
+
 TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-}
-const UserTable = ({ users }) => {
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
-  const [openDialog, setOpenDialog] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(null)
-  const [openRoleDialog, setOpenRoleDialog] = useState(false)
+};
 
-  const handleOpenDialog = (userId) => {
-    setSelectedUser(userId)
-    setOpenDialog(true)
-  }
-  const handleCloseDialog = () => {
-    setOpenDialog(false)
-    setSelectedUser(null)
-  }
-  const handleActiveDeactive = async () => {
-    if (selectedUser) {
-      try {
-        const result = await activeDeactiveUser(selectedUser)
-        console.log(result)
-      } catch (error) {
-        console.error('Error active/deactive user', error)
-      } finally {
-        handleCloseDialog()
-      }
+const initialFormData = {
+  startCash: '',
+  endCash: '',
+  cashNumber: '',
+  userId: '',
+  status: ''
+};
+
+const CashierTable = ({ cashiers }) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [updateData, setUpdateData] = useState(initialFormData);
+
+  const handleUpdate = async () => {
+    try {
+      const result = await updateCashier(updateData)
+      console.log(result.data)
+      handleCloseDialog()
+    } catch (error) {
+      console.error('Error editing product:', error)
     }
-  }
-  const handleOpenRoleDialog = (user) => {
-    setSelectedUser(user)
-    setOpenRoleDialog(true)
-  }
+  };
 
-  const handleCloseRoleDialog = () => {
-    setOpenRoleDialog(false)
-    setSelectedUser(null)
-  }
-  // Avoid a layout jump when reaching the last page with empty rows.
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - cashiers.length) : 0;
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
+    setPage(newPage);
+  };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }
-  const formatStatus = (status) => (status ? 'Active' : 'Inactive');
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-  // Ensure products is an array
-  const userList = Array.isArray(users) ? users : []
+  const cashierList = Array.isArray(cashiers) ? cashiers : [];
   useEffect(() => {
-    activeDeactiveUser()
+    updateCashier()
   }, [])
   return (
     <>
-      <ActiveDeactiveDialog
+      <UpdateCashierDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        onConfirm={handleActiveDeactive}
+        onUpdateCashier={handleUpdate}
+        formData={updateData}
       />
-
-      <UpdateRoleDialog
-        open={openRoleDialog}
-        onClose={handleCloseRoleDialog}
-        user={selectedUser}
-      />
-
       <TableContainer
         component={Paper}
         sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
       >
-        <Table stickyHeader aria-label="UserTable">
+        <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell align="right">Start Date</TableCell>
+              <TableCell align="right">End Date</TableCell>
+              <TableCell align="right">Income</TableCell>
+              <TableCell align="right">Cashier Number</TableCell>
               <TableCell align="right">User Id</TableCell>
-              <TableCell align="right">User Name</TableCell>
-              <TableCell align="right">Role</TableCell>
-              <TableCell align="right">Full Name</TableCell>
-              <TableCell align="right">Date of birth</TableCell>
-              <TableCell align="right">Phone number</TableCell>
-              <TableCell align="right">Address</TableCell>
               <TableCell align="right">Status</TableCell>
               <TableCell align="right">Options</TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
             {(rowsPerPage > 0
-              ? userList.slice(
+              ? cashierList.slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage
               )
-              : userList
-            ).map((user) => (
-              <TableRow key={user.userId}>
+              : cashierList
+            ).map((cashier) => (
+              <TableRow key={cashier.cashId}>
                 <TableCell component="th" scope="row">
-                  {user.userId}
+                  {cashier.cashId}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {user.username}
+                  {cashier.startCash}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {user.role}
+                  {cashier.endCash}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {user.fullName}
+                  {cashier.income}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {user.doB}
+                  {cashier.cashNumber}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {user.phone}
+                  {cashier.userId}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {user.address}
+                  {cashier.status}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {formatStatus(user.status)}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  <Button onClick={() => handleOpenRoleDialog(user)}>Update Role</Button>
-                  <Button onClick={() => handleOpenDialog(user.userId)}>Active/Deactive</Button>
+                  <Button onClick={() => {
+                    handleOpenDialog();
+                    setUpdateData({
+                      ...initialFormData,
+                      ...cashier,
+                    })
+                  }}>Update</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -229,7 +216,7 @@ const UserTable = ({ users }) => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={11}
-                count={userList.length}
+                count={cashierList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 slotProps={{
@@ -237,8 +224,8 @@ const UserTable = ({ users }) => {
                     inputProps: {
                       'aria-label': 'rows per page',
                     },
-                    native: true
-                  }
+                    native: true,
+                  },
                 }}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
@@ -248,13 +235,12 @@ const UserTable = ({ users }) => {
           </TableFooter>
         </Table>
       </TableContainer>
-
     </>
-  )
-}
+  );
+};
 
-UserTable.propTypes = {
-  users: PropTypes.array.isRequired,
-}
+CashierTable.propTypes = {
+  cashiers: PropTypes.array.isRequired,
+};
 
-export default UserTable
+export default CashierTable;

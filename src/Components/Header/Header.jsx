@@ -10,6 +10,9 @@ const Header = ({ handleCategory }) => {
   const handleNavigateToManageCustomer = () => {
     navigate('/StaffPage/StaffCustomer')
   }
+  const handleNavigateToManageDiscount = () => {
+    navigate('/StaffPage/StaffDiscount')
+  }
   return (
     <div className={styles.nav}>
       <div className={styles.logo}>
@@ -45,7 +48,8 @@ const Header = ({ handleCategory }) => {
           </li>
 
           <li>
-            <Button
+          <Button
+              onClick={handleNavigateToManageDiscount}
               sx={{
                 backgroundColor: '#333',
                 color: 'white',
