@@ -151,7 +151,7 @@ export default function ManagerSideBar() {
               <ListItemText primary="Manage Product" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/H') }}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate('/ManagerHomePage/ManageCashier') }}>
             <ListItemButton
               sx={{
                 minHeight: 48,

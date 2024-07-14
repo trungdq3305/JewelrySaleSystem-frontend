@@ -14,6 +14,7 @@ import ManageProducts from '../Page/ManageProducts'
 import ManageUsers from '../Page/ManageUsers.jsx'
 import ManageCustomer from '../Page/ManageCustomer.jsx'
 import ManageDiscount from '../Page/ManageDiscount'
+import ManageCashier from '../Page/ManageCashier.jsx'
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -64,10 +65,17 @@ export const router = createBrowserRouter([
             path: 'ManageUsers',
             element: (
               <ProtectedRoutes allowedRoles={[2, 3]}>
-                <ManageUsers/>
+                <ManageUsers />
               </ProtectedRoutes>
             )
-
+          },
+          {
+            path: 'ManageCashier',
+            element: (
+              <ProtectedRoutes allowedRoles={[2]}>
+                <ManageCashier />
+              </ProtectedRoutes>
+            )
           }
         ]
       },
@@ -95,7 +103,7 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
-       {
+      {
         path: 'ManagerHomePage/ManageVoucher',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
@@ -111,7 +119,7 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
-       {
+      {
         path: 'ManagerHomePage/ManageDiscount',
         element: (
           <ProtectedRoutes allowedRoles={[1, 2]}>
