@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
 import HomePage from '../assets/HomePage.png';
-
+import Login from '../assets/Login.png'
 const ManagerPage = () => {
   const navigate = useNavigate();
 
@@ -26,32 +26,32 @@ const ManagerPage = () => {
       </style>
 
       <div style={{
-        backgroundImage: `url(${HomePage})`,
+        backgroundImage: `url(${Login})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         width: '100%',
         height: '100vh',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center',
         color: '#fff',
         textAlign: 'center',
-        paddingRight: '20px',
       }}>
         <div style={{
+          backgroundColor: 'rgba(128, 128, 128, 0.5)', // Màu xám nhạt với độ trong suốt
+          padding: '30px',
+          borderRadius: '10px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           zIndex: '1',
-          marginRight: '10%'
         }}>
           <img src={logo} alt="Logo" style={{ maxWidth: '300px', maxHeight: '300px', marginBottom: '20px' }} />
           <h1 style={{ 
             marginTop: '10px', 
             fontFamily: 'Roboto, sans-serif', 
-            color: '#daadaf', 
-            fontSize: '2.5rem' // Adjust the font size as needed
+            color: '#fff4fc', 
+            fontSize: '2.5rem' // Điều chỉnh kích thước font theo nhu cầu
           }}>
             Welcome Manager
           </h1>
@@ -65,11 +65,13 @@ const ManagerPage = () => {
                   backgroundColor: '#e39994',
                   borderColor: 'white',
                 },
+                borderRadius: '50px',
               }}>
               Manager management
             </Button>
             <Button variant='outlined' onClick={handleStaffButton}
               sx={{
+                borderRadius: '50px',
                 backgroundColor: '#e39994',
                 color: 'white',
                 border: '1px solid #e39994',
@@ -82,6 +84,7 @@ const ManagerPage = () => {
             </Button>
             <Button variant='outlined' onClick={handleAdminButton}
               sx={{
+                borderRadius: '50px',
                 backgroundColor: '#e39994',
                 color: 'white',
                 border: '1px solid #e39994',
