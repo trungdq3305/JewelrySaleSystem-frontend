@@ -212,7 +212,7 @@ const DiscountTable = ({ discounts, reload }) => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
-      <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
+      <TableContainer component={Paper} sx={{  display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>

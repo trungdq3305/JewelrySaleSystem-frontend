@@ -120,6 +120,17 @@ const ManageDiscount = () => {
               Add Discount
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                label="Status"  sx={{ height: '50px' , margin : '10px'}}
+              >
+                <MenuItem value="true">Active</MenuItem>
+                <MenuItem value="false">Inactive</MenuItem>
+              </Select>
+            </FormControl>
               <FormControl fullWidth margin="normal">
                 <InputLabel>Search By</InputLabel>
                 <Select
@@ -131,6 +142,7 @@ const ManageDiscount = () => {
                   <MenuItem value="productId">Product ID</MenuItem>
                 </Select>
               </FormControl>
+              
               <TextField
                 fullWidth
                 label="Search"
