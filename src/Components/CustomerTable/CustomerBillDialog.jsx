@@ -1,10 +1,20 @@
 import React from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, List, ListItem, ListItemText } from '@mui/material'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material'
 
 const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-};
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+  return new Date(dateString).toLocaleDateString(undefined, options)
+}
 
 const CustomerBillDialog = ({ open, onClose, bills }) => {
   return (
@@ -12,13 +22,15 @@ const CustomerBillDialog = ({ open, onClose, bills }) => {
       <DialogTitle>Bills</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {bills.length > 0 ? (
+          {bills !== undefined ? (
             <List>
               {bills.map((bill) => (
                 <ListItem key={bill.billId}>
                   <ListItemText
                     primary={`Bill ID: ${bill.billId}`}
-                    secondary={`Total Cost: ${bill.totalCost} | Publish Day: ${formatDate(bill.publishDay)}`}
+                    secondary={`Total Cost: ${
+                      bill.totalCost
+                    } | Publish Day: ${formatDate(bill.publishDay)}`}
                   />
                 </ListItem>
               ))}

@@ -28,6 +28,9 @@ const Header = ({ handleCategory }) => {
           </li>
           <li>
             <Button
+              onClick={() => {
+                navigate('/StaffPage/Goldrate')
+              }}
               sx={{
                 backgroundColor: '#333',
                 color: 'white',
@@ -56,7 +59,7 @@ const Header = ({ handleCategory }) => {
             </Button>
           </li>
           <li>
-          <Button
+            <Button
               onClick={handleNavigateToManageCustomer}
               sx={{
                 backgroundColor: '#333',
