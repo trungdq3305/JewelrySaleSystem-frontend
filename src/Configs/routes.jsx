@@ -14,6 +14,7 @@ import ManageProducts from '../Page/ManageProducts'
 import ManageUsers from '../Page/ManageUsers.jsx'
 import ManageCustomer from '../Page/ManageCustomer.jsx'
 import ManageDiscount from '../Page/ManageDiscount'
+import ManageCashier from '../Page/ManageCashier.jsx'
 import StaffCustomer from '../Page/StaffCustomer.jsx'
 import StaffDiscount from '../Page/StaffDiscount.jsx'
 import GoldPage from '../Page/GoldPage.jsx'
@@ -80,6 +81,14 @@ export const router = createBrowserRouter([
               </ProtectedRoutes>
             ),
           },
+{
+            path: 'ManageCashier',
+            element: (
+              <ProtectedRoutes allowedRoles={[2]}>
+                <ManageCashier />
+              </ProtectedRoutes>
+            )
+          }
         ],
       },
       {
