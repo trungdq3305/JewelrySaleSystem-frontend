@@ -69,11 +69,11 @@ const ManageGem = () => {
   const handleAddNewGem = async (formData) => {
     try {
       const response = await addGem(formData);
-      if (response.isSuccess) { // Assuming response has an isSuccess field
+      if (response.isSuccess) { 
         toast.success('Gem added successfully');
         handleCloseDialog();
         console.log('New Gem added successfully:', response.data);
-        await loadGems(); // Corrected to load gems after adding a new one
+        await loadGems(); 
       } else {
         toast.error(response.message || 'Error adding new gem');
         console.error('Error adding new gem:', response.message);
