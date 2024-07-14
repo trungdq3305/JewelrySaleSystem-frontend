@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, TablePagination, Snackbar } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Box,
+  TablePagination,
+} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { updateGem } from '../../Configs/axios';
+import { updateGem} from '../../Configs/axios';
 import UpdateGemDialog from './UpdateGemDialog';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -93,12 +106,15 @@ const GemTable = ({ gems, reload }) => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openDialog, setOpenDialog] = useState(false);
   const [editData, setEditData] = useState(initialFormData);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [gemList, setGemList] = useState(gems);
+  
+  useEffect(() => {
+    setGemList(gems);
+  }, [gems]);
 
   const handleUpdateGem = (gem) => {
+    setEditData(gem);
     setOpenDialog(true);
-    setEditData({ ...initialFormData, ...gem });
   };
 
   const handleCloseDialog = () => {
@@ -118,21 +134,19 @@ const GemTable = ({ gems, reload }) => {
     const isFormValid = requiredFields.every((field) => formData[field] !== '' && formData[field] !== undefined);
 
     if (!isFormValid) {
-      setSnackbarMessage('Please fill in all required fields.');
-      setOpenSnackbar(true);
+      toast.error('Please fill in all required fields.');
       return;
     }
 
     try {
       await updateGem(formData); 
-      setSnackbarMessage('Gem updated successfully!');
-      setOpenSnackbar(true);
-      handleCloseDialog();
-      reload();
+      setGemList(gemList.map(gem => gem.gemId === formData.gemId ? formData : gem));
+      toast.success(`Gem ${formData.gemId} updated successfully`);
     } catch (error) {
+      toast.error('Error updating gem.');
       console.error('Error updating gem:', error);
-      setSnackbarMessage('Error updating gem.');
-      setOpenSnackbar(true);
+    } finally {
+      handleCloseDialog();
     }
   };
 
@@ -146,7 +160,6 @@ const GemTable = ({ gems, reload }) => {
     setPage(0);
   };
 
-  const gemList = Array.isArray(gems) && gems.length > 0 ? gems : [];
 
   const emptyRows = rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - gemList.length) : 0;
 
@@ -160,12 +173,6 @@ const GemTable = ({ gems, reload }) => {
         onUpdateGem={handleEditGem}
         formData={editData}
         setFormData={setEditData}
-      />
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-        message={snackbarMessage}
       />
       <TableContainer component={Paper} sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
