@@ -4,14 +4,16 @@ import GemTable from '../Components/ManageGem/GemTable';
 import { getAllGem, addGem, getGems } from '../Configs/axios';
 import ManagerSideBar from '../Components/Sidebar/ManagerSideBar';
 import AddGemDialog from '../Components/ManageGem/AddGemDialog';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ManageGem = () => {
   const [gems, setGems] = useState([]); 
   const [loading, setLoading] = useState(false); 
   const [openDialog, setOpenDialog] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState('gemId');
+  const [statusFilter, setStatusFilter] = useState('all'); 
   const [inputValue, setInputValue] = useState('');
-  const [error, setError] = useState('');
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -26,16 +28,16 @@ const ManageGem = () => {
     setLoading(true);
     const transformedSearchParams = {
       [searchCriteria]: inputValue,
+      status: statusFilter === 'all' ? undefined : statusFilter,
     };
 
     try {
       const response = await getGems(transformedSearchParams);
       console.log('Search response data:', response.data); 
       setGems(Array.isArray(response.data) ? response.data : []); 
-      setError(''); // Clear any previous errors
     } catch (error) {
       console.error('Search error:', error);
-      setError(`Error fetching gems by ${searchCriteria}. Please try again.`);
+      toast.error('Error searching gems');
     } finally {
       setLoading(false);
     }
@@ -56,10 +58,9 @@ const ManageGem = () => {
       const result = await getAllGem();
       console.log('Load gems data:', result.data); 
       setGems(Array.isArray(result.data) ? result.data : []);
-      setError(''); // Clear any previous errors
     } catch (error) {
       console.error('Error loading gems:', error);
-      setError('Error loading gems. Please try again.');
+      toast.error('Error loading gems. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -67,13 +68,19 @@ const ManageGem = () => {
 
   const handleAddNewGem = async (formData) => {
     try {
-      await addGem(formData);
-      handleCloseDialog();
-      loadGems();
-      console.log('New gem added successfully:', formData);
+      const response = await addGem(formData);
+      if (response.isSuccess) { // Assuming response has an isSuccess field
+        toast.success('Gem added successfully');
+        handleCloseDialog();
+        console.log('New Gem added successfully:', response.data);
+        await loadGems(); // Corrected to load gems after adding a new one
+      } else {
+        toast.error(response.message || 'Error adding new gem');
+        console.error('Error adding new gem:', response.message);
+      }
     } catch (error) {
+      toast.error('Server error occurred');
       console.error('Error adding new gem:', error);
-      setError('Error adding new gem. Please try again.');
     }
   };
 
@@ -81,9 +88,8 @@ const ManageGem = () => {
     loadGems();
   }, []);
 
-  if (loading) return <CircularProgress />;
-
   return (
+    <><ToastContainer />
     <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
       <ManagerSideBar />
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
@@ -136,13 +142,10 @@ const ManageGem = () => {
               </Button>
             </Box>
           </Box>
-
-          {error && <Box sx={{ mb: 2, color: 'red' }}>{error}</Box>}
-
-          <GemTable gems={gems} reload={loadGems}/>
+          {loading ? <CircularProgress /> : <GemTable gems={gems} reload={loadGems} />}
         </Paper>
       </Box>
-    </Box>
+    </Box></>
   );
 };
 

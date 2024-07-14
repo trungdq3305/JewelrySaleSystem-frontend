@@ -48,10 +48,6 @@ const UpdateGemDialog = ({ openDialog, handleCloseDialog, onUpdateGem, formData,
     }
   };
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   return (
     <>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -124,15 +120,6 @@ const UpdateGemDialog = ({ openDialog, handleCloseDialog, onUpdateGem, formData,
           <Button onClick={handleUpdateGem} variant="contained" autoFocus>Update</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

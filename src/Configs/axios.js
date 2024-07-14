@@ -230,17 +230,21 @@ export const getAllGem = async () => {
 export const updateGem = async (formData) => {
   try {
     const response = await axios.put(api + '/gem/updategem', formData)
+    if (response.status !== 200) {
+      throw new Error(`Error: ${response.status}`)
+    }
     return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message)
-      return error.message
+      console.log('error message:', error.message)
+      throw new Error(error.message) 
     } else {
-      console.log('Unxpected error:', error)
-      return 'An unexpected error has occured'
+      console.log('Unexpected error:', error)
+      throw new Error('An unexpected error has occurred') 
     }
   }
 }
+
 
 const getGems = async (params) => {
   try {
@@ -316,21 +320,18 @@ export const getVouchersv2 = async (params) => {
 }
 export const addGem = async (formData) => {
   try {
-    const data = await axios.post(api + '/gem/creategem', formData)
-
-    console.log(data)
+    const response = await axios.post(api + '/gem/creategem', formData);
+    return { isSuccess: true, data: response.data }; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error massage: ', error.message)
-      alert('PLEASE ENTER NAME OF DIAMOND OR THAT IS NAME WAS EXISTED')
-      return error.message
+      console.log('Error message: ', error.message);
+      return { isSuccess: false, message: error.response?.data?.message || error.message }; 
     } else {
-      console.log('Unexpected error: ', error)
-      alert('An unexpected error has occurred')
-      return 'An unexpected error has occired'
+      console.log('Unexpected error: ', error);
+      return { isSuccess: false, message: 'An unexpected error has occurred' }; 
     }
   }
-}
+};
 
 export const getAllCustomers = async () => {
   try {
@@ -447,30 +448,30 @@ export const updateDiscount = async (formData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message:', error.message)
-      throw new Error(error.message) // Re-throw the error for the caller to handle
+      throw new Error(error.message) 
     } else {
       console.log('Unexpected error:', error)
-      throw new Error('An unexpected error has occurred') // Re-throw the error for the caller to handle
+      throw new Error('An unexpected error has occurred')
     }
   }
 }
 
 export const addDiscount = async (formData) => {
   try {
-    const data = await axios.post(api + '/discount/create-discount', formData)
-    console.log(data)
+    const response = await axios.post(api + '/discount/create-discount', formData);
+    return { isSuccess: true, data: response.data }; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error massage: ', error.message)
-      alert('Cost >= 10000 /nExpired Day must be later than publish day')
-      return error.message
+      console.log('Error message: ', error.message);
+      return { isSuccess: false, message: error.response?.data?.message || error.message }; 
     } else {
-      console.log('Unexpected error: ', error)
-      alert('An unexpected error has occurred')
-      return 'An unexpected error has occired'
+      console.log('Unexpected error: ', error);
+      return { isSuccess: false, message: 'An unexpected error has occurred' }; 
     }
   }
-}
+};
+
+
 
 const getDiscount = async (params) => {
   try {
