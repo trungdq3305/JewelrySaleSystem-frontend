@@ -6,7 +6,7 @@ import Login from '../assets/Login.png'
 const ManagerPage = () => {
   const navigate = useNavigate();
 
-  const handleManagerButton = () => navigate('/ManagerHomePage');
+  const handleManagerButton = () => navigate('/ManagerHomePage/ManageCustomer');
   const handleStaffButton = () => navigate('/StaffPage');
   const handleAdminButton = () => navigate('/AdminPage');
 
@@ -81,19 +81,6 @@ const ManagerPage = () => {
                 },
               }}>
               Staff management
-            </Button>
-            <Button variant='outlined' onClick={handleAdminButton}
-              sx={{
-                borderRadius: '50px',
-                backgroundColor: '#e39994',
-                color: 'white',
-                border: '1px solid #e39994',
-                '&:hover': {
-                  backgroundColor: '#e39994',
-                  borderColor: 'white',
-                },
-              }}>
-              Admin management
             </Button>
           </div>
         </div>

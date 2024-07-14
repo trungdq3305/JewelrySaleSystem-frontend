@@ -214,9 +214,9 @@ const CustomerTable = ({ customers, reloadCustomers }) => {
         onClose={() => setOpenBillDialog(false)}
         bills={bills}
       />
-      <TableContainer component={Paper} sx={{ display: 'flex', flexDirection: 'column' }}>
+      <TableContainer component={Paper} sx={{ maxHeight: 600, display: 'flex', flexDirection: 'column' }}>
         <Table stickyHeader aria-label="custom pagination table">
-          <TableHead>
+          <TableHead >
             <TableRow >
               <TableCell style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>ID</TableCell>
               <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Name</TableCell>
