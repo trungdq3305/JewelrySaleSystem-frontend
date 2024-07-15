@@ -182,7 +182,6 @@ const ManageVoucher = () => {
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-        <ManagerSideBar />
         <Box
           sx={{
             flexGrow: 1,
@@ -196,7 +195,7 @@ const ManageVoucher = () => {
               flexGrow: 1,
               display: 'flex',
               flexDirection: 'column',
-              
+
               overflow: 'hidden',
               padding: '10px',
             }}

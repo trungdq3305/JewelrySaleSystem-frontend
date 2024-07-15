@@ -89,6 +89,7 @@ const ManageDiscount = () => {
 
   return (
     <>
+    
     <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -98,8 +99,8 @@ const ManageDiscount = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
-    <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      <ManagerSideBar />
+    <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh'}}>
+    <ManagerSideBar />
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
         <Paper sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '10px' }}>
           <AddDiscountDialog

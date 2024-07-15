@@ -1,22 +1,32 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import { addUser, getAllUsers, searchUser } from '../Configs/axios';
 import UserTable from '../Components/UserTable/UserTable';
 import AddUserDialog from '../Components/UserTable/AddUserDialog';
+import LoginBackground from '../assets/Login.png';
+import { useAuth } from '../Context/UserContext';
 
 const AdminHomepage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+  const { logOut } = useAuth();
+
+  const handleLogout = () => {
+    logOut(); // Call logout function from context or wherever it's defined
+  };
 
   const onSearchTextChange = async (event) => {
     const searchValue = event.target.value;
     if (searchValue.length === 0) {
       loadAllUsers();
     } else {
-      const result = await searchUser(searchValue);
-      setUsers(result.data.data);
+      try {
+        const result = await searchUser(searchValue);
+        setUsers(result.data.data);
+      } catch (error) {
+        console.error('Error searching user:', error);
+      }
     }
   };
 
@@ -44,9 +54,14 @@ const AdminHomepage = () => {
 
   const loadAllUsers = async () => {
     setLoading(true);
-    const result = await getAllUsers();
-    setUsers(result.data.data);
-    setLoading(false);
+    try {
+      const result = await getAllUsers();
+      setUsers(result.data.data);
+    } catch (error) {
+      console.error('Error loading users:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddUser = async (formData) => {
@@ -60,7 +75,7 @@ const AdminHomepage = () => {
         loadAllUsers();
       }
     } catch (error) {
-      window.alert(error);
+      window.alert('Error adding user:', error);
       console.error('Error adding user:', error);
     }
   };
@@ -74,17 +89,53 @@ const AdminHomepage = () => {
   return (
     <Box
       sx={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         gap: '20px',
         padding: '20px',
-        backgroundColor: '#f8bbd0', // Pink background
-        minHeight: '100vh'
+        backgroundImage: `url(${LoginBackground})`,
+        minHeight: '100vh',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <Typography variant="h3" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
-  Welcome admin
-</Typography>
+      <Paper
+        sx={{
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          padding: '20px',
+          textAlign: 'center',
+          marginBottom: '0', 
+        }}
+      >
+        <Typography variant="h3" align="center" gutterBottom style={{ fontWeight: 'bold', color: '#fff' }}>
+          Welcome admin
+        </Typography>
+      </Paper>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: '0', 
+          
+        }}
+      >
+        <Button
+          onClick={handleLogout}
+          variant="contained"
+          color="primary"
+          sx={{backgroundColor: '#584c4c',
+            color: 'white', 
+            border: '1px solid white',
+            '&:hover': {
+              backgroundColor: '#584c4c',
+              borderColor: 'white',
+            },
+            height:'50px'}}
+        >
+          Logout
+        </Button>
+      </Box>
       <Paper
         sx={{
           padding: '20px',
@@ -92,7 +143,7 @@ const AdminHomepage = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          borderRadius: '30px'
+          borderRadius: '30px',
         }}
       >
         <Box

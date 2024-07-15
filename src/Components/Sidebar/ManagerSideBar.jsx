@@ -27,6 +27,7 @@ import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import CardGiftcardOutlinedIcon from '@mui/icons-material/CardGiftcardOutlined'
+import { useAuth } from '../../Context/UserContext'
 const drawerWidth = 240
 
 const openedMixin = (theme) => ({
@@ -36,7 +37,7 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-  backgroundColor: '#FFDBF0',
+  backgroundColor: '#e17489',
   color: '#000000',
 })
 
@@ -50,7 +51,7 @@ const closedMixin = (theme) => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
-  backgroundColor: '#FFDBF0',
+  backgroundColor: '#e17489',
   color: '#ffffff',
 })
 
@@ -84,7 +85,10 @@ export default function ManagerSideBar() {
   const [open, setOpen] = React.useState(true)
   const [manageOpen, setManageOpen] = React.useState(false)
   const navigate = useNavigate()
-
+  const { logOut } = useAuth()
+  const handleLogout = () => {
+    const result = logOut()
+  }
   const handleManageClick = () => {
     setManageOpen(!manageOpen)
   }
@@ -96,9 +100,9 @@ export default function ManagerSideBar() {
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
             {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
+              <ChevronRightIcon sx={{color: 'white'}}/>
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon sx={{color: 'white'}}/>
             )}
           </IconButton>
         </DrawerHeader>
@@ -125,21 +129,49 @@ export default function ManagerSideBar() {
                   justifyContent: 'center',
                 }}
               >
-                <HomeOutlinedIcon />
+                <HomeOutlinedIcon sx={{color: 'white'}}/>
               </ListItemIcon>
               <ListItemText
                 primary="Dashboard"
-                sx={{ opacity: open ? 1 : 0 }}
+                sx={{ opacity: open ? 1 : 0, color: 'white'}}
               />
             </ListItemButton>
           </ListItem>
-
+          <ListItem
+            disablePadding
+            sx={{ display: 'block' }}
+            onClick={() => {
+              navigate('/ManagePage')
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <HomeOutlinedIcon sx={{color: 'white'}}/>
+              </ListItemIcon>
+              <ListItemText
+                primary="Homepage"
+                sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
+              />
+            </ListItemButton>
+          </ListItem>
           <ListItemButton onClick={handleManageClick}>
             <ListItemIcon>
-              <GroupsOutlinedIcon />
+              <GroupsOutlinedIcon sx={{color: 'white'}}/>
             </ListItemIcon>
-            <ListItemText primary="Manage List" />
-            {manageOpen ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary="Manage List" sx={{color: 'white'}}/>
+            {manageOpen ? <ExpandLess sx={{color: 'white'}}/> : <ExpandMore sx={{color: 'white'}}/>}
           </ListItemButton>
           <Collapse in={manageOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -164,9 +196,9 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <DiamondOutlinedIcon />
+                    <DiamondOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
-                  <ListItemText primary="Gem" sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary="Gem" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
                 </ListItemButton>
               </ListItem>
 
@@ -191,11 +223,11 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <LocalOfferOutlinedIcon />
+                    <LocalOfferOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
                   <ListItemText
                     primary="Discount"
-                    sx={{ opacity: open ? 1 : 0 }}
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
                   />
                 </ListItemButton>
               </ListItem>
@@ -221,11 +253,11 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <CategoryOutlinedIcon />
+                    <CategoryOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
                   <ListItemText
                     primary="Product"
-                    sx={{ opacity: open ? 1 : 0 }}
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
                   />
                 </ListItemButton>
               </ListItem>
@@ -251,11 +283,11 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <PeopleOutlineOutlinedIcon />
+                    <PeopleOutlineOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
                   <ListItemText
                     primary="Cashier"
-                    sx={{ opacity: open ? 1 : 0 }}
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
                   />
                 </ListItemButton>
               </ListItem>
@@ -281,9 +313,9 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <PeopleAltOutlinedIcon />
+                    <PeopleAltOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
-                  <ListItemText primary="User" sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary="User" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
                 </ListItemButton>
               </ListItem>
 
@@ -308,11 +340,11 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <PersonOutlineOutlinedIcon />
+                    <PersonOutlineOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
                   <ListItemText
                     primary="Customer"
-                    sx={{ opacity: open ? 1 : 0 }}
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
                   />
                 </ListItemButton>
               </ListItem>
@@ -338,11 +370,11 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <CardGiftcardOutlinedIcon />
+                    <CardGiftcardOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
                   <ListItemText
                     primary="Voucher"
-                    sx={{ opacity: open ? 1 : 0 }}
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
                   />
                 </ListItemButton>
               </ListItem>
@@ -367,9 +399,9 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <CardGiftcardOutlinedIcon />
+                    <CardGiftcardOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
-                  <ListItemText primary="Gold" sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary="Gold" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
                 </ListItemButton>
               </ListItem>
             </List>
@@ -395,11 +427,14 @@ export default function ManagerSideBar() {
               <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem> */}
+          
           <ListItem
             disablePadding
             sx={{ display: 'block' }}
             onClick={() => {
-              navigate('/ManagePage')
+              {
+                handleLogout()
+              }
             }}
           >
             <ListItemButton
@@ -416,11 +451,11 @@ export default function ManagerSideBar() {
                   justifyContent: 'center',
                 }}
               >
-                <ExitToAppOutlinedIcon />
+                <ExitToAppOutlinedIcon sx={{color: 'white'}}/>
               </ListItemIcon>
               <ListItemText
-                primary="Back to Homepage"
-                sx={{ opacity: open ? 1 : 0 }}
+                primary="Logout"
+                sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
               />
             </ListItemButton>
           </ListItem>
