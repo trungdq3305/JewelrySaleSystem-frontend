@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
 import HomePage from '../assets/HomePage.png';
 import Login from '../assets/Login.png'
+import ManagerSideBar from '../Components/Sidebar/ManagerSideBar';
+
 const ManagerPage = () => {
   const navigate = useNavigate();
 
-  const handleManagerButton = () => navigate('/ManagerHomePage/ManageCustomer');
+  const handleManagerButton = () => navigate('/ManagerHomePage');
   const handleStaffButton = () => navigate('/StaffPage');
   const handleAdminButton = () => navigate('/AdminPage');
 
@@ -24,7 +26,7 @@ const ManagerPage = () => {
           }
         `}
       </style>
-
+          
       <div style={{
         backgroundImage: `url(${Login})`,
         backgroundSize: 'cover',
@@ -37,6 +39,7 @@ const ManagerPage = () => {
         color: '#fff',
         textAlign: 'center',
       }}>
+        <ManagerSideBar />
         <div style={{
           backgroundColor: 'rgba(128, 128, 128, 0.5)', // Màu xám nhạt với độ trong suốt
           padding: '30px',
@@ -55,8 +58,8 @@ const ManagerPage = () => {
           }}>
             Welcome Manager
           </h1>
-          <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <Button variant='outlined' onClick={handleManagerButton}
+           <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+           {/* <Button variant='outlined' onClick={handleManagerButton}
               sx={{
                 backgroundColor: '#e39994',
                 color: 'white',
@@ -69,9 +72,11 @@ const ManagerPage = () => {
               }}>
               Manager management
             </Button>
+*/}
             <Button variant='outlined' onClick={handleStaffButton}
               sx={{
                 borderRadius: '50px',
+                height: '60px',
                 backgroundColor: '#e39994',
                 color: 'white',
                 border: '1px solid #e39994',
@@ -82,7 +87,7 @@ const ManagerPage = () => {
               }}>
               Staff management
             </Button>
-          </div>
+          </div> 
         </div>
       </div>
     </>

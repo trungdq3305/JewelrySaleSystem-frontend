@@ -14,7 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
 
   const handleLogin = (username, password) => {
-    alert('Login')
+    
     const result = loginUser(username, password)
   }
 

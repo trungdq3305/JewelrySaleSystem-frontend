@@ -90,8 +90,8 @@ const ManageGem = () => {
 
   return (
     <><ToastContainer />
-    <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      <ManagerSideBar />
+    <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' , justifyContent: 'full'}}>
+    <ManagerSideBar />
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
         <Paper sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '10px' }}>
           <AddGemDialog

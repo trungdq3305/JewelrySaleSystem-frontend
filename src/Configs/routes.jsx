@@ -89,6 +89,22 @@ export const router = createBrowserRouter([
               </ProtectedRoutes>
             ),
           },
+          {
+            path: 'ManageCustomer',
+            element: (
+              <ProtectedRoutes allowedRoles={[1, 2]}>
+                <ManageCustomer />
+              </ProtectedRoutes>
+            ),
+          },
+          {
+            path: 'ManageVoucher',
+            element: (
+              <ProtectedRoutes allowedRoles={[1, 2]}>
+                <ManageVoucher />
+              </ProtectedRoutes>
+            ),
+          },
         ],
       },
       {
@@ -123,14 +139,7 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
-      {
-        path: 'ManagerHomePage/ManageCustomer',
-        element: (
-          <ProtectedRoutes allowedRoles={[1, 2]}>
-            <ManageCustomer />
-          </ProtectedRoutes>
-        ),
-      },
+      
       {
         path: 'ManagerHomePage/ManageDiscount',
         element: (
@@ -163,6 +172,7 @@ export const router = createBrowserRouter([
           </ProtectedRoutes>
         ),
       },
+      
     ],
   },
 ])
