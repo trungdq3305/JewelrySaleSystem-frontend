@@ -182,6 +182,7 @@ const ManageVoucher = () => {
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+      <ManagerSideBar />
         <Box
           sx={{
             flexGrow: 1,
