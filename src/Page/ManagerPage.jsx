@@ -4,7 +4,7 @@ const ManagerPage = () => {
   const navigate = useNavigate()
   const handleManagerButton = () => navigate('/ManagerHomePage')
   const handleStaffButton = () => navigate ('/StaffPage')
-  const handleAdminButton = () => navigate('/AdminPage')
+  const handleAdminButton = () => navigate('/AdminHomePage')
   return (
     <>
       <div>Manager Home page</div>

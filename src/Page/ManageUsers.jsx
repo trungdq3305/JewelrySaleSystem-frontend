@@ -63,8 +63,6 @@ const ManageUsers = () => {
   if (loading) return <div>Loading....</div>;
   return (
     <>
-    
-   
       <TextField
         id="filled-search"
         label="Search"
@@ -73,7 +71,7 @@ const ManageUsers = () => {
         style={{ width: '300px' }}
         onChange={onSearchTextChange}
       />
-         <Button onClick={handleOpenDialog}>
+      <Button onClick={handleOpenDialog}>
         Add User
       </Button>
       <AddUserDialog
@@ -85,7 +83,7 @@ const ManageUsers = () => {
 
       />
       <UserTable users={users} />
-      
+
     </>
   )
 }
