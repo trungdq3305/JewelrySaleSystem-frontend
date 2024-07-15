@@ -209,12 +209,12 @@ const ProductTable = ({ products }) => {
       
       <TableContainer
         component={Paper}
-        sx={{ maxHeight: 500, display: 'flex', flexDirection: 'column' }}
+        sx={{ display: 'flex', flexDirection: 'column' }}
       >
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Id</TableCell>
+              <TableCell style={{backgroundColor: 'lightgray', fontWeight: 'bold' }}>Id</TableCell>
               <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Name</TableCell>
               <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Category</TableCell>
               <TableCell align="right" style={{ backgroundColor: 'lightgray', fontWeight: 'bold' }}>Material</TableCell>

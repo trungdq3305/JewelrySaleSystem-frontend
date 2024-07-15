@@ -149,7 +149,7 @@ const CashierTable = ({ cashiers }) => {
       />
       <TableContainer
         component={Paper}
-        sx={{ maxHeight: 440, display: 'flex', flexDirection: 'column' }}
+        sx={{ display: 'flex', flexDirection: 'column' }}
       >
         <Table stickyHeader aria-label="custom pagination table">
           <TableHead>
