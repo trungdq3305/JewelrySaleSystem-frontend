@@ -175,11 +175,11 @@ export default function ManagerSideBar() {
           </ListItemButton>
           <Collapse in={manageOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem
+            <ListItem
                 disablePadding
                 sx={{ display: 'block' }}
                 onClick={() => {
-                  navigate('/ManagerHomePage/ManageGem')
+                  navigate('/ManagerHomePage/ManageUsers')
                 }}
               >
                 <ListItemButton
@@ -196,72 +196,11 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <DiamondOutlinedIcon sx={{color: 'white'}}/>
+                    <PeopleAltOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
-                  <ListItemText primary="Gem" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
+                  <ListItemText primary="User" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
                 </ListItemButton>
               </ListItem>
-
-              <ListItem
-                disablePadding
-                sx={{ display: 'block' }}
-                onClick={() => {
-                  navigate('/ManagerHomePage/ManageDiscount')
-                }}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <LocalOfferOutlinedIcon sx={{color: 'white'}}/>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Discount"
-                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
-                  />
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem
-                disablePadding
-                sx={{ display: 'block' }}
-                onClick={() => {
-                  navigate('/ManagerHomePage/ManageProducts')
-                }}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <CategoryOutlinedIcon sx={{color: 'white'}}/>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Product"
-                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
-                  />
-                </ListItemButton>
-              </ListItem>
-
               <ListItem
                 disablePadding
                 sx={{ display: 'block' }}
@@ -291,12 +230,11 @@ export default function ManagerSideBar() {
                   />
                 </ListItemButton>
               </ListItem>
-
               <ListItem
                 disablePadding
                 sx={{ display: 'block' }}
                 onClick={() => {
-                  navigate('/ManagerHomePage/ManageUsers')
+                  navigate('/ManagerHomePage/ManageProducts')
                 }}
               >
                 <ListItemButton
@@ -313,12 +251,14 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <PeopleAltOutlinedIcon sx={{color: 'white'}}/>
+                    <CategoryOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
-                  <ListItemText primary="User" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
+                  <ListItemText
+                    primary="Product"
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
+                  />
                 </ListItemButton>
               </ListItem>
-
               <ListItem
                 disablePadding
                 sx={{ display: 'block' }}
@@ -348,7 +288,32 @@ export default function ManagerSideBar() {
                   />
                 </ListItemButton>
               </ListItem>
-
+              <ListItem
+                disablePadding
+                sx={{ display: 'block' }}
+                onClick={() => {
+                  navigate('/ManagerHomePage/ManageGold')
+                }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CardGiftcardOutlinedIcon sx={{color: 'white'}}/>
+                  </ListItemIcon>
+                  <ListItemText primary="Gold" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
+                </ListItemButton>
+              </ListItem>
               <ListItem
                 disablePadding
                 sx={{ display: 'block' }}
@@ -382,7 +347,7 @@ export default function ManagerSideBar() {
                 disablePadding
                 sx={{ display: 'block' }}
                 onClick={() => {
-                  navigate('/ManagerHomePage/ManageGold')
+                  navigate('/ManagerHomePage/ManageDiscount')
                 }}
               >
                 <ListItemButton
@@ -399,9 +364,38 @@ export default function ManagerSideBar() {
                       justifyContent: 'center',
                     }}
                   >
-                    <CardGiftcardOutlinedIcon sx={{color: 'white'}}/>
+                    <LocalOfferOutlinedIcon sx={{color: 'white'}}/>
                   </ListItemIcon>
-                  <ListItemText primary="Gold" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
+                  <ListItemText
+                    primary="Discount"
+                    sx={{ opacity: open ? 1 : 0 ,color: 'white'}}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                disablePadding
+                sx={{ display: 'block' }}
+                onClick={() => {
+                  navigate('/ManagerHomePage/ManageGem')
+                }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <DiamondOutlinedIcon sx={{color: 'white'}}/>
+                  </ListItemIcon>
+                  <ListItemText primary="Gem" sx={{ opacity: open ? 1 : 0 ,color: 'white'}} />
                 </ListItemButton>
               </ListItem>
             </List>
