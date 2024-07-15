@@ -632,3 +632,19 @@ export const updateCashier = async (formData) => {
     }
   }
 }
+export const getAllBill = async (start, end, id) => {
+  try {
+    const query = `?stardate=${start}&enddate=${end}&Id=${id}`
+    const data = await axios.get(api + '/bill/viewlistbill' + query)
+
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error massage: ', error.message)
+      return error.message
+    } else {
+      console.log('Unexpected error: ', error)
+      return 'An unexpected error has occured'
+    }
+  }
+}

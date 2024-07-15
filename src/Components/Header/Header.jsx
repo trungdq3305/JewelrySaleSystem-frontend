@@ -4,9 +4,14 @@ import logo from '../../assets/logo.jpg'
 import CustomizedMenus from '../React-menu/ReactMenu'
 import Button from '@mui/material/Button'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../Context/UserContext'
 
 const Header = ({ handleCategory }) => {
   const navigate = useNavigate()
+  const { logOut } = useAuth()
+  const handleLogout = () => {
+    const result = logOut()
+  }
   const handleNavigateToManageCustomer = () => {
     navigate('/StaffPage/StaffCustomer')
   }
@@ -48,7 +53,7 @@ const Header = ({ handleCategory }) => {
           </li>
 
           <li>
-          <Button
+            <Button
               onClick={handleNavigateToManageDiscount}
               sx={{
                 backgroundColor: '#333',
@@ -107,6 +112,11 @@ const Header = ({ handleCategory }) => {
           </li>
           <li>
             <Button
+              onClick={() => {
+                {
+                  handleLogout()
+                }
+              }}
               sx={{
                 backgroundColor: '#333',
                 color: 'white',
@@ -117,6 +127,25 @@ const Header = ({ handleCategory }) => {
               }}
             >
               PROFILE{' '}
+            </Button>
+          </li>
+          <li>
+            <Button
+              onClick={() => {
+                {
+                  handleLogout()
+                }
+              }}
+              sx={{
+                backgroundColor: '#333',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#ffdbf0',
+                  color: 'black',
+                },
+              }}
+            >
+              LOG OUT{' '}
             </Button>
           </li>
         </ul>
